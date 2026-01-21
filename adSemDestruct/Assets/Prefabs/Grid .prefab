@@ -48,4 +48,5 @@ MonoBehaviour:
   columns: 7
   pieceWidth: 1
   pieceHeight: 1
+  gridPieces: []
   gridPiecePF: {fileID: 0}

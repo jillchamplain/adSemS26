@@ -3,23 +3,26 @@ using UnityEngine;
 
 public class Mouse : MonoBehaviour
 {
+    [SerializeField] LayerMask interactMask;
     [SerializeField] GameObject held;
     void Update()
     {
-        if(!ClickCheck())
-        HoldCheck();
+        if (!ClickCheck())
+            HoldCheck();
 
         ReleaseCheck();
     }
 
     bool ClickCheck()
     {
-        RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+
+        RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, 0, interactMask);
+
         if (Input.GetMouseButtonDown(0))
         {
             if (hit)
             {
-                //Debug.Log(hit.transform.gameObject);
+                Debug.Log(hit.transform.gameObject);
                 return true;
             }
         }
@@ -35,9 +38,10 @@ public class Mouse : MonoBehaviour
             return true;
         }
 
-        RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
         if (Input.GetMouseButton(0))
         {
+
+            RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, 0, interactMask);
             if (hit)
             {
                 //Debug.Log("Holding over" + hit.transform.gameObject); 
@@ -51,6 +55,7 @@ public class Mouse : MonoBehaviour
                 return true;
             }
         }
+
         held = null;
         return false;
     }
@@ -59,10 +64,14 @@ public class Mouse : MonoBehaviour
     {
         if (Input.GetMouseButtonUp(0))
         {
-            held = null;
+            if (held)
+            {
+                held.GetComponent<IGrabbable>().Released();
+                held = null;
+            }
             return true;
         }
         return false;
     }
-
 }
+

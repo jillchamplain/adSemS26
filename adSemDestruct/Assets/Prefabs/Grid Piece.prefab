@@ -135,6 +135,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   row: 0
   col: 0
+  boxCollider: {fileID: 0}
 --- !u!61 &263546643833280161
 BoxCollider2D:
   m_ObjectHideFlags: 0
