@@ -22,7 +22,7 @@ public class Mouse : MonoBehaviour
         {
             if (hit)
             {
-                Debug.Log(hit.transform.gameObject);
+                //Debug.Log(hit.transform.gameObject);
                 return true;
             }
         }

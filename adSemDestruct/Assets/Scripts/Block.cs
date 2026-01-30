@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Block : MonoBehaviour, IGrabbable
 {
+   [SerializeField] LayerMask interactMask
    public void Grabbed(Vector2 pos)
     {
         transform.position = pos;
@@ -17,3 +18,4 @@ public class Block : MonoBehaviour, IGrabbable
         }
     }
 }
+
