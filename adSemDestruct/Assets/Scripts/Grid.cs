@@ -17,12 +17,12 @@ public class Grid : MonoBehaviour
 
     private void OnEnable()
     {
-        Block.blockPlaced += AssignToGrid;
+        MatchItem.matchItemPlaced += AssignToGrid;
     }
 
     private void OnDisable()
     {
-        Block.blockPlaced -= AssignToGrid;
+        MatchItem.matchItemPlaced -= AssignToGrid;
     }
     void Start()
     {
@@ -34,6 +34,8 @@ public class Grid : MonoBehaviour
     {
         
     }
+
+    #region GRID GENERATION
 
     public void GenerateGrid()
     {
@@ -52,23 +54,34 @@ public class Grid : MonoBehaviour
                 newPiece.name = i + "_" + j;
 
                 GridPiece piece = newPiece.GetComponent<GridPiece>();
-                piece.setRow(i);
-                piece.setCol(j);
+                piece.gridBased.row = i;
+                piece.gridBased.col = j;
                 gridPieces.Add(piece);
             }
         }
     }
 
-    void AssignToGrid(Block block, GridPiece gridPiece)
+    #endregion
+
+    #region GRID RECOGNITION
+
+    void MatchRecognition()
     {
-        Debug.Log("Grid Piece: " + gridPiece.getRow() + "," + gridPiece.getCol());
+
+    }
+
+    #endregion
+
+    void AssignToGrid(MatchItem item, GridPiece gridPiece)
+    {
+        //Debug.Log("Grid Piece: " + gridPiece.getRow() + "," + gridPiece.getCol());
         foreach(GridPiece piece in gridPieces)
         {
-            if(piece.getRow() == gridPiece.getRow() && piece.getCol() == gridPiece.getCol())
+            if(piece.gridBased.row == gridPiece.gridBased.row && piece.gridBased.col == gridPiece.gridBased.col)
             {
                 
-                block.gameObject.transform.parent = gridPiece.gameObject.transform;
-                block.gameObject.transform.position = gridPiece.gameObject.transform.position;
+                item.gameObject.transform.parent = gridPiece.gameObject.transform;
+                item.gameObject.transform.position = gridPiece.gameObject.transform.position;
             }
         }
     }
