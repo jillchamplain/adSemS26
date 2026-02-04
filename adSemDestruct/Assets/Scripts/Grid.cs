@@ -8,7 +8,7 @@ public class Grid : MonoBehaviour
     [SerializeField] int columns;
     [SerializeField] float pieceWidth;
     [SerializeField] float pieceHeight;
-    [SerializeField] List<GridPiece> gridPieces;
+     GridPiece[,] gridPieces;
 
     [Header("References")]
     [SerializeField] GameObject gridPiecePF;
@@ -26,6 +26,7 @@ public class Grid : MonoBehaviour
     }
     void Start()
     {
+        gridPieces = new GridPiece[rows, columns];
         GenerateGrid();
     }
 
@@ -56,7 +57,7 @@ public class Grid : MonoBehaviour
                 GridPiece piece = newPiece.GetComponent<GridPiece>();
                 piece.gridBased.row = i;
                 piece.gridBased.col = j;
-                gridPieces.Add(piece);
+                gridPieces[i, j] = piece;
             }
         }
     }
@@ -65,9 +66,10 @@ public class Grid : MonoBehaviour
 
     #region GRID RECOGNITION
 
-    void MatchRecognition()
+    void MatchRecognition(MatchItem item)
     {
-
+        //vertical match 3
+        //horizontal match 3
     }
 
     #endregion
@@ -75,13 +77,16 @@ public class Grid : MonoBehaviour
     void AssignToGrid(MatchItem item, GridPiece gridPiece)
     {
         //Debug.Log("Grid Piece: " + gridPiece.getRow() + "," + gridPiece.getCol());
-        foreach(GridPiece piece in gridPieces)
+
+        for(int i = 0; i <rows;i++)
         {
-            if(piece.gridBased.row == gridPiece.gridBased.row && piece.gridBased.col == gridPiece.gridBased.col)
+            for(int j = 0; j < columns;j++)
             {
-                
-                item.gameObject.transform.parent = gridPiece.gameObject.transform;
-                item.gameObject.transform.position = gridPiece.gameObject.transform.position;
+                if (i == gridPiece.gridBased.row && j == gridPiece.gridBased.col)
+                {
+                    item.gameObject.transform.parent = gridPiece.gameObject.transform;
+                    item.gameObject.transform.position = gridPiece.gameObject.transform.position;
+                }
             }
         }
     }
