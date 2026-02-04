@@ -14,6 +14,16 @@ public class Grid : MonoBehaviour
     [SerializeField] GameObject gridPiecePF;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    private void OnEnable()
+    {
+        Block.blockPlaced += AssignToGrid;
+    }
+
+    private void OnDisable()
+    {
+        Block.blockPlaced -= AssignToGrid;
+    }
     void Start()
     {
         GenerateGrid();
@@ -44,15 +54,22 @@ public class Grid : MonoBehaviour
                 GridPiece piece = newPiece.GetComponent<GridPiece>();
                 piece.setRow(i);
                 piece.setCol(j);
+                gridPieces.Add(piece);
             }
         }
     }
 
-    void AssignToGrid(Vector2 pos, GameObject obj)
+    void AssignToGrid(Block block, GridPiece gridPiece)
     {
+        Debug.Log("Grid Piece: " + gridPiece.getRow() + "," + gridPiece.getCol());
         foreach(GridPiece piece in gridPieces)
         {
-            piece.getCollider().bounds.Contains(pos);
+            if(piece.getRow() == gridPiece.getRow() && piece.getCol() == gridPiece.getCol())
+            {
+                
+                block.gameObject.transform.parent = gridPiece.gameObject.transform;
+                block.gameObject.transform.position = gridPiece.gameObject.transform.position;
+            }
         }
     }
 
