@@ -228,7 +228,7 @@ public class MatchGrid : MonoBehaviour
         
         if (thePiece.getMatchItem())
         {
-            Debug.Log("swapping");
+            //Debug.Log("swapping");
             if (getGridPieceAt(theItem.row, theItem.col) != null) //If piece is currently on the grid
             {
                 Debug.Log("swapping to " + getGridPieceAt(theItem.row, theItem.col));
@@ -236,9 +236,15 @@ public class MatchGrid : MonoBehaviour
 
                 //Swaps position of match item currently on grid piece
                 MatchItem curMatchItem = thePiece.getMatchItem();
+
+                //curMatchItem.setPrevRow(curMatchItem.row);
+                //curMatchItem.setPrevCol(curMatchItem.col);
+
                 prevGridPiece.setMatchItem(curMatchItem);
-                curMatchItem.row = prevGridPiece.row;
-                curMatchItem.col = prevGridPiece.col;
+                //curMatchItem.row = prevGridPiece.row;
+                //curMatchItem.col = prevGridPiece.col;
+
+
                 curMatchItem.gameObject.transform.parent = prevGridPiece.gameObject.transform;
                 curMatchItem.gameObject.transform.position = prevGridPiece.gameObject.transform.position;
             }
@@ -248,9 +254,14 @@ public class MatchGrid : MonoBehaviour
             }
         }
 
+        theItem.setPrevRow(theItem.row);
+        theItem.setPrevCol(theItem.col);
+
         thePiece.setMatchItem(theItem); //Need code for swapping positions with other item
         theItem.row = thePiece.row;
         theItem.col = thePiece.col;
+
+       
         theItem.gameObject.transform.parent = thePiece.gameObject.transform;
         theItem.gameObject.transform.position = thePiece.gameObject.transform.position;
 

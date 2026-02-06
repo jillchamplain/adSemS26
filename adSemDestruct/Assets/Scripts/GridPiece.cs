@@ -11,18 +11,11 @@ public class GridPiece : GridBased
             matchItemRef = null;
             return;
         }
-        
-        if (matchItemRef != null)
-        {
-            int holdR = matchItemRef.row;
-            int holdC = matchItemRef.col;
 
-            matchItemRef.row = matchItemRef.getPrevRow();
-            matchItemRef.setPrevRow(holdR);
+        Debug.Log(this + "assigning");
 
-            matchItemRef.col = matchItemRef.getPrevCol();
-            matchItemRef.setPrevCol(holdC);
-        }
+        newRef.setPrevRow(newRef.row);
+        newRef.setPrevCol(newRef.col);
 
         newRef.row = this.row;
         newRef.col = this.col;
