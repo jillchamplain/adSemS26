@@ -7,14 +7,31 @@ public enum MatchItemType
     NUM_TYPES
 }
 
-public class MatchItem : MonoBehaviour, IGrabbable
+public class MatchItem : GridBased, IGrabbable
 {
-    [SerializeField] public GridBased gridBased;
     [SerializeField] MatchItemType type;
+    public MatchItemType getType() {  return type; }
+    public void setType(MatchItemType type) { this.type = type; }
+
+    [SerializeField] int prevRow;
+    public int getPrevRow() { return prevRow; }
+    public void setPrevRow(int prevRow) { this.prevRow = prevRow; }
+    [SerializeField] int prevCol;
+
+    public int getPrevCol() { return prevCol; }
+    public void setPrevCol(int prevCol) { this.prevCol = prevCol; }
+
     [SerializeField] LayerMask interactMask;
+
 
     public delegate void MatchItemPlaced(MatchItem item, GridPiece gridPiece);
     public static event MatchItemPlaced matchItemPlaced;
+
+    private void Start()
+    {
+        prevRow = row;
+        prevCol = col;
+    }
 
     public void Grabbed(Vector2 pos)
     {
