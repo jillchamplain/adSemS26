@@ -16,7 +16,7 @@ public class MatchGrid : MonoBehaviour
     [Header("References")]
     [SerializeField] GameObject gridPiecePF;
 
-    public delegate void Match(List<MatchItem> matchItems);
+    public delegate void Match(List<GridPiece> matchPieces);
     public static event Match match;
 
     private void OnEnable()
@@ -63,7 +63,6 @@ public class MatchGrid : MonoBehaviour
     #endregion
 
     #region MATCH RECOGNITION
-
     bool MatchRecognition(MatchItem item) //Return shape??? return grid positions?
     {
         int x = item.row;
@@ -115,9 +114,9 @@ public class MatchGrid : MonoBehaviour
         return isVertMatch;
     }
 
-    List<MatchItem> VerticalMatchCollection(MatchItem item)
+    List<GridPiece> VerticalMatchCollection(MatchItem item)
     {
-        List<MatchItem> matchPieces = new List<MatchItem>();
+        List<GridPiece> matchPieces = new List<GridPiece>();
         for (int i = 0; i < rows; i++)
         {
             for (int j = 0; j < columns - 2; j++) //Prevents index errors
@@ -131,9 +130,9 @@ public class MatchGrid : MonoBehaviour
                 if (gridPieces[i, j].getMatchItem().getType() == item.getType()
                     && gridPieces[i, j + 1].getMatchItem().getType() == item.getType() && gridPieces[i, j + 2].getMatchItem().getType() == item.getType())
                 {
-                    matchPieces.Add(gridPieces[i, j].getMatchItem());
-                    matchPieces.Add(gridPieces[i, j + 1].getMatchItem());
-                    matchPieces.Add(gridPieces[i, j + 2].getMatchItem());
+                    matchPieces.Add(gridPieces[i, j]);
+                    matchPieces.Add(gridPieces[i, j + 1]);
+                    matchPieces.Add(gridPieces[i, j + 2]);
                 }
             }
         }
@@ -165,9 +164,9 @@ public class MatchGrid : MonoBehaviour
         return isHorMatch;
     }
 
-    List<MatchItem> HorizontalMatchCollection(MatchItem item)
+    List<GridPiece> HorizontalMatchCollection(MatchItem item)
     {
-        List<MatchItem> matchPieces = new List<MatchItem>();
+        List<GridPiece> matchPieces = new List<GridPiece>();
         for (int i = 0; i < rows - 2; i++)
         {
             for (int j = 0; j < columns; j++) //Prevents index errors
@@ -181,9 +180,9 @@ public class MatchGrid : MonoBehaviour
                 if (gridPieces[i, j].getMatchItem().getType() == item.getType()
                     && gridPieces[i + 1, j].getMatchItem().getType() == item.getType() && gridPieces[i + 2, j].getMatchItem().getType() == item.getType())
                 {
-                    matchPieces.Add(gridPieces[i, j].getMatchItem());
-                    matchPieces.Add(gridPieces[i + 1, j].getMatchItem());
-                    matchPieces.Add(gridPieces[i + 2, j].getMatchItem());
+                    matchPieces.Add(gridPieces[i, j]);
+                    matchPieces.Add(gridPieces[i + 1, j]);
+                    matchPieces.Add(gridPieces[i + 2, j]);
                 }
             }
         }

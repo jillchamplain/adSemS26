@@ -44,13 +44,14 @@ public class MatchItem : GridBased, IGrabbable
         prevCol = col;
     }
 
-    void OnMatch(List<MatchItem> matchItems)
+    void OnMatch(List<GridPiece> matchPieces)
     {
-        foreach (MatchItem item in matchItems)
+        foreach (GridPiece gp in matchPieces)
         {
-            if(item == this)
+            if(gp.getMatchItem() == this)
             {
-                Destroy(gameObject);
+                gp.setMatchItem(null);
+                Destroy(gameObject); //need to unassign from grid
             }
         }
     }
