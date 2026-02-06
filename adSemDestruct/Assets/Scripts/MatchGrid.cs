@@ -13,6 +13,15 @@ public class MatchGrid : MonoBehaviour
     [SerializeField] float pieceHeight;
     GridPiece[,] gridPieces;
 
+    public GridPiece getGridPieceAt(int x, int y) 
+    {  
+        if(x  < 0 || x >= rows)
+            return null;
+        if(y < 0 || y >= columns)
+            return null;
+        return gridPieces[x, y]; 
+    }
+
     [Header("References")]
     [SerializeField] GameObject gridPiecePF;
 
@@ -204,14 +213,48 @@ public class MatchGrid : MonoBehaviour
             {
                 if (i == gridPiece.row && j == gridPiece.col)
                 {
-                    gridPiece.setMatchItem(item); //Need code for swapping positions with other item
-                    item.gameObject.transform.parent = gridPiece.gameObject.transform;
-                    item.gameObject.transform.position = gridPiece.gameObject.transform.position;
+                    SwapGridAssign(item, gridPieces[i, j]);
+
+                    
                 }
             }
         }
 
         MatchRecognition(item);
+    }
+
+    void SwapGridAssign(MatchItem theItem, GridPiece thePiece)
+    {
+        
+        if (thePiece.getMatchItem())
+        {
+            Debug.Log("swapping");
+            if (getGridPieceAt(theItem.row, theItem.col) != null) //If piece is currently on the grid
+            {
+                Debug.Log("swapping to " + getGridPieceAt(theItem.row, theItem.col));
+                GridPiece prevGridPiece = getGridPieceAt(theItem.row, theItem.col);
+
+                //Swaps position of match item currently on grid piece
+                MatchItem curMatchItem = thePiece.getMatchItem();
+                prevGridPiece.setMatchItem(curMatchItem);
+                curMatchItem.row = prevGridPiece.row;
+                curMatchItem.col = prevGridPiece.col;
+                curMatchItem.gameObject.transform.parent = prevGridPiece.gameObject.transform;
+                curMatchItem.gameObject.transform.position = prevGridPiece.gameObject.transform.position;
+            }
+            else
+            {
+                Debug.Log(getGridPieceAt(theItem.row, theItem.col));
+            }
+        }
+
+        thePiece.setMatchItem(theItem); //Need code for swapping positions with other item
+        theItem.row = thePiece.row;
+        theItem.col = thePiece.col;
+        theItem.gameObject.transform.parent = thePiece.gameObject.transform;
+        theItem.gameObject.transform.position = thePiece.gameObject.transform.position;
+
+
     }
 
     void UnassignFromGrid(MatchItem item)

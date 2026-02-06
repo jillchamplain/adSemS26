@@ -47,8 +47,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ded5fab66c33ba644a80ce566adb56ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridBased: {fileID: 0}
+  row: 100
+  col: 100
   type: 0
+  prevRow: 0
+  prevCol: 0
   interactMask:
     serializedVersion: 2
     m_Bits: 1
