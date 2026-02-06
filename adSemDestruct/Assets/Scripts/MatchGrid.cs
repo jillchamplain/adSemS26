@@ -75,7 +75,7 @@ public class MatchGrid : MonoBehaviour
 
         bool isMatch = false;
         bool vertMatch = VerticalMatchRecognition(item);
-        bool horMatch = CheckHorMatch(x, y, item);
+        bool horMatch = HorizontalMatchRecognition(item);
 
         Debug.Log("vert match:" + vertMatch);
         Debug.Log("hor match: " + horMatch);
@@ -87,8 +87,6 @@ public class MatchGrid : MonoBehaviour
         return isMatch;
     }
 
-    #endregion
-
     bool VerticalMatchRecognition(MatchItem item)
     {
         bool isVertMatch = false;
@@ -96,16 +94,12 @@ public class MatchGrid : MonoBehaviour
         {
             for(int j = 0; j < columns - 2; j++) //Prevents index errors
             {
-                if (gridPieces[i, j].getMatchItem() == null || gridPieces[i, j + 1].getMatchItem() == null || gridPieces[i, j + 2])
+               
+                if (gridPieces[i, j].getMatchItem() == null || gridPieces[i, j + 1].getMatchItem() == null || gridPieces[i, j + 2].getMatchItem() == null)
                 {
-                  
                     continue;
                 }
 
-                if (gridPieces[i , j + 1].getMatchItem().getType() == item.getType())
-                {
-                    Debug.Log("above");
-                }
                 if (gridPieces[i, j].getMatchItem().getType() == item.getType()
                     && gridPieces[i, j + 1].getMatchItem().getType() == item.getType() && gridPieces[i, j + 2].getMatchItem().getType() == item.getType())
                 {
@@ -113,272 +107,32 @@ public class MatchGrid : MonoBehaviour
                 }
             }
         }
-
         return isVertMatch;
     }
 
-    bool CheckVertMatch(int x, int y, MatchItem item)
+    bool HorizontalMatchRecognition(MatchItem item)
     {
-        bool vertMatch = false;
+        bool isHorMatch = false;
+        for (int i = 0; i < rows - 2; i++)
+        {
+            for (int j = 0; j < columns; j++) //Prevents index errors
+            {
 
-        if (CheckVertMatchTop(x, y, item))
-            vertMatch = true;
-        if (CheckVertMatchCenter(x, y, item))
-            vertMatch = true;
-        if (CheckVertMatchBot(x, y, item))
-            vertMatch = true;
+                if (gridPieces[i, j].getMatchItem() == null || gridPieces[i + 1, j].getMatchItem() == null || gridPieces[i + 2, j].getMatchItem() == null)
+                {
+                    continue;
+                }
 
-        
-        return vertMatch;
+                if (gridPieces[i, j].getMatchItem().getType() == item.getType()
+                    && gridPieces[i + 1, j].getMatchItem().getType() == item.getType() && gridPieces[i + 2, j].getMatchItem().getType() == item.getType())
+                {
+                    isHorMatch = true;
+                }
+            }
+        }
+        return isHorMatch;
     }
-
-    bool CheckVertMatchCenter(int x, int y, MatchItem item)
-    {
-        bool vertMatch = true;
-
-        if (y + 1 < 0 || y + 1 >= columns) //If cannot find top or bot no match 3
-        {
-            return false;
-        }
-
-        if (y - 1 < 0 || y - 1 >= columns)
-        {
-            return false;
-        }
-
-        if (gridPieces[x, y + 1].getMatchItem() == null || gridPieces[x, y - 1].getMatchItem() == null) //If no matchitems no match
-            return false;
-
-        if (gridPieces[x, y + 1].getMatchItem() != null)
-        {
-            if (gridPieces[x, y + 1].getMatchItem().getType() != item.getType())
-            {
-                vertMatch = false;
-            }
-        }
-
-        if (gridPieces[x, y - 1].getMatchItem() != null)
-        {
-            if (gridPieces[x, y - 1].getMatchItem().getType() != item.getType())
-            {
-                vertMatch = false;
-            }
-        }
-        return vertMatch;
-    }
-
-    bool CheckVertMatchTop(int x, int y, MatchItem item)
-    {
-        bool vertMatch = true;
-
-        if (y - 1 < 0 || y - 1 >= columns) //If cannot find top or bot no match 3
-        {
-            return false;
-        }
-
-        if (y - 2 < 0 || y - 2 >= columns)
-        {
-            return false;
-        }
-
-        if (gridPieces[x, y - 1].getMatchItem() == null || gridPieces[x, y - 2].getMatchItem() == null) //If no matchitems no match
-            return false;
-
-        if (gridPieces[x, y - 1].getMatchItem() != null)
-        {
-            if (gridPieces[x, y - 1].getMatchItem().getType() != item.getType())
-            {
-                vertMatch = false;
-            }
-        }
-
-        if (gridPieces[x, y - 2].getMatchItem() != null)
-        {
-            if (gridPieces[x, y - 2].getMatchItem().getType() != item.getType())
-            {
-                vertMatch = false;
-            }
-        }
-        return vertMatch;
-    }
-
-    bool CheckVertMatchBot(int x, int y, MatchItem item)
-    {
-        bool vertMatch = true;
-
-        if (y + 1 < 0 || y + 2 >= columns) //If cannot find top or bot no match 3
-        {
-            return false;
-        }
-
-        if (y + 1 < 0 || y + 2 >= columns)
-        {
-            return false;
-        }
-
-        if (gridPieces[x, y + 1].getMatchItem() == null || gridPieces[x, y + 2].getMatchItem() == null) //If no matchitems no match
-            return false;
-
-        if (gridPieces[x, y + 1].getMatchItem() != null)
-        {
-            if (gridPieces[x, y + 1].getMatchItem().getType() != item.getType())
-            {
-                vertMatch = false;
-            }
-        }
-
-        if (gridPieces[x, y + 2].getMatchItem() != null)
-        {
-            if (gridPieces[x, y + 2].getMatchItem().getType() != item.getType())
-            {
-                vertMatch = false;
-            }
-        }
-        return vertMatch;
-    }
-
-
-
-    bool CheckHorMatch(int x, int y, MatchItem item)
-    {
-        bool horMatch = true;
-
-        if (x + 1 < 0 || x + 1 >= rows) //If cannot find left or right no match 3
-        {
-            return false;
-        }
-
-        if (x - 1 < 0 || x - 1 >= rows)
-        {
-            return false;
-        }
-
-        if (gridPieces[x + 1, y].getMatchItem() == null || gridPieces[x - 1, y].getMatchItem() == null) //If no matchitems no match
-            return false;
-
-        if (gridPieces[x + 1, y].getMatchItem() != null)
-        {
-            if (gridPieces[x + 1, y].getMatchItem().getType() != item.getType())
-            {
-                horMatch = false;
-            }
-        }
-
-        if (gridPieces[x - 1, y].getMatchItem() != null)
-        {
-            if (gridPieces[x - 1, y].getMatchItem().getType() != item.getType())
-            {
-                horMatch = false;
-            }
-        }
-        return horMatch;
-    }
-
-    bool CheckHorMatchCenter(int x, int y, MatchItem item)
-    {
-        bool horMatch = true;
-
-        if (x + 1 < 0 || x + 1 >= rows) //If cannot find left or right no match 3
-        {
-            return false;
-        }
-
-        if (x - 1 < 0 || x - 1 >= rows)
-        {
-            return false;
-        }
-
-        if (gridPieces[x + 1, y].getMatchItem() == null || gridPieces[x - 1, y].getMatchItem() == null) //If no matchitems no match
-            return false;
-
-        if (gridPieces[x + 1, y].getMatchItem() != null)
-        {
-            if (gridPieces[x + 1, y].getMatchItem().getType() != item.getType())
-            {
-                horMatch = false;
-            }
-        }
-
-        if (gridPieces[x - 1, y].getMatchItem() != null)
-        {
-            if (gridPieces[x - 1, y].getMatchItem().getType() != item.getType())
-            {
-                horMatch = false;
-            }
-        }
-        return horMatch;
-    }
-
-    bool CheckHorMatchLeft(int x, int y, MatchItem item)
-    {
-        bool horMatch = true;
-
-        if (x + 1 < 0 || x + 1 >= rows) //If cannot find left or right no match 3
-        {
-            return false;
-        }
-
-        if (x + 2 < 0 || x + 2 >= rows)
-        {
-            return false;
-        }
-
-        if (gridPieces[x + 1, y].getMatchItem() == null || gridPieces[x + 2, y].getMatchItem() == null) //If no matchitems no match
-            return false;
-
-        if (gridPieces[x + 1, y].getMatchItem() != null)
-        {
-            if (gridPieces[x + 1, y].getMatchItem().getType() != item.getType())
-            {
-                horMatch = false;
-            }
-        }
-
-        if (gridPieces[x + 2, y].getMatchItem() != null)
-        {
-            if (gridPieces[x + 2, y].getMatchItem().getType() != item.getType())
-            {
-                horMatch = false;
-            }
-        }
-        return horMatch;
-    }
-
-    bool CheckHorMatchRight(int x, int y, MatchItem item)
-    {
-        bool horMatch = true;
-
-        if (x + 1 < 0 || x + 1 >= rows) //If cannot find left or right no match 3
-        {
-            return false;
-        }
-
-        if (x - 1 < 0 || x - 1 >= rows)
-        {
-            return false;
-        }
-
-        if (gridPieces[x + 1, y].getMatchItem() == null || gridPieces[x - 1, y].getMatchItem() == null) //If no matchitems no match
-            return false;
-
-        if (gridPieces[x + 1, y].getMatchItem() != null)
-        {
-            if (gridPieces[x + 1, y].getMatchItem().getType() != item.getType())
-            {
-                horMatch = false;
-            }
-        }
-
-        if (gridPieces[x - 1, y].getMatchItem() != null)
-        {
-            if (gridPieces[x - 1, y].getMatchItem().getType() != item.getType())
-            {
-                horMatch = false;
-            }
-        }
-        return horMatch;
-    }
-
+    #endregion
 
     void AssignToGrid(MatchItem item, GridPiece gridPiece)
     {
