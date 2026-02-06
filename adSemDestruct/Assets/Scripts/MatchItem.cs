@@ -1,4 +1,6 @@
+using NUnit.Framework;
 using UnityEngine;
+using System.Collections.Generic;
 public enum MatchItemType
 {
     A,
@@ -27,12 +29,33 @@ public class MatchItem : GridBased, IGrabbable
     public delegate void MatchItemPlaced(MatchItem item, GridPiece gridPiece);
     public static event MatchItemPlaced matchItemPlaced;
 
+    private void OnEnable()
+    {
+        MatchGrid.match += OnMatch;
+    }
+
+    private void OnDisable()
+    {
+        MatchGrid.match -= OnMatch;
+    }
     private void Start()
     {
         prevRow = row;
         prevCol = col;
     }
 
+    void OnMatch(List<MatchItem> matchItems)
+    {
+        foreach (MatchItem item in matchItems)
+        {
+            if(item == this)
+            {
+                Destroy(gameObject);
+            }
+        }
+    }
+
+    #region IGrabbable
     public void Grabbed(Vector2 pos)
     {
         transform.position = pos;
@@ -51,5 +74,6 @@ public class MatchItem : GridBased, IGrabbable
             }
         }
     }
+    #endregion
 }
 

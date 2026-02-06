@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 using static UnityEditor.Progress;
 
@@ -10,12 +11,13 @@ public class MatchGrid : MonoBehaviour
     [SerializeField] int columns;
     [SerializeField] float pieceWidth;
     [SerializeField] float pieceHeight;
-     GridPiece[,] gridPieces;
+    GridPiece[,] gridPieces;
 
     [Header("References")]
     [SerializeField] GameObject gridPiecePF;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public delegate void Match(List<MatchItem> matchItems);
+    public static event Match match;
 
     private void OnEnable()
     {
@@ -30,12 +32,6 @@ public class MatchGrid : MonoBehaviour
     {
         gridPieces = new GridPiece[rows, columns];
         GenerateGrid();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     #region GRID GENERATION
@@ -66,7 +62,7 @@ public class MatchGrid : MonoBehaviour
 
     #endregion
 
-    #region GRID RECOGNITION
+    #region MATCH RECOGNITION
 
     bool MatchRecognition(MatchItem item) //Return shape??? return grid positions?
     {
@@ -77,16 +73,25 @@ public class MatchGrid : MonoBehaviour
         bool vertMatch = VerticalMatchRecognition(item);
         bool horMatch = HorizontalMatchRecognition(item);
 
-        Debug.Log("vert match:" + vertMatch);
-        Debug.Log("hor match: " + horMatch);
+        //Debug.Log("vert match:" + vertMatch);
+        //Debug.Log("hor match: " + horMatch);
 
-        if (vertMatch || horMatch)
+        if (vertMatch)
+        {
             isMatch = true;
+            match?.Invoke(VerticalMatchCollection(item));
+        }
+        if(horMatch)
+        {
+            isMatch = true;
+            match?.Invoke(HorizontalMatchCollection(item));
 
+        }
         //Debug.Log(isMatch);
+
         return isMatch;
     }
-
+    #region VERTICAL MATCHES
     bool VerticalMatchRecognition(MatchItem item)
     {
         bool isVertMatch = false;
@@ -110,6 +115,33 @@ public class MatchGrid : MonoBehaviour
         return isVertMatch;
     }
 
+    List<MatchItem> VerticalMatchCollection(MatchItem item)
+    {
+        List<MatchItem> matchPieces = new List<MatchItem>();
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns - 2; j++) //Prevents index errors
+            {
+
+                if (gridPieces[i, j].getMatchItem() == null || gridPieces[i, j + 1].getMatchItem() == null || gridPieces[i, j + 2].getMatchItem() == null)
+                {
+                    continue;
+                }
+
+                if (gridPieces[i, j].getMatchItem().getType() == item.getType()
+                    && gridPieces[i, j + 1].getMatchItem().getType() == item.getType() && gridPieces[i, j + 2].getMatchItem().getType() == item.getType())
+                {
+                    matchPieces.Add(gridPieces[i, j].getMatchItem());
+                    matchPieces.Add(gridPieces[i, j + 1].getMatchItem());
+                    matchPieces.Add(gridPieces[i, j + 2].getMatchItem());
+                }
+            }
+        }
+        return matchPieces;
+    }
+    #endregion
+
+    #region HORIZONTAL MATCHES
     bool HorizontalMatchRecognition(MatchItem item)
     {
         bool isHorMatch = false;
@@ -132,6 +164,33 @@ public class MatchGrid : MonoBehaviour
         }
         return isHorMatch;
     }
+
+    List<MatchItem> HorizontalMatchCollection(MatchItem item)
+    {
+        List<MatchItem> matchPieces = new List<MatchItem>();
+        for (int i = 0; i < rows - 2; i++)
+        {
+            for (int j = 0; j < columns; j++) //Prevents index errors
+            {
+
+                if (gridPieces[i, j].getMatchItem() == null || gridPieces[i + 1, j].getMatchItem() == null || gridPieces[i + 2, j].getMatchItem() == null)
+                {
+                    continue;
+                }
+
+                if (gridPieces[i, j].getMatchItem().getType() == item.getType()
+                    && gridPieces[i + 1, j].getMatchItem().getType() == item.getType() && gridPieces[i + 2, j].getMatchItem().getType() == item.getType())
+                {
+                    matchPieces.Add(gridPieces[i, j].getMatchItem());
+                    matchPieces.Add(gridPieces[i + 1, j].getMatchItem());
+                    matchPieces.Add(gridPieces[i + 2, j].getMatchItem());
+                }
+            }
+        }
+        return matchPieces;
+    }
+    #endregion
+
     #endregion
 
     void AssignToGrid(MatchItem item, GridPiece gridPiece)
