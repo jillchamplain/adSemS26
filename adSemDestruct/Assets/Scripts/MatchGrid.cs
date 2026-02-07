@@ -12,7 +12,6 @@ public class MatchGrid : MonoBehaviour
     [SerializeField] float pieceWidth;
     [SerializeField] float pieceHeight;
     GridPiece[,] gridPieces;
-
     public GridPiece getGridPieceAt(int x, int y) 
     {  
         if(x  < 0 || x >= rows)
@@ -25,7 +24,8 @@ public class MatchGrid : MonoBehaviour
     [Header("References")]
     [SerializeField] GameObject gridPiecePF;
 
-    public delegate void Match(List<GridPiece> matchPieces);
+    //EVENTS
+    public delegate void Match(List<GridPiece> matchPieces, BlockShape shape, MatchItemType type);
     public static event Match match;
 
     private void OnEnable()
@@ -87,12 +87,12 @@ public class MatchGrid : MonoBehaviour
         if (vertMatch)
         {
             isMatch = true;
-            match?.Invoke(VerticalMatchCollection(item));
+            match?.Invoke(VerticalMatchCollection(item), BlockShape.VERTICAL, item.getType());
         }
         if(horMatch)
         {
             isMatch = true;
-            match?.Invoke(HorizontalMatchCollection(item));
+            match?.Invoke(HorizontalMatchCollection(item), BlockShape.HORIZONTAL, item.getType());
 
         }
         //Debug.Log(isMatch);
@@ -201,6 +201,7 @@ public class MatchGrid : MonoBehaviour
 
     #endregion
 
+    #region GRID ASSIGNMENT
     void AssignToGrid(MatchItem item, GridPiece gridPiece)
     {
         //Debug.Log("Grid Piece: " + gridPiece.getRow() + "," + gridPiece.getCol());
@@ -267,7 +268,6 @@ public class MatchGrid : MonoBehaviour
 
 
     }
-
     void UnassignFromGrid(MatchItem item)
     {
         for(int i = 0; i < rows; i++)
@@ -281,4 +281,5 @@ public class MatchGrid : MonoBehaviour
             }
         }
     }
+    #endregion
 }

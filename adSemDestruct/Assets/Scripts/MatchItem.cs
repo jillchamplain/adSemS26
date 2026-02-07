@@ -44,7 +44,7 @@ public class MatchItem : GridBased, IGrabbable
         prevCol = col;
     }
 
-    void OnMatch(List<GridPiece> matchPieces)
+    void OnMatch(List<GridPiece> matchPieces, BlockShape shape, MatchItemType type)
     {
         foreach (GridPiece gp in matchPieces)
         {
