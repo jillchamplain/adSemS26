@@ -6,6 +6,9 @@ public enum MatchItemType
     A,
     B,
     C,
+    D,
+    E,
+    F,
     NUM_TYPES
 }
 
@@ -29,6 +32,9 @@ public class MatchItem : GridBased, IGrabbable
     public delegate void MatchItemPlaced(MatchItem item, GridPiece gridPiece);
     public static event MatchItemPlaced matchItemPlaced;
 
+    public delegate void MatchItemDestroyed();
+    public static event MatchItemDestroyed matchItemDestroyed;
+
     private void OnEnable()
     {
         MatchGrid.match += OnMatch;
@@ -44,13 +50,14 @@ public class MatchItem : GridBased, IGrabbable
         prevCol = col;
     }
 
-    void OnMatch(List<GridPiece> matchPieces, BlockShape shape, MatchItemType type)
+    void OnMatch(List<GridPiece> matchPieces, Vector3 origin, BlockShape shape, MatchItemType type)
     {
         foreach (GridPiece gp in matchPieces)
         {
             if(gp.getMatchItem() == this)
             {
                 gp.setMatchItem(null);
+                matchItemDestroyed?.Invoke();
                 Destroy(gameObject); //need to unassign from grid
             }
         }

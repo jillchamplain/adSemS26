@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Collections.Generic;
 public class BlockManager : MonoBehaviour
 {
-    public static BlockManager instance;
+    [HideInInspector] public static BlockManager instance;
     [SerializeField] List<GameObject> blocks;
     public GameObject getBlockOfShape(BlockShape type)
     {
@@ -34,9 +34,9 @@ public class BlockManager : MonoBehaviour
         MatchGrid.match -= SpawnBlock;
     }
 
-    void SpawnBlock(List<GridPiece> matchPieces, BlockShape shape, MatchItemType type)
+    void SpawnBlock(List<GridPiece> matchPieces, Vector3 origin, BlockShape shape, MatchItemType type)
     {
-        GameObject newBlock = Instantiate(getBlockOfShape(shape), Vector3.zero, Quaternion.identity); //Need to find position
+        GameObject newBlock = Instantiate(getBlockOfShape(shape), origin, Quaternion.identity); //Need to find position
         newBlock.GetComponent<Block>().setMatchItemType(type);
     }
 }

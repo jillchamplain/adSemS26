@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &685159163700081337
+--- !u!1001 &5519790581586702958
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -54,15 +54,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3590125170531628917, guid: 524c035fd87011f4397c31509982f8ba, type: 3}
       propertyPath: m_Color.b
-      value: 0.514151
+      value: 0.2681972
       objectReference: {fileID: 0}
     - target: {fileID: 3590125170531628917, guid: 524c035fd87011f4397c31509982f8ba, type: 3}
       propertyPath: m_Color.g
-      value: 0.514151
+      value: 0.24256852
       objectReference: {fileID: 0}
     - target: {fileID: 3590125170531628917, guid: 524c035fd87011f4397c31509982f8ba, type: 3}
       propertyPath: m_Color.r
-      value: 1
+      value: 0.745283
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

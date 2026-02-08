@@ -6,6 +6,7 @@ using static UnityEditor.Progress;
 
 public class MatchGrid : MonoBehaviour
 {
+    [HideInInspector] public static MatchGrid instance;
     [Header("Data")]
     [SerializeField] int rows;
     [SerializeField] int columns;
@@ -25,17 +26,29 @@ public class MatchGrid : MonoBehaviour
     [SerializeField] GameObject gridPiecePF;
 
     //EVENTS
-    public delegate void Match(List<GridPiece> matchPieces, BlockShape shape, MatchItemType type);
+    public delegate void GridGenerated(int x, int y);
+    public static event GridGenerated gridGenerated;
+    public delegate void Match(List<GridPiece> matchPieces, Vector3 origin, BlockShape shape, MatchItemType type);
     public static event Match match;
 
     private void OnEnable()
     {
         MatchItem.matchItemPlaced += AssignToGrid;
+        //MatchItem.matchItemDestroyed += ReplaceAssign;
+        MatchItemManager.matchItemSpawned += AssignToGrid;
     }
 
     private void OnDisable()
     {
         MatchItem.matchItemPlaced -= AssignToGrid;
+        //MatchItem.matchItemDestroyed -= ReplaceAssign;
+        MatchItemManager.matchItemSpawned -= AssignToGrid;
+    }
+
+    private void Awake()
+    {
+        if (instance == null)
+            instance = this;
     }
     void Start()
     {
@@ -56,7 +69,7 @@ public class MatchGrid : MonoBehaviour
         {
             for (int j = 0; j < row; j++) // j is col
             {
-                Vector3 pos = new Vector3(i * pieceWidth, j * pieceHeight, 0);
+                Vector3 pos = new Vector3(this.transform.position.x + i * pieceWidth, this.transform.position.y + j * pieceHeight, 0);
                 GameObject newPiece = GameObject.Instantiate(gridPiecePF, pos, Quaternion.identity, this.gameObject.transform);
 
                 newPiece.name = i + "_" + j;
@@ -67,12 +80,13 @@ public class MatchGrid : MonoBehaviour
                 gridPieces[i, j] = piece;
             }
         }
+        gridGenerated?.Invoke(row, col);
     }
 
     #endregion
 
     #region MATCH RECOGNITION
-    bool MatchRecognition(MatchItem item) //Return shape??? return grid positions?
+    bool MatchRecognition(MatchItem item) 
     {
         int x = item.row;
         int y = item.col;
@@ -84,20 +98,44 @@ public class MatchGrid : MonoBehaviour
         //Debug.Log("vert match:" + vertMatch);
         //Debug.Log("hor match: " + horMatch);
 
-        if (vertMatch)
+        if (vertMatch)//matches of 3 
         {
             isMatch = true;
-            match?.Invoke(VerticalMatchCollection(item), BlockShape.VERTICAL, item.getType());
+            match?.Invoke(VerticalMatchCollection(item), FindVerticalMatchOrigin(item), BlockShape.VERTICAL, item.getType());
+            ReplaceAssign();
         }
-        if(horMatch)
+        else if(horMatch)
         {
             isMatch = true;
-            match?.Invoke(HorizontalMatchCollection(item), BlockShape.HORIZONTAL, item.getType());
-
+            match?.Invoke(HorizontalMatchCollection(item), FindHorizontalMatchOrigin(item), BlockShape.HORIZONTAL, item.getType());
+            ReplaceAssign();
         }
         //Debug.Log(isMatch);
 
         return isMatch;
+    }
+
+    List<GridPiece> SearchForMatch(MatchItem item)
+    {
+        List<GridPiece> matchPieces = new List<GridPiece>();
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns - 2; j++) //Prevents index errors
+            {
+
+                if (gridPieces[i, j].getMatchItem() == null || gridPieces[i, j + 1].getMatchItem() == null || gridPieces[i, j + 2].getMatchItem() == null)
+                {
+                    continue;
+                }
+
+                if (gridPieces[i, j].getMatchItem().getType() == item.getType()
+                    && gridPieces[i, j + 1].getMatchItem().getType() == item.getType() && gridPieces[i, j + 2].getMatchItem().getType() == item.getType())
+                {
+                   
+                }
+            }
+        }
+        return matchPieces;
     }
     #region VERTICAL MATCHES
     bool VerticalMatchRecognition(MatchItem item)
@@ -122,7 +160,6 @@ public class MatchGrid : MonoBehaviour
         }
         return isVertMatch;
     }
-
     List<GridPiece> VerticalMatchCollection(MatchItem item)
     {
         List<GridPiece> matchPieces = new List<GridPiece>();
@@ -142,10 +179,34 @@ public class MatchGrid : MonoBehaviour
                     matchPieces.Add(gridPieces[i, j]);
                     matchPieces.Add(gridPieces[i, j + 1]);
                     matchPieces.Add(gridPieces[i, j + 2]);
+                    //Debug.Log(matchPieces);
+                    return matchPieces;
                 }
             }
         }
         return matchPieces;
+    }
+
+    Vector3 FindVerticalMatchOrigin(MatchItem item)
+    {
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns - 2; j++) //Prevents index errors
+            {
+
+                if (gridPieces[i, j].getMatchItem() == null || gridPieces[i, j + 1].getMatchItem() == null || gridPieces[i, j + 2].getMatchItem() == null)
+                {
+                    continue;
+                }
+
+                if (gridPieces[i, j].getMatchItem().getType() == item.getType()
+                    && gridPieces[i, j + 1].getMatchItem().getType() == item.getType() && gridPieces[i, j + 2].getMatchItem().getType() == item.getType())
+                {
+                    return gridPieces[i, j + 1].gameObject.transform.position;
+                }
+            }
+        }
+        return Vector3.zero;
     }
     #endregion
 
@@ -192,16 +253,60 @@ public class MatchGrid : MonoBehaviour
                     matchPieces.Add(gridPieces[i, j]);
                     matchPieces.Add(gridPieces[i + 1, j]);
                     matchPieces.Add(gridPieces[i + 2, j]);
+                    return matchPieces;
                 }
             }
         }
         return matchPieces;
+    }
+    Vector3 FindHorizontalMatchOrigin(MatchItem item)
+    {
+        for (int i = 0; i < rows - 2; i++)
+        {
+            for (int j = 0; j < columns; j++) //Prevents index errors
+            {
+
+                if (gridPieces[i, j].getMatchItem() == null || gridPieces[i + 1, j].getMatchItem() == null || gridPieces[i + 2, j].getMatchItem() == null)
+                {
+                    continue;
+                }
+
+                if (gridPieces[i, j].getMatchItem().getType() == item.getType()
+                    && gridPieces[i + 1, j].getMatchItem().getType() == item.getType() && gridPieces[i + 2, j].getMatchItem().getType() == item.getType())
+                {
+                    return gridPieces[i + 1, j].gameObject.transform.position;
+                }
+            }
+        }
+        return Vector3.zero;
     }
     #endregion
 
     #endregion
 
     #region GRID ASSIGNMENT
+    void AssignToGrid(MatchItem item, int x, int y)
+    {
+        //Debug.Log("Grid Piece: " + gridPiece.getRow() + "," + gridPiece.getCol());
+
+        GridPiece gridPiece = gridPieces[x, y];
+        UnassignFromGrid(item);
+
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns; j++)
+            {
+                if (i == gridPiece.row && j == gridPiece.col)
+                {
+                    SwapGridAssign(item, gridPieces[i, j]);
+
+
+                }
+            }
+        }
+
+        MatchRecognition(item);
+    }
     void AssignToGrid(MatchItem item, GridPiece gridPiece)
     {
         //Debug.Log("Grid Piece: " + gridPiece.getRow() + "," + gridPiece.getCol());
@@ -223,7 +328,6 @@ public class MatchGrid : MonoBehaviour
 
         MatchRecognition(item);
     }
-
     void SwapGridAssign(MatchItem theItem, GridPiece thePiece)
     {
         
@@ -232,7 +336,7 @@ public class MatchGrid : MonoBehaviour
             //Debug.Log("swapping");
             if (getGridPieceAt(theItem.row, theItem.col) != null) //If piece is currently on the grid
             {
-                Debug.Log("swapping to " + getGridPieceAt(theItem.row, theItem.col));
+                //Debug.Log("swapping to " + getGridPieceAt(theItem.row, theItem.col));
                 GridPiece prevGridPiece = getGridPieceAt(theItem.row, theItem.col);
 
                 //Swaps position of match item currently on grid piece
@@ -277,6 +381,30 @@ public class MatchGrid : MonoBehaviour
                 if (gridPieces[i,j].getMatchItem() == item)
                 {
                     gridPieces[i, j].setMatchItem(null);
+                }
+            }
+        }
+    }
+
+    void ReplaceAssign()
+    {
+        Debug.Log("fall");
+        for(int i = 0; i < rows; i++)
+        {
+            for(int j = 0; j < columns; j++)
+            {
+                if (gridPieces[i, j].getMatchItem() == null)
+                {
+                    for(int y = 0; j + y < columns; y++) //Iterate up column
+                    {
+                        if (gridPieces[i,j + y].getMatchItem() != null)
+                        {
+                            Debug.Log("setting " + gridPieces[i, j + y].getMatchItem() + " to " + gridPieces[i, y]);
+                            gridPieces[i, y].setMatchItem(gridPieces[i, j + y].getMatchItem());
+                            gridPieces[i, j + y].setMatchItem(null);
+                            break;
+                        }
+                    }
                 }
             }
         }

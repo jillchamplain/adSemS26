@@ -12,7 +12,7 @@ public class GridPiece : GridBased
             return;
         }
 
-        Debug.Log(this + "assigning");
+        //Debug.Log(this + "assigning");
 
         newRef.setPrevRow(newRef.row);
         newRef.setPrevCol(newRef.col);
@@ -20,6 +20,10 @@ public class GridPiece : GridBased
         newRef.row = this.row;
         newRef.col = this.col;
         matchItemRef = newRef; 
+
+        matchItemRef.transform.parent = this.transform;
+
+        matchItemRef.transform.position = this.transform.position;
     }
 
     [Header("References")]
