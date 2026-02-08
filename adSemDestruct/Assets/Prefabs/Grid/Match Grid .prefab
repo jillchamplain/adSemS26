@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6640766167545240673}
   - component: {fileID: 4956687761604147046}
   m_Layer: 0
-  m_Name: 'Grid '
+  m_Name: 'Match Grid '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48,5 +48,4 @@ MonoBehaviour:
   columns: 7
   pieceWidth: 1
   pieceHeight: 1
-  gridPieces: []
   gridPiecePF: {fileID: 0}

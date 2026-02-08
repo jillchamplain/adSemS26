@@ -102,13 +102,13 @@ public class MatchGrid : MonoBehaviour
         {
             isMatch = true;
             match?.Invoke(VerticalMatchCollection(item), FindVerticalMatchOrigin(item), BlockShape.VERTICAL, item.getType());
-            ReplaceAssign();
+            
         }
         else if(horMatch)
         {
             isMatch = true;
             match?.Invoke(HorizontalMatchCollection(item), FindHorizontalMatchOrigin(item), BlockShape.HORIZONTAL, item.getType());
-            ReplaceAssign();
+            
         }
         //Debug.Log(isMatch);
 
@@ -298,9 +298,7 @@ public class MatchGrid : MonoBehaviour
             {
                 if (i == gridPiece.row && j == gridPiece.col)
                 {
-                    SwapGridAssign(item, gridPieces[i, j]);
-
-
+                    gridPieces[i,j].setMatchItem(item);
                 }
             }
         }
@@ -386,23 +384,28 @@ public class MatchGrid : MonoBehaviour
         }
     }
 
-    void ReplaceAssign()
+    public void ReplaceAssign()
     {
-        Debug.Log("fall");
+       
         for(int i = 0; i < rows; i++)
         {
             for(int j = 0; j < columns; j++)
             {
                 if (gridPieces[i, j].getMatchItem() == null)
                 {
-                    for(int y = 0; j + y < columns; y++) //Iterate up column
+                    Debug.Log("null spot at " + gridPieces[i, j]);
+                    for(int y = j + 1; y < columns; y++) //Iterate up column
                     {
-                        if (gridPieces[i,j + y].getMatchItem() != null)
+                        if (gridPieces[i, y].getMatchItem() != null)
                         {
-                            Debug.Log("setting " + gridPieces[i, j + y].getMatchItem() + " to " + gridPieces[i, y]);
-                            gridPieces[i, y].setMatchItem(gridPieces[i, j + y].getMatchItem());
-                            gridPieces[i, j + y].setMatchItem(null);
+                            Debug.Log("setting " + gridPieces[i, y].getMatchItem() + " to " + gridPieces[i, j]);
+                            
+                            //Debug.Log(gridPieces[i, y] + " has been set to null");
+
+                            gridPieces[i, j].setMatchItem(gridPieces[i, y].getMatchItem());
+                            gridPieces[i, y].setMatchItem(null);
                             break;
+
                         }
                     }
                 }
