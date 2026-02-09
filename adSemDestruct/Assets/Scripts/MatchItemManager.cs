@@ -23,11 +23,13 @@ public class MatchItemManager : MonoBehaviour
     private void OnEnable()
     {
         MatchGrid.gridGenerated += GenerateMatchItems;
+        MatchGrid.nullGridAt += GenerateMatchItem;
     }
 
     private void OnDisable()
     {
         MatchGrid.gridGenerated -= GenerateMatchItems;
+        MatchGrid.nullGridAt -= GenerateMatchItem;
     }
     private void Awake()
     {
@@ -51,5 +53,11 @@ public class MatchItemManager : MonoBehaviour
                 matchItemSpawned?.Invoke(newMatchItem.GetComponent<MatchItem>(), i, j);
             }
         }
+    }
+
+    void GenerateMatchItem(int row, int column)
+    {
+        GameObject newMatchItem = Instantiate(getRandomMatchItem(), new Vector3(row, column, 0), Quaternion.identity);
+        matchItemSpawned?.Invoke(newMatchItem.GetComponent<MatchItem>(), row, column);
     }
 }

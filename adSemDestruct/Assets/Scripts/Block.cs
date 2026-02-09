@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using UnityEngine;
 
 public enum BlockShape
@@ -13,9 +14,18 @@ public class Block : MonoBehaviour
     [SerializeField] MatchItemType type;
     public MatchItemType getMatchItemType() { return type; }
     public void setMatchItemType(MatchItemType newType) {  type = newType; }
-    void Start()
+
+    //EVENTS
+    public delegate void BlockCreated();
+    public static event BlockCreated blockCreated;
+
+    private void Awake()
     {
         
+    }
+    void Start()
+    {
+        blockCreated?.Invoke();
     }
 
     // Update is called once per frame
