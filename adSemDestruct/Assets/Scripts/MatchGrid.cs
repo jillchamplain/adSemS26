@@ -138,6 +138,7 @@ public class MatchGrid : MonoBehaviour
         if (vertMatch)//matches of 3 
         {
             isMatch = true;
+            //Debug.Log("Vertical Match made! Type:" + item.getType());
             match?.Invoke(VerticalMatchCollection(item), FindVerticalMatchOrigin(item), BlockShape.VERTICAL, item.getType());
             
         }
@@ -145,10 +146,8 @@ public class MatchGrid : MonoBehaviour
         {
             isMatch = true;
             match?.Invoke(HorizontalMatchCollection(item), FindHorizontalMatchOrigin(item), BlockShape.HORIZONTAL, item.getType());
-            
+            //Debug.Log("Horizontal Match made! Type:" + item.getType());
         }
-        if (isMatch)
-            Debug.Log("Match made!");
 
         return isMatch;
     }
