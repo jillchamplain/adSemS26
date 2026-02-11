@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class GridPiece : GridBased
 {
+    [Header("References")]
     [SerializeField] MatchItem matchItemRef;
     public MatchItem getMatchItem() {  return matchItemRef; }
     public void setMatchItem(MatchItem newRef) 

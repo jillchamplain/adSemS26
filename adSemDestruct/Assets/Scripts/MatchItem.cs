@@ -32,7 +32,7 @@ public class MatchItem : GridBased, IGrabbable
     public delegate void MatchItemPlaced(MatchItem item, GridPiece gridPiece);
     public static event MatchItemPlaced matchItemPlaced;
 
-    public delegate void MatchItemDestroyed();
+    public delegate void MatchItemDestroyed(MatchItem item);
     public static event MatchItemDestroyed matchItemDestroyed;
 
     private void OnEnable()
@@ -50,14 +50,18 @@ public class MatchItem : GridBased, IGrabbable
         prevCol = col;
     }
 
+    public void DestroySelf()
+    {
+        matchItemDestroyed?.Invoke(this);
+    }
+
     void OnMatch(List<GridPiece> matchPieces, Vector3 origin, BlockShape shape, MatchItemType type)
     {
         foreach (GridPiece gp in matchPieces)
         {
             if(gp.getMatchItem() == this)
             {
-                gp.setMatchItem(null);
-                matchItemDestroyed?.Invoke();
+                matchItemDestroyed?.Invoke(this);
                 Destroy(gameObject); //need to unassign from grid
             }
         }

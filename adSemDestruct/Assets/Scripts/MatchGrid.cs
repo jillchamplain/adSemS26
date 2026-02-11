@@ -26,6 +26,9 @@ public class MatchGrid : MonoBehaviour
     [SerializeField] GameObject gridPiecePF;
 
     //EVENTS
+    public delegate void GridGeneratedWithMatch(int x, int y);
+    public static event GridGeneratedWithMatch gridGeneratedWithMatch;
+
     public delegate void GridGenerated(int x, int y);
     public static event GridGenerated gridGenerated;
 
@@ -35,11 +38,17 @@ public class MatchGrid : MonoBehaviour
     public delegate void Match(List<GridPiece> matchPieces, Vector3 origin, BlockShape shape, MatchItemType type);
     public static event Match match;
 
+    public delegate void MatchItemSwapped();
+    public static event MatchItemSwapped matchItemSwapped;
+
     private void OnEnable()
     {
         MatchItem.matchItemPlaced += AssignToGrid;
-        
+        MatchItem.matchItemDestroyed += UnassignFromGrid;
+
+        MatchItemManager.matchItemGenerated += GenerateAssignToGrid;
         MatchItemManager.matchItemSpawned += AssignToGrid;
+        MatchItemManager.matchItemsGenerated += GenerateMatchRecognition;
 
         Block.blockCreated += ReplaceAssign;
         Block.blockCreated += MatchRecognition;
@@ -48,8 +57,11 @@ public class MatchGrid : MonoBehaviour
     private void OnDisable()
     {
         MatchItem.matchItemPlaced -= AssignToGrid;
+        MatchItem.matchItemDestroyed -= UnassignFromGrid;
         
+        MatchItemManager.matchItemGenerated -= GenerateAssignToGrid;
         MatchItemManager.matchItemSpawned -= AssignToGrid;
+        MatchItemManager.matchItemsGenerated -= GenerateMatchRecognition;
 
         Block.blockCreated -= ReplaceAssign;
         Block.blockCreated -= MatchRecognition;
@@ -110,6 +122,25 @@ public class MatchGrid : MonoBehaviour
     #endregion
 
     #region MATCH RECOGNITION
+
+    void GenerateMatchRecognition()
+    {
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns; j++)
+            {
+                if (gridPieces[i, j].getMatchItem() != null)
+                {
+                    if (GenerateMatchRecognition(gridPieces[i, j].getMatchItem()))
+                    {
+                        //Debug.Log("Generated with match");
+                        gridGeneratedWithMatch?.Invoke(rows, columns);
+                    }
+                        
+                }
+            }
+        }
+    }
     void MatchRecognition()
     {
         for(int i = 0; i < rows; i++)
@@ -122,6 +153,25 @@ public class MatchGrid : MonoBehaviour
                 }
             }
         }
+    }
+
+    bool GenerateMatchRecognition(MatchItem item)
+    {
+        int x = item.row;
+        int y = item.col;
+
+        bool isMatch = false;
+        bool vertMatch = VerticalMatchRecognition(item);
+        bool horMatch = HorizontalMatchRecognition(item);
+
+        //Debug.Log("vert match:" + vertMatch);
+        //Debug.Log("hor match: " + horMatch);
+
+        if (vertMatch || horMatch)//matches of 3 
+        {
+            isMatch = true;
+        }
+        return isMatch;
     }
     bool MatchRecognition(MatchItem item) 
     {
@@ -151,7 +201,6 @@ public class MatchGrid : MonoBehaviour
 
         return isMatch;
     }
-
     List<GridPiece> SearchForMatch(MatchItem item)
     {
         List<GridPiece> matchPieces = new List<GridPiece>();
@@ -322,6 +371,22 @@ public class MatchGrid : MonoBehaviour
     #endregion
 
     #region GRID ASSIGNMENT
+    void GenerateAssignToGrid(MatchItem item, int x, int y)
+    {
+        GridPiece gridPiece = gridPieces[x, y];
+        UnassignFromGrid(item);
+
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns; j++)
+            {
+                if (i == gridPiece.row && j == gridPiece.col)
+                {
+                    gridPieces[i, j].setMatchItem(item);
+                }
+            }
+        }
+    }
     void AssignToGrid(MatchItem item, int x, int y)
     {
         //Debug.Log("Grid Piece: " + gridPiece.getRow() + "," + gridPiece.getCol());
@@ -406,6 +471,8 @@ public class MatchGrid : MonoBehaviour
         theItem.gameObject.transform.position = thePiece.gameObject.transform.position;
 
         MatchRecognition();
+        if(thePiece.getMatchItem() )
+        matchItemSwapped?.Invoke();
     }
     void UnassignFromGrid(MatchItem item)
     {

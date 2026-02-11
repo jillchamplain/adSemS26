@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class BlockManager : MonoBehaviour
 {
     [HideInInspector] public static BlockManager instance;
+    [Header("Data")]
     [SerializeField] List<GameObject> blocks;
     public GameObject getBlockOfShape(BlockShape type)
     {
@@ -38,5 +39,6 @@ public class BlockManager : MonoBehaviour
     {
         GameObject newBlock = Instantiate(getBlockOfShape(shape), origin, Quaternion.identity); //Need to find position
         newBlock.GetComponent<Block>().setMatchItemType(type);
+        blocks.Add(newBlock);
     }
 }
