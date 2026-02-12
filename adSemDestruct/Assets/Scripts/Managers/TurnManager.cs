@@ -52,7 +52,10 @@ public class TurnManager : MonoBehaviour
         UpdateUI();
 
         if (curTurn == maxTurns)
+        {
+            Debug.Log("game over");
             reachedMaxTurns?.Invoke();
+        }
 
     }
 }

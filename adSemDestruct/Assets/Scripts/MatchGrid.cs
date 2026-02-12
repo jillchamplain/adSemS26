@@ -430,8 +430,12 @@ public class MatchGrid : MonoBehaviour
     }
     void SwapGridAssign(MatchItem theItem, GridPiece thePiece)
     {
-        
-        if (thePiece.getMatchItem())
+        bool isSamePiece = false;
+
+        if (theItem.row == thePiece.row && theItem.col == thePiece.col)
+            isSamePiece = true;
+
+            if (thePiece.getMatchItem())
         {
             //Debug.Log("swapping");
             if (getGridPieceAt(theItem.row, theItem.col) != null) //If piece is currently on the grid
@@ -470,9 +474,11 @@ public class MatchGrid : MonoBehaviour
         theItem.gameObject.transform.parent = thePiece.gameObject.transform;
         theItem.gameObject.transform.position = thePiece.gameObject.transform.position;
 
+        if (!isSamePiece)
+            matchItemSwapped?.Invoke();
+
         MatchRecognition();
-        if(thePiece.getMatchItem() )
-        matchItemSwapped?.Invoke();
+        
     }
     void UnassignFromGrid(MatchItem item)
     {
