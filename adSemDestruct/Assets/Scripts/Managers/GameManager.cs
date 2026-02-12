@@ -10,17 +10,31 @@ public enum GameState
 }
 public class GameManager : MonoBehaviour
 {
-    public static GameManager instance;
+    [HideInInspector] public static GameManager instance;
     [SerializeField] GameState curState;
-    void Start()
+    void Awake()
     {
         if(instance == null)
             instance = this;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnEnable()
     {
-        
+        DestructionGoalManager.destructionGoalsDestroyed += GameWon;
+    }
+
+    private void OnDisable()
+    {
+        DestructionGoalManager.destructionGoalsDestroyed -= GameWon;
+    }
+
+    void GameWon()
+    {
+        curState = GameState.GAME_WIN;
+    }
+
+    void GameOver()
+    {
+        curState = GameState.GAME_OVER;
     }
 }
