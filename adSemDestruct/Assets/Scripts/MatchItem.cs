@@ -32,7 +32,7 @@ public class MatchItem : GridBased, IGrabbable
     public delegate void MatchItemPlaced(MatchItem item, GridPiece gridPiece);
     public static event MatchItemPlaced matchItemPlaced;
 
-    public delegate void MatchItemDestroyed(MatchItem item);
+    public delegate void MatchItemDestroyed(MatchItem item); //Need standard of events. Called from only manager or object
     public static event MatchItemDestroyed matchItemDestroyed;
 
     private void OnEnable()

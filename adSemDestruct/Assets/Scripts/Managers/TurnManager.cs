@@ -15,7 +15,7 @@ public class TurnManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI maxTurnsTF; //Gonna need UI manager
 
     //EVENTS
-    public delegate void ReachedMaxTurns();
+    public delegate void ReachedMaxTurns(); //Get turnManager to wait time before deciding
     public static event ReachedMaxTurns reachedMaxTurns;
 
     private void Awake()

@@ -4,9 +4,15 @@ using System.Collections.Generic;
 public class DestructionGoalManager : MonoBehaviour
 {
     [HideInInspector] public static DestructionGoalManager instance;
+    [Header("Data")]
     [SerializeField] List<GameObject> destructionGoals = new List<GameObject>();
+    [Header("References")]
+    [SerializeField] GameObject destructionGoalPF;
 
     //EVENTS
+
+
+
     public delegate void DestructionGoalsDestroyed();
     public static event DestructionGoalsDestroyed destructionGoalsDestroyed;
 
@@ -16,40 +22,47 @@ public class DestructionGoalManager : MonoBehaviour
     private void OnEnable()
     {
         DestructionGoal.destructionGoalDestroyed += RemoveDestructionGoal;
+        TurnManager.reachedMaxTurns += LoseDestructionGoalsCheck;
     }
 
     private void OnDisable()
     {
         DestructionGoal.destructionGoalDestroyed -= RemoveDestructionGoal;
+        TurnManager.reachedMaxTurns -= LoseDestructionGoalsCheck;
+    }
+
+    private void Start()
+    {
+        SpawnDestructionGoal(new Vector3(1, 1, 0));
     }
 
     void RemoveDestructionGoal(DestructionGoal theGoal)
     {
         destructionGoals.Remove(theGoal.gameObject);
-
+        WinDestructionGoalsCheck();
         
     }
-
-    void FinalDestructionGoalsCheck()
+    void LoseDestructionGoalsCheck()
     {
         if (destructionGoals.Count > 0)
             destructionGoalsNotDestroyed?.Invoke();
+        else
+            WinDestructionGoalsCheck();
     }
 
-    void DestructionGoalsCheck()
+    void WinDestructionGoalsCheck()
     {
         if(destructionGoals.Count <= 0)
         {
             destructionGoalsDestroyed?.Invoke();
         }
-        else
-        {
-
-        }
     }
 
-    void SpawnDestructionGoal(GameObject theGoal, Vector3 pos)
+    void SpawnDestructionGoal(Vector3 pos) //Level scriptable object?
     {
+        GameObject newGoal = Instantiate(destructionGoalPF, pos, Quaternion.identity);
+        destructionGoals.Add(newGoal);
 
+        newGoal.transform.parent = this.gameObject.transform;
     }
 }

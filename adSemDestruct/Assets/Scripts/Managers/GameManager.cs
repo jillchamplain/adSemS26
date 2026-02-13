@@ -30,11 +30,13 @@ public class GameManager : MonoBehaviour
 
     void GameWon()
     {
+        Debug.Log("Win");
         curState = GameState.GAME_WIN;
     }
 
     void GameOver()
     {
+        Debug.Log("Lose");
         curState = GameState.GAME_OVER;
     }
 }

@@ -14,7 +14,7 @@ public class DestructionGoal : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log("destroy destruction goal");
-        DestroySelf();
+        if(collision.gameObject.GetComponent<Block>())
+            DestroySelf();
     }
 }
