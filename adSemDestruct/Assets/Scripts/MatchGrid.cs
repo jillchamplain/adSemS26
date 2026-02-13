@@ -407,9 +407,15 @@ public class MatchGrid : MonoBehaviour
 
         MatchRecognition(item);
     }
-    void AssignToGrid(MatchItem item, GridPiece gridPiece)
+    void AssignToGrid(MatchItem item, GridPiece gridPiece) //From mouse
     {
         //Debug.Log("Grid Piece: " + gridPiece.getRow() + "," + gridPiece.getCol());
+        if(gridPiece == null)
+        {
+            item.transform.position = gridPieces[item.row, item.col].transform.position;
+            MatchRecognition(item);
+            return;
+        }
 
         UnassignFromGrid(item);
 

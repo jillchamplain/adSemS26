@@ -79,11 +79,11 @@ public class MatchItem : GridBased, IGrabbable
         RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.forward, 0, interactMask);
         if (hit)
         {
-            if (hit.transform.gameObject.GetComponent<GridPiece>())
-            {
-                // Debug.Log("hit gridPiece");
-                matchItemPlaced?.Invoke(this, hit.transform.gameObject.GetComponent<GridPiece>());
-            }
+            matchItemPlaced?.Invoke(this, hit.transform.gameObject.GetComponent<GridPiece>());
+        }
+        else
+        {
+            matchItemPlaced?.Invoke(this, null);
         }
     }
     #endregion
