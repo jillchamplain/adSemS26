@@ -4,6 +4,7 @@ public enum GameState
 {
     MENU,
     PAUSED,
+    PLAY,
     GAME_OVER,
     GAME_WIN,
     NUM_STATES
@@ -11,7 +12,30 @@ public enum GameState
 public class GameManager : MonoBehaviour
 {
     [HideInInspector] public static GameManager instance;
-    [SerializeField] GameState curState;
+    [SerializeField] GameState curState = GameState.PLAY;
+    void setGameState(GameState state) 
+    {
+        curState = state; 
+        switch(curState)
+        {
+            case GameState.PAUSED:
+                break;
+            case GameState.MENU:
+                break;
+            case GameState.GAME_OVER:
+                break;
+            case GameState.GAME_WIN:
+                break;
+        }
+    }
+
+    // EVENTS
+
+    public delegate void GameStateChangeTo(GameState state);
+    public static event GameStateChangeTo gameStateChangeTo;
+
+
+
     void Awake()
     {
         if(instance == null)
@@ -20,23 +44,27 @@ public class GameManager : MonoBehaviour
 
     private void OnEnable()
     {
-        DestructionGoalManager.destructionGoalsDestroyed += GameWon;
+        DestructionGoalManager.destructionGoalsDestroyed += GameWin;
+        DestructionGoalManager.destructionGoalsNotDestroyed += GameOver;
     }
 
     private void OnDisable()
     {
-        DestructionGoalManager.destructionGoalsDestroyed -= GameWon;
+        DestructionGoalManager.destructionGoalsDestroyed -= GameWin;
+        DestructionGoalManager.destructionGoalsNotDestroyed -= GameOver;
     }
 
-    void GameWon()
+    void GameWin()
     {
         Debug.Log("Win");
-        curState = GameState.GAME_WIN;
+        setGameState(GameState.GAME_WIN);
+        gameStateChangeTo?.Invoke(GameState.GAME_WIN);
     }
 
     void GameOver()
     {
         Debug.Log("Lose");
-        curState = GameState.GAME_OVER;
+        setGameState(GameState.GAME_OVER);
+        gameStateChangeTo?.Invoke(GameState.GAME_OVER);
     }
 }

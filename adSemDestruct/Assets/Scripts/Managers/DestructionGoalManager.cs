@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
-public class DestructionGoalManager : MonoBehaviour
+public class DestructionGoalManager : MonoBehaviour, ISubManager
 {
     [HideInInspector] public static DestructionGoalManager instance;
     [Header("Data")]
@@ -65,4 +65,11 @@ public class DestructionGoalManager : MonoBehaviour
 
         newGoal.transform.parent = this.gameObject.transform;
     }
+
+    #region ISubManager
+    public void HandleGameState(GameState state)
+    {
+
+    }
+    #endregion
 }

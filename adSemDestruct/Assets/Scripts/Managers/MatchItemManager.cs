@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
-public class MatchItemManager : MonoBehaviour
+public class MatchItemManager : MonoBehaviour, ISubManager
 {
     [HideInInspector] public MatchItemManager instance;
     [Header("Data")]
@@ -82,4 +82,11 @@ public class MatchItemManager : MonoBehaviour
         matchItems.Add(newMatchItem);
         matchItemSpawned?.Invoke(newMatchItem.GetComponent<MatchItem>(), row, column);
     }
+
+    #region ISubManager
+    public void HandleGameState(GameState state)
+    {
+
+    }
+    #endregion
 }

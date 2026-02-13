@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
-public class BlockManager : MonoBehaviour
+public class BlockManager : MonoBehaviour, ISubManager
 {
     [HideInInspector] public static BlockManager instance;
     [Header("Data")]
@@ -41,4 +41,11 @@ public class BlockManager : MonoBehaviour
         newBlock.GetComponent<Block>().setMatchItemType(type);
         blocks.Add(newBlock);
     }
+
+    #region ISubManager
+    public void HandleGameState(GameState state)
+    {
+
+    }
+    #endregion
 }

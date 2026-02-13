@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class TurnManager : MonoBehaviour
+public class TurnManager : MonoBehaviour, ISubManager
 {
     [HideInInspector] public static TurnManager instance;
     [Header("Data")]
@@ -58,4 +58,11 @@ public class TurnManager : MonoBehaviour
         }
 
     }
+
+    #region ISubManager
+    public void HandleGameState(GameState state)
+    {
+
+    }
+    #endregion
 }
