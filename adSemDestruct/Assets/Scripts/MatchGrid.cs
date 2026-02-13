@@ -1,8 +1,8 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Security.Cryptography;
+using DG.Tweening;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 public class MatchGrid : MonoBehaviour
 {
@@ -419,7 +419,7 @@ public class MatchGrid : MonoBehaviour
             {
                 if (i == gridPiece.row && j == gridPiece.col)
                 {
-                    SwapGridAssign(item, gridPieces[i, j]);
+                    SUPERTEMPSwapGridAssign(item, gridPieces[i, j]);
 
                     
                 }
@@ -428,6 +428,7 @@ public class MatchGrid : MonoBehaviour
 
         MatchRecognition(item);
     }
+    #region Swap Assign
     void SwapGridAssign(MatchItem theItem, GridPiece thePiece)
     {
         bool isSamePiece = false;
@@ -436,26 +437,83 @@ public class MatchGrid : MonoBehaviour
             isSamePiece = true;
 
             if (thePiece.getMatchItem())
-        {
-            //Debug.Log("swapping");
-            if (getGridPieceAt(theItem.row, theItem.col) != null) //If piece is currently on the grid
-            {
-                //Debug.Log("swapping to " + getGridPieceAt(theItem.row, theItem.col));
+            {   
+                if (getGridPieceAt(theItem.row, theItem.col) != null) //If piece is currently on the grid
+                {
                 GridPiece prevGridPiece = getGridPieceAt(theItem.row, theItem.col);
 
                 //Swaps position of match item currently on grid piece
                 MatchItem curMatchItem = thePiece.getMatchItem();
-
-                //curMatchItem.setPrevRow(curMatchItem.row);
-                //curMatchItem.setPrevCol(curMatchItem.col);
-
                 prevGridPiece.setMatchItem(curMatchItem);
-                //curMatchItem.row = prevGridPiece.row;
-                //curMatchItem.col = prevGridPiece.col;
 
+                curMatchItem.transform.DOMove(prevGridPiece.transform.position, 0.1f);
 
                 curMatchItem.gameObject.transform.parent = prevGridPiece.gameObject.transform;
-                curMatchItem.gameObject.transform.position = prevGridPiece.gameObject.transform.position;
+                //curMatchItem.gameObject.transform.position = prevGridPiece.gameObject.transform.position;
+                }
+                else
+                {
+                    Debug.Log(getGridPieceAt(theItem.row, theItem.col));
+                }
+            }
+
+        theItem.setPrevRow(theItem.row);
+        theItem.setPrevCol(theItem.col);
+
+        thePiece.setMatchItem(theItem); 
+        theItem.row = thePiece.row;
+        theItem.col = thePiece.col;
+
+       
+        theItem.gameObject.transform.parent = thePiece.gameObject.transform;
+
+        //ANIMATION
+        if(!isSamePiece)
+        {
+
+        }
+
+        theItem.gameObject.transform.position = thePiece.gameObject.transform.position;
+
+        if (!isSamePiece)
+            matchItemSwapped?.Invoke();
+
+        MatchRecognition();
+        
+    }
+
+
+    void SUPERTEMPSwapGridAssign(MatchItem theItem, GridPiece thePiece)
+    {
+        StartCoroutine(TEMPSwapGridAssign(theItem, thePiece));
+    }
+    IEnumerator TEMPSwapGridAssign(MatchItem theItem, GridPiece thePiece)
+    {
+        bool isSamePiece = false;
+
+        if (theItem.row == thePiece.row && theItem.col == thePiece.col)
+            isSamePiece = true;
+
+        if (thePiece.getMatchItem())
+        {
+            theItem.gameObject.transform.position = thePiece.gameObject.transform.position;
+
+            if (getGridPieceAt(theItem.row, theItem.col) != null) //If piece is currently on the grid
+            {
+                GridPiece prevGridPiece = getGridPieceAt(theItem.row, theItem.col);
+
+                //Swaps position of match item currently on grid piece
+                MatchItem curMatchItem = thePiece.getMatchItem();
+               
+
+                //ANIMATION
+                Debug.Log("Moving to " + prevGridPiece.transform.position);
+                curMatchItem.transform.DOMove(prevGridPiece.transform.position, 0.1f);
+                yield return new WaitForSeconds(0.1f);
+                prevGridPiece.setMatchItem(curMatchItem);
+
+                //curMatchItem.gameObject.transform.parent = prevGridPiece.gameObject.transform;
+                //curMatchItem.gameObject.transform.position = prevGridPiece.gameObject.transform.position;
             }
             else
             {
@@ -466,20 +524,25 @@ public class MatchGrid : MonoBehaviour
         theItem.setPrevRow(theItem.row);
         theItem.setPrevCol(theItem.col);
 
-        thePiece.setMatchItem(theItem); //Need code for swapping positions with other item
+
+        //theItem.gameObject.transform.parent = thePiece.gameObject.transform;
+
+        //ANIMATION
+        //Debug.Log("Moving controlled piece to " + thePiece.transform.localPosition);
+        //theItem.transform.DOLocalMove(thePiece.transform.localPosition, 0.5f);
+        //yield return new WaitForSeconds(0.5f);
+
+        thePiece.setMatchItem(theItem);
         theItem.row = thePiece.row;
         theItem.col = thePiece.col;
-
-       
-        theItem.gameObject.transform.parent = thePiece.gameObject.transform;
-        theItem.gameObject.transform.position = thePiece.gameObject.transform.position;
 
         if (!isSamePiece)
             matchItemSwapped?.Invoke();
 
         MatchRecognition();
-        
+
     }
+    #endregion
     void UnassignFromGrid(MatchItem item)
     {
         for(int i = 0; i < rows; i++)
