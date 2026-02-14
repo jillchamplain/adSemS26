@@ -25,7 +25,7 @@ public class MatchGrid : MonoBehaviour
     [Header("References")]
     [SerializeField] GameObject gridPiecePF;
 
-    //EVENTS
+    #region EVENTS
     public delegate void GridGeneratedWithMatch(int x, int y);
     public static event GridGeneratedWithMatch gridGeneratedWithMatch;
 
@@ -66,7 +66,7 @@ public class MatchGrid : MonoBehaviour
         Block.blockCreated -= ReplaceAssignCall;
         Block.blockCreated -= MatchRecognition;
     }
-
+    #endregion
     private void Awake()
     {
         if (instance == null)
@@ -373,6 +373,11 @@ public class MatchGrid : MonoBehaviour
     #region GRID ASSIGNMENT
 
     #region GENERATE ASSIGN
+    void GenerateAssignToGridCall(MatchItem item, int x, int y)
+    {
+       StartCoroutine(RTGenerateAssignToGrid(item, x, y));
+    }
+
     void GenerateAssignToGrid(MatchItem item, int x, int y)
     {
         GridPiece gridPiece = gridPieces[x, y];
@@ -384,6 +389,28 @@ public class MatchGrid : MonoBehaviour
             {
                 if (i == gridPiece.row && j == gridPiece.col)
                 {
+
+                    gridPieces[i, j].setMatchItem(item);
+                }
+            }
+        }
+    }
+
+    IEnumerator RTGenerateAssignToGrid(MatchItem item, int x, int y)
+    {
+        GridPiece gridPiece = gridPieces[x, y];
+        UnassignFromGrid(item);
+
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns; j++)
+            {
+                if (i == gridPiece.row && j == gridPiece.col)
+                {
+                    //ANIMATION
+                    item.transform.DOMove(gridPiece.transform.position, 0.1f);
+                    yield return new WaitForSeconds(0.1f);
+
                     gridPieces[i, j].setMatchItem(item);
                 }
             }
@@ -430,7 +457,7 @@ public class MatchGrid : MonoBehaviour
             {
                 if (i == gridPiece.row && j == gridPiece.col)
                 {
-                    SUPERTEMPSwapGridAssign(item, gridPieces[i, j]);
+                    SwapGridAssignCall(item, gridPieces[i, j]);
 
                     
                 }
@@ -442,65 +469,11 @@ public class MatchGrid : MonoBehaviour
     #endregion
 
     #region SWAP ASSIGN
-    void SwapGridAssign(MatchItem theItem, GridPiece thePiece)
+    void SwapGridAssignCall(MatchItem theItem, GridPiece thePiece)
     {
-        bool isSamePiece = false;
-
-        if (theItem.row == thePiece.row && theItem.col == thePiece.col)
-            isSamePiece = true;
-
-            if (thePiece.getMatchItem())
-            {   
-                if (getGridPieceAt(theItem.row, theItem.col) != null) //If piece is currently on the grid
-                {
-                GridPiece prevGridPiece = getGridPieceAt(theItem.row, theItem.col);
-
-                //Swaps position of match item currently on grid piece
-                MatchItem curMatchItem = thePiece.getMatchItem();
-                prevGridPiece.setMatchItem(curMatchItem);
-
-                curMatchItem.transform.DOMove(prevGridPiece.transform.position, 0.1f);
-
-                curMatchItem.gameObject.transform.parent = prevGridPiece.gameObject.transform;
-                //curMatchItem.gameObject.transform.position = prevGridPiece.gameObject.transform.position;
-                }
-                else
-                {
-                    Debug.Log(getGridPieceAt(theItem.row, theItem.col));
-                }
-            }
-
-        theItem.setPrevRow(theItem.row);
-        theItem.setPrevCol(theItem.col);
-
-        thePiece.setMatchItem(theItem); 
-        theItem.row = thePiece.row;
-        theItem.col = thePiece.col;
-
-       
-        theItem.gameObject.transform.parent = thePiece.gameObject.transform;
-
-        //ANIMATION
-        if(!isSamePiece)
-        {
-
-        }
-
-        theItem.gameObject.transform.position = thePiece.gameObject.transform.position;
-
-        if (!isSamePiece)
-            matchItemSwapped?.Invoke();
-
-        MatchRecognition();
-        
+        StartCoroutine(SwapGridAssign(theItem, thePiece));
     }
-
-
-    void SUPERTEMPSwapGridAssign(MatchItem theItem, GridPiece thePiece)
-    {
-        StartCoroutine(TEMPSwapGridAssign(theItem, thePiece));
-    }
-    IEnumerator TEMPSwapGridAssign(MatchItem theItem, GridPiece thePiece)
+    IEnumerator SwapGridAssign(MatchItem theItem, GridPiece thePiece)
     {
         bool isSamePiece = false;
 
@@ -520,7 +493,6 @@ public class MatchGrid : MonoBehaviour
                
 
                 //ANIMATION
-                Debug.Log("Moving to " + prevGridPiece.transform.position);
                 curMatchItem.transform.DOMove(prevGridPiece.transform.position, 0.1f);
                 yield return new WaitForSeconds(0.1f);
                 prevGridPiece.setMatchItem(curMatchItem);

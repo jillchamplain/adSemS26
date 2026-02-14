@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 public class MatchItemManager : MonoBehaviour, ISubManager
 {
     [HideInInspector] public MatchItemManager instance;
@@ -32,14 +33,14 @@ public class MatchItemManager : MonoBehaviour, ISubManager
     {
         MatchGrid.gridGenerated += GenerateMatchItems;
         MatchGrid.gridGeneratedWithMatch += GenerateMatchItems;
-        MatchGrid.nullGridAt += GenerateMatchItem;
+        MatchGrid.nullGridAt += SpawnMatchItemCall;
     }
 
     private void OnDisable()
     {
         MatchGrid.gridGenerated -= GenerateMatchItems;
         MatchGrid.gridGeneratedWithMatch -= GenerateMatchItems;
-        MatchGrid.nullGridAt -= GenerateMatchItem;
+        MatchGrid.nullGridAt -= SpawnMatchItemCall;
     }
     private void Awake()
     {
@@ -75,11 +76,15 @@ public class MatchItemManager : MonoBehaviour, ISubManager
         matchItemsGenerated?.Invoke();
     }
 
-
-    void GenerateMatchItem(int row, int column)
+    void SpawnMatchItemCall(int row, int column)
+    {
+        StartCoroutine(SpawnMatchItem(row, column));
+    }
+    IEnumerator SpawnMatchItem(int row, int column)
     {
         GameObject newMatchItem = Instantiate(getRandomMatchItem(), new Vector3(row, column, 0), Quaternion.identity);
         matchItems.Add(newMatchItem);
+        yield return new WaitForSeconds(0.2f);
         matchItemSpawned?.Invoke(newMatchItem.GetComponent<MatchItem>(), row, column);
     }
 
