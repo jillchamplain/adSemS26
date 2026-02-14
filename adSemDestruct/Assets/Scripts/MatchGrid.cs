@@ -50,7 +50,7 @@ public class MatchGrid : MonoBehaviour
         MatchItemManager.matchItemSpawned += AssignToGrid;
         MatchItemManager.matchItemsGenerated += GenerateMatchRecognition;
 
-        Block.blockCreated += ReplaceAssign;
+        Block.blockCreated += ReplaceAssignCall;
         Block.blockCreated += MatchRecognition;
     }
 
@@ -63,7 +63,7 @@ public class MatchGrid : MonoBehaviour
         MatchItemManager.matchItemSpawned -= AssignToGrid;
         MatchItemManager.matchItemsGenerated -= GenerateMatchRecognition;
 
-        Block.blockCreated -= ReplaceAssign;
+        Block.blockCreated -= ReplaceAssignCall;
         Block.blockCreated -= MatchRecognition;
     }
 
@@ -371,6 +371,8 @@ public class MatchGrid : MonoBehaviour
     #endregion
 
     #region GRID ASSIGNMENT
+
+    #region GENERATE ASSIGN
     void GenerateAssignToGrid(MatchItem item, int x, int y)
     {
         GridPiece gridPiece = gridPieces[x, y];
@@ -387,6 +389,9 @@ public class MatchGrid : MonoBehaviour
             }
         }
     }
+    #endregion
+
+    #region ASSIGN
     void AssignToGrid(MatchItem item, int x, int y)
     {
         //Debug.Log("Grid Piece: " + gridPiece.getRow() + "," + gridPiece.getCol());
@@ -434,7 +439,9 @@ public class MatchGrid : MonoBehaviour
 
         MatchRecognition(item);
     }
-    #region Swap Assign
+    #endregion
+
+    #region SWAP ASSIGN
     void SwapGridAssign(MatchItem theItem, GridPiece thePiece)
     {
         bool isSamePiece = false;
@@ -549,6 +556,8 @@ public class MatchGrid : MonoBehaviour
 
     }
     #endregion
+
+    #region UNASSIGN
     void UnassignFromGrid(MatchItem item)
     {
         for(int i = 0; i < rows; i++)
@@ -562,7 +571,15 @@ public class MatchGrid : MonoBehaviour
             }
         }
     }
-    public void ReplaceAssign()
+    #endregion
+
+    #region REPLACE ASSIGN
+    
+    void ReplaceAssignCall()
+    {
+        StartCoroutine(ReplaceAssign());
+    }
+    IEnumerator ReplaceAssign()
     {
         for(int i = 0; i < rows; i++)
         {
@@ -575,9 +592,10 @@ public class MatchGrid : MonoBehaviour
                     {
                         if (gridPieces[i, y].getMatchItem() != null)
                         {
-                            //Debug.Log("setting " + gridPieces[i, y].getMatchItem() + " to " + gridPieces[i, j]);
-                            
-                            //Debug.Log(gridPieces[i, y] + " has been set to null");
+                            //ANIMATION
+                            gridPieces[i, y].getMatchItem().transform.DOMove(gridPieces[i, j].transform.position, 0.1f);
+                            yield return new WaitForSeconds(0.1f);
+
 
                             gridPieces[i, j].setMatchItem(gridPieces[i, y].getMatchItem());
                             gridPieces[i, y].setMatchItem(null);
@@ -590,5 +608,7 @@ public class MatchGrid : MonoBehaviour
         }
         RepopulateGrid(rows, columns);
     }
+    #endregion
+
     #endregion
 }
