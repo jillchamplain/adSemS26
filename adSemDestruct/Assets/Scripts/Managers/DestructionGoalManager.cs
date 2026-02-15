@@ -9,10 +9,7 @@ public class DestructionGoalManager : MonoBehaviour, ISubManager
     [Header("References")]
     [SerializeField] GameObject destructionGoalPF;
 
-    //EVENTS
-
-
-
+    #region EVENTS
     public delegate void DestructionGoalsDestroyed();
     public static event DestructionGoalsDestroyed destructionGoalsDestroyed;
 
@@ -30,10 +27,12 @@ public class DestructionGoalManager : MonoBehaviour, ISubManager
         DestructionGoal.destructionGoalDestroyed -= RemoveDestructionGoal;
         TurnManager.reachedMaxTurns -= LoseDestructionGoalsCheck;
     }
+    #endregion
 
     private void Start()
     {
-        SpawnDestructionGoal(new Vector3(1, 1, 0));
+        //SpawnDestructionGoal(new Vector3(1, 1, 0));
+        
     }
 
     void RemoveDestructionGoal(DestructionGoal theGoal)

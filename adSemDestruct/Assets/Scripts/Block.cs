@@ -15,10 +15,13 @@ public class Block : MonoBehaviour
     public MatchItemType getMatchItemType() { return type; }
     public void setMatchItemType(MatchItemType newType) {  type = newType; }
 
-    //EVENTS
+    #region EVENTS
     public delegate void BlockCreated();
     public static event BlockCreated blockCreated;
 
+    public delegate void BlockHit(int forceDamage);
+    public static event BlockHit blockHit;
+    #endregion
     private void Awake()
     {
         
@@ -32,5 +35,13 @@ public class Block : MonoBehaviour
     void Update()
     {
         
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.GetComponent<Destructible>())
+        {
+            blockHit?.Invoke(1); //Damage based on velocity???
+        }
     }
 }

@@ -59,8 +59,8 @@ public class MatchItem : GridBased, IGrabbable
         transform.DOPunchScale(new Vector3(2, 2, 0), 0.5f);
         //Debug.Log("Destroy Anim");
         //Debug.Log("Done animating");
-        matchItemDestroyed?.Invoke(this.row , this.col);
-        Destroy(this.gameObject);
+        Destroy(this.gameObject, 0.5f);
+        matchItemDestroyed?.Invoke(this.row, this.col);
     }
 
 
