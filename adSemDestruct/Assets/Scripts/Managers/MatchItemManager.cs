@@ -53,7 +53,7 @@ public class MatchItemManager : MonoBehaviour, ISubManager
         foreach(GameObject item in matchItems)
         {
             MatchItem m = item.GetComponent<MatchItem>();
-            m.DestroySelf();
+            m.DestroySelfCall();
             Destroy(item);
         }
 
@@ -81,8 +81,6 @@ public class MatchItemManager : MonoBehaviour, ISubManager
         GameObject newMatchItem = Instantiate(getRandomMatchItem(), new Vector3(row, column, 0), Quaternion.identity);
         matchItems.Add(newMatchItem);
         matchItemSpawned?.Invoke(newMatchItem.GetComponent<MatchItem>(), row, column);
-        Debug.Log("spawn waiting");
-        Debug.Log("spawn done");
     }
 
     #region ISubManager

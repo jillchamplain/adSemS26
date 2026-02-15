@@ -1,6 +1,8 @@
 using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
+using DG.Tweening;
 public enum MatchItemType
 {
     A,
@@ -28,11 +30,11 @@ public class MatchItem : GridBased, IGrabbable
 
     [SerializeField] LayerMask interactMask;
 
-
+    #region EVENTS
     public delegate void MatchItemPlaced(MatchItem item, GridPiece gridPiece);
     public static event MatchItemPlaced matchItemPlaced;
 
-    public delegate void MatchItemDestroyed(MatchItem item); //Need standard of events. Called from only manager or object
+    public delegate void MatchItemDestroyed(int x, int y); //Need standard of events. Called from only manager or object
     public static event MatchItemDestroyed matchItemDestroyed;
 
     private void OnEnable()
@@ -44,16 +46,23 @@ public class MatchItem : GridBased, IGrabbable
     {
         MatchGrid.match -= OnMatch;
     }
+#endregion
+
     private void Start()
     {
         prevRow = row;
         prevCol = col;
     }
 
-    public void DestroySelf()
+    public void DestroySelfCall()
     {
-        matchItemDestroyed?.Invoke(this);
+        transform.DOPunchScale(new Vector3(2, 2, 0), 0.5f);
+        //Debug.Log("Destroy Anim");
+        //Debug.Log("Done animating");
+        matchItemDestroyed?.Invoke(this.row , this.col);
+        Destroy(this.gameObject);
     }
+
 
     void OnMatch(List<GridPiece> matchPieces, Vector3 origin, BlockShape shape, MatchItemType type) 
     {
@@ -61,8 +70,7 @@ public class MatchItem : GridBased, IGrabbable
         {
             if(gp.getMatchItem() == this)
             {
-                matchItemDestroyed?.Invoke(this);
-                Destroy(gameObject); //need to unassign from grid
+                DestroySelfCall();
             }
         }
     }

@@ -1,8 +1,9 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using DG.Tweening;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class MatchGrid : MonoBehaviour
 {
@@ -544,6 +545,20 @@ public class MatchGrid : MonoBehaviour
             for(int j = 0; j < columns; j++)
             {
                 if (gridPieces[i,j].getMatchItem() == item)
+                {
+                    gridPieces[i, j].setMatchItem(null);
+                }
+            }
+        }
+    }
+
+    void UnassignFromGrid(int x, int y)
+    {
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns; j++)
+            {
+                if (i == x && j == y)
                 {
                     gridPieces[i, j].setMatchItem(null);
                 }
