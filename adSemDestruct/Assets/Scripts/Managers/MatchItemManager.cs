@@ -82,10 +82,14 @@ public class MatchItemManager : MonoBehaviour, ISubManager
     }
     IEnumerator SpawnMatchItem(int row, int column)
     {
+      
         GameObject newMatchItem = Instantiate(getRandomMatchItem(), new Vector3(row, column, 0), Quaternion.identity);
+        newMatchItem.GetComponentInChildren<SpriteRenderer>().enabled = false;
         matchItems.Add(newMatchItem);
-        yield return new WaitForSeconds(0.2f);
         matchItemSpawned?.Invoke(newMatchItem.GetComponent<MatchItem>(), row, column);
+        yield return new WaitForSeconds(0.2f);
+        newMatchItem.GetComponentInChildren<SpriteRenderer>().enabled = true;
+
     }
 
     #region ISubManager
