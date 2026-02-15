@@ -33,14 +33,14 @@ public class MatchItemManager : MonoBehaviour, ISubManager
     {
         MatchGrid.gridGenerated += GenerateMatchItems;
         MatchGrid.gridGeneratedWithMatch += GenerateMatchItems;
-        MatchGrid.nullGridAt += SpawnMatchItemCall;
+        MatchGrid.nullGridAt += SpawnMatchItem;
     }
 
     private void OnDisable()
     {
         MatchGrid.gridGenerated -= GenerateMatchItems;
         MatchGrid.gridGeneratedWithMatch -= GenerateMatchItems;
-        MatchGrid.nullGridAt -= SpawnMatchItemCall;
+        MatchGrid.nullGridAt -= SpawnMatchItem;
     }
     private void Awake()
     {
@@ -76,20 +76,13 @@ public class MatchItemManager : MonoBehaviour, ISubManager
         matchItemsGenerated?.Invoke();
     }
 
-    void SpawnMatchItemCall(int row, int column)
+    void SpawnMatchItem(int row, int column)
     {
-        StartCoroutine(SpawnMatchItem(row, column));
-    }
-    IEnumerator SpawnMatchItem(int row, int column)
-    {
-      
         GameObject newMatchItem = Instantiate(getRandomMatchItem(), new Vector3(row, column, 0), Quaternion.identity);
-        newMatchItem.GetComponentInChildren<SpriteRenderer>().enabled = false;
         matchItems.Add(newMatchItem);
         matchItemSpawned?.Invoke(newMatchItem.GetComponent<MatchItem>(), row, column);
-        yield return new WaitForSeconds(0.2f);
-        newMatchItem.GetComponentInChildren<SpriteRenderer>().enabled = true;
-
+        Debug.Log("spawn waiting");
+        Debug.Log("spawn done");
     }
 
     #region ISubManager

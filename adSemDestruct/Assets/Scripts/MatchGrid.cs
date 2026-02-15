@@ -105,18 +105,25 @@ public class MatchGrid : MonoBehaviour
         gridGenerated?.Invoke(rows, cols);
     }
 
-    void RepopulateGrid(int rows, int cols)
+    void RepopulateGridCall(int rows, int cols)
     {
-        for(int i = 0; i < rows; i++)
+        StartCoroutine(RepopulateGrid(rows, cols));   
+    }
+
+    IEnumerator RepopulateGrid(int rows, int cols)
+    {
+        for (int i = 0; i < rows; i++)
         {
-            for(int j  = 0; j < cols; j++)
+            for (int j = 0; j < cols; j++)
             {
                 if (gridPieces[i, j].getMatchItem() == null)
                 {
                     nullGridAt?.Invoke(i, j);
+                    //ANIMATION
+                    yield return new WaitForSeconds(0.2f);
                 }
             }
-        }    
+        }
     }
 
     #endregion
@@ -578,7 +585,7 @@ public class MatchGrid : MonoBehaviour
                 }
             }
         }
-        RepopulateGrid(rows, columns);
+        RepopulateGridCall(rows, columns);
     }
     #endregion
 
