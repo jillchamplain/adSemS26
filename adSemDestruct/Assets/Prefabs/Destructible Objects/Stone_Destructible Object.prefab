@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &8366271449768333192
+--- !u!1001 &5015260970450303973
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -10,19 +10,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2141615376396897099, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
       propertyPath: m_Color.b
-      value: 0.31706122
+      value: 0.509434
       objectReference: {fileID: 0}
     - target: {fileID: 2141615376396897099, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
       propertyPath: m_Color.g
-      value: 0.37101507
+      value: 0.509434
       objectReference: {fileID: 0}
     - target: {fileID: 2141615376396897099, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
       propertyPath: m_Color.r
-      value: 0.5377358
+      value: 0.509434
       objectReference: {fileID: 0}
     - target: {fileID: 2588143117961585857, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
       propertyPath: m_Name
-      value: Wood_Destructible Object
+      value: Stone_Destructible Object
       objectReference: {fileID: 0}
     - target: {fileID: 2742882579850187633, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -65,20 +65,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9006659779986335979, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
-      propertyPath: type
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9006659779986335979, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
       propertyPath: weight
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9006659779986335979, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
       propertyPath: maxHealth
-      value: 100
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 9006659779986335979, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
       propertyPath: forceDamageMult
-      value: 100
+      value: 200
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
