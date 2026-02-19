@@ -1,16 +1,32 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Mouse : MonoBehaviour
+public class Mouse : MonoBehaviour, ISubManager
 {
+    bool shouldInteract = true;
     [SerializeField] LayerMask interactMask;
     [SerializeField] GameObject held;
+
+    #region EVENTS
+    private void OnEnable()
+    {
+        GameManager.gameStateChangeTo += HandleGameState;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.gameStateChangeTo -= HandleGameState;
+    }
+    #endregion
     void Update()
     {
-        if (!ClickCheck())
-            HoldCheck();
+        if (shouldInteract)
+        {
+            if (!ClickCheck())
+                HoldCheck();
 
-        ReleaseCheck();
+            ReleaseCheck();
+        }
     }
 
     bool ClickCheck()
@@ -73,5 +89,30 @@ public class Mouse : MonoBehaviour
         }
         return false;
     }
+
+    void HandleMouseState(GameState state)
+    {
+        switch(state)
+        {
+            case GameState.PLAY:
+                shouldInteract = true; 
+                break;
+            case GameState.MENU:
+            case GameState.PAUSED:
+            case GameState.GAME_OVER:
+            case GameState.GAME_WIN:
+                shouldInteract = false;
+                break;
+        }
+    }
+
+    #region ISubManager
+
+    public void HandleGameState(GameState state)
+    {
+        HandleMouseState(state);
+    }
+
+    #endregion
 }
 

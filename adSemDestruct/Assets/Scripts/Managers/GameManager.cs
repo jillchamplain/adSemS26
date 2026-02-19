@@ -13,12 +13,14 @@ public class GameManager : MonoBehaviour
 {
     [HideInInspector] public static GameManager instance;
     [SerializeField] GameState curState = GameState.PLAY;
-    void setGameState(GameState state) 
+    public void setGameState(GameState state)                                                                                                      
     {
-        curState = state; 
+        curState = state;
+        Time.timeScale = 1f;
         switch(curState)
         {
             case GameState.PAUSED:
+                Time.timeScale = 0f;
                 break;
             case GameState.MENU:
                 break;
@@ -27,21 +29,11 @@ public class GameManager : MonoBehaviour
             case GameState.GAME_WIN:
                 break;
         }
+        gameStateChangeTo?.Invoke(curState);
     }
-
-    // EVENTS
-
+    #region EVENTS
     public delegate void GameStateChangeTo(GameState state);
     public static event GameStateChangeTo gameStateChangeTo;
-
-
-
-    void Awake()
-    {
-        if(instance == null)
-            instance = this;
-    }
-
     private void OnEnable()
     {
         DestructionGoalManager.destructionGoalsDestroyed += GameWin;
@@ -53,18 +45,44 @@ public class GameManager : MonoBehaviour
         DestructionGoalManager.destructionGoalsDestroyed -= GameWin;
         DestructionGoalManager.destructionGoalsNotDestroyed -= GameOver;
     }
+    #endregion
+
+    void Awake()
+    {
+        if (instance == null)
+            instance = this;
+        setGameState(GameState.PLAY);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            if(curState != GameState.PAUSED)
+                setGameState(GameState.PAUSED);
+            else setGameState(GameState.PLAY);
+        }
+    }
+
+    public void Play()
+    {
+        setGameState(GameState.PLAY);
+    }
+
+    public void Pause()
+    {
+        setGameState(GameState.PAUSED);
+    }
 
     void GameWin()
     {
         Debug.Log("Win");
         setGameState(GameState.GAME_WIN);
-        gameStateChangeTo?.Invoke(GameState.GAME_WIN);
     }
 
     void GameOver()
     {
         Debug.Log("Lose");
         setGameState(GameState.GAME_OVER);
-        gameStateChangeTo?.Invoke(GameState.GAME_OVER);
     }
 }
