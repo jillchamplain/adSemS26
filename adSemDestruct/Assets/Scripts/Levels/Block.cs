@@ -23,10 +23,10 @@ public class Block : Destructor
     public delegate void BlockCreated();
     public static event BlockCreated blockCreated;
 
-    public delegate void BlockHitObject(int forceDamage, DestructionObject theDestruct);
+    public delegate void BlockHitObject(int forceDamage, LevelMaterial theDestruct);
     public static event BlockHitObject blockHitObject;
 
-    public delegate void BlockHitGoal(int forceDamage, DestructionGoal theDestruct);
+    public delegate void BlockHitGoal(int forceDamage, LevelGoal theDestruct);
     public static event BlockHitGoal blockHitGoal;
 
     #endregion
@@ -57,15 +57,15 @@ public class Block : Destructor
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.GetComponent<DestructionObject>())
+        if (collision.gameObject.GetComponent<LevelMaterial>())
         {
-            blockHitObject?.Invoke(CalcForceDamage(), collision.gameObject.GetComponent<DestructionObject>());
+            blockHitObject?.Invoke(CalcForceDamage(), collision.gameObject.GetComponent<LevelMaterial>());
 
             DestroySelf();
         }
-        else if(collision.gameObject.GetComponent<DestructionGoal>())
+        else if(collision.gameObject.GetComponent<LevelGoal>())
         {
-            blockHitGoal?.Invoke(CalcForceDamage(), collision.gameObject.GetComponent<DestructionGoal>());
+            blockHitGoal?.Invoke(CalcForceDamage(), collision.gameObject.GetComponent<LevelGoal>());
 
             DestroySelf();
         }

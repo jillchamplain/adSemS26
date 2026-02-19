@@ -599,6 +599,7 @@ public class MatchGrid : MonoBehaviour
                 }
             }
         }
+        MatchRecognition();
         RepopulateGridCall(rows, columns);
     }
     #endregion

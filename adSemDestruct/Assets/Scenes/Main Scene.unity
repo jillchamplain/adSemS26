@@ -1062,6 +1062,25 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &771100348 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5082322501745781481, guid: 4fee58e7ab44d474ea44879aa36f91f9, type: 3}
+  m_PrefabInstance: {fileID: 8242526557210141259}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &771100349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 771100348}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25e32fa5b5b148349a43123dee90459b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destructionGoals: []
+  destructionGoalPF: {fileID: 7223899584104615028, guid: 727b35840ba8b9a4b8b1c2e45b8034e7, type: 3}
 --- !u!1 &806025851 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7284985201707115085, guid: 13ffcac5286beee408870a71e4ff87a0, type: 3}
@@ -2880,10 +2899,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Destruction Goal Manager
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4730805065226356635, guid: 4fee58e7ab44d474ea44879aa36f91f9, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5082322501745781481, guid: 4fee58e7ab44d474ea44879aa36f91f9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 771100349}
   m_SourcePrefab: {fileID: 100100000, guid: 4fee58e7ab44d474ea44879aa36f91f9, type: 3}
 --- !u!1001 &8868942057048330159
 PrefabInstance:

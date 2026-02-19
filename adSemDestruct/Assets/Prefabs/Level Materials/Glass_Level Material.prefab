@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &8366271449768333192
+--- !u!1001 &6266863891698805897
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -10,19 +10,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2141615376396897099, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
       propertyPath: m_Color.b
-      value: 0.31706122
+      value: 0.9507075
       objectReference: {fileID: 0}
     - target: {fileID: 2141615376396897099, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
       propertyPath: m_Color.g
-      value: 0.37101507
+      value: 0.9811321
       objectReference: {fileID: 0}
     - target: {fileID: 2141615376396897099, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
       propertyPath: m_Color.r
-      value: 0.5377358
+      value: 0.5229619
       objectReference: {fileID: 0}
     - target: {fileID: 2588143117961585857, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
       propertyPath: m_Name
-      value: Wood_Destructible Object
+      value: Glass_Level Material
       objectReference: {fileID: 0}
     - target: {fileID: 2742882579850187633, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -64,24 +64,77 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 9006659779986335979, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
-      propertyPath: type
+    - target: {fileID: 7127676111149161871, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
+      propertyPath: m_SizeDelta.x
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7127676111149161871, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8434915321238389952, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
+      propertyPath: m_text
+      value: ghgh
       objectReference: {fileID: 0}
     - target: {fileID: 9006659779986335979, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
       propertyPath: weight
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 9006659779986335979, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
       propertyPath: maxHealth
-      value: 100
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 9006659779986335979, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
       propertyPath: forceDamageMult
-      value: 100
+      value: 50
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 9006659779986335979, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
+    - {fileID: 5929983430144882577, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2588143117961585857, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
+      insertIndex: 1
+      addedObject: {fileID: 1088955177880798921}
   m_SourcePrefab: {fileID: 100100000, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
+--- !u!114 &2591409590554323017 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8434915321238389952, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
+  m_PrefabInstance: {fileID: 6266863891698805897}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!50 &5874396208005999174 stripped
+Rigidbody2D:
+  m_CorrespondingSourceObject: {fileID: 539961070781236943, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
+  m_PrefabInstance: {fileID: 6266863891698805897}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8436000720487254088 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2588143117961585857, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
+  m_PrefabInstance: {fileID: 6266863891698805897}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1088955177880798921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8436000720487254088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13b08965c2db86a4aab614ecaae38fe4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb: {fileID: 5874396208005999174}
+  forceDamageMult: 0.5
+  weight: 50
+  type: 0
+  maxHealth: 50
+  health: 0
+  healthTF: {fileID: 2591409590554323017}

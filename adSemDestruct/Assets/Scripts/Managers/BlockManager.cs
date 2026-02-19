@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 public class BlockManager : MonoBehaviour, ISubManager
 {
     [HideInInspector] public static BlockManager instance;
@@ -27,19 +28,27 @@ public class BlockManager : MonoBehaviour, ISubManager
     }
     private void OnEnable()
     {
-        MatchGrid.match += SpawnBlock;
+        MatchGrid.match += SpawnBlockCall;
     }
 
     private void OnDisable()
     {
-        MatchGrid.match -= SpawnBlock;
+        MatchGrid.match -= SpawnBlockCall;
     }
 
-    void SpawnBlock(List<GridPiece> matchPieces, Vector3 origin, BlockShape shape, MatchItemType type)
+    void SpawnBlockCall(List<GridPiece> matchPieces, Vector3 origin, BlockShape shape, MatchItemType type)
     {
+        StartCoroutine(SpawnBlock(matchPieces, origin, shape, type));
+    }
+
+    IEnumerator SpawnBlock(List<GridPiece> matchPieces, Vector3 origin, BlockShape shape, MatchItemType type)
+    {
+        yield return new WaitForSeconds(.5f);
         GameObject newBlock = Instantiate(getBlockOfShape(shape), origin, Quaternion.identity); //Need to find position
         newBlock.GetComponent<Block>().setMatchItemType(type);
         blocks.Add(newBlock);
+        
+
     }
 
     #region ISubManager

@@ -22,7 +22,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2588143117961585857, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
       propertyPath: m_Name
-      value: Stone_Destructible Object
+      value: Stone_Level Material
       objectReference: {fileID: 0}
     - target: {fileID: 2742882579850187633, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -63,6 +63,22 @@ PrefabInstance:
     - target: {fileID: 2742882579850187633, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5929983430144882577, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
+      propertyPath: type
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5929983430144882577, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
+      propertyPath: weight
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 5929983430144882577, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
+      propertyPath: maxHealth
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 5929983430144882577, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
+      propertyPath: forceDamageMult
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9006659779986335979, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
       propertyPath: weight

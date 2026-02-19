@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public enum DestructionObjectType
@@ -7,13 +8,15 @@ public enum DestructionObjectType
     STONE,
     NUM_TYPES
 }
-public class DestructionObject : Destructor
+public class LevelMaterial : Destructor
 {
     [Header("Data")]
     [SerializeField] DestructionObjectType type;
     public DestructionObjectType getType() { return type; }
     [SerializeField] int maxHealth;
     [SerializeField] int health;
+    [Header("References")]
+    [SerializeField] TextMeshProUGUI healthTF; 
     void CheckHealth()
     {
         if(health <= 0)
@@ -22,8 +25,8 @@ public class DestructionObject : Destructor
 
     #region EVENTS
 
-    public delegate void DestructionHit(int damage, DestructionGoal theGoal);
-    public static event DestructionHit destructionHit;
+    public delegate void MaterialHit(int damage, LevelGoal theGoal);
+    public static event MaterialHit materialHit;
 
     private void OnEnable()
     {
@@ -39,23 +42,30 @@ public class DestructionObject : Destructor
     void Start()
     {
         health = maxHealth;
+        UpdateUI();
     }
 
-    void TakeDamage(int damage, DestructionObject theDestruct)
+    void TakeDamage(int damage, LevelMaterial theDestruct)
     {
         if (theDestruct == this)
         {
             health -= damage;
-            Debug.Log("Taking " + damage);
+            //Debug.Log("Taking " + damage);
             CheckHealth();
+            UpdateUI();
         }
+    }
+
+    void UpdateUI()
+    {
+        healthTF.text = string.Format("{0}", health);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.GetComponent<DestructionGoal>())
+        if(collision.gameObject.GetComponent<LevelGoal>())
         {
-            destructionHit?.Invoke(CalcForceDamage(), collision.gameObject.GetComponent<DestructionGoal>());
+            materialHit?.Invoke(CalcForceDamage(), collision.gameObject.GetComponent<LevelGoal>());
         }
     }
 

@@ -36,14 +36,14 @@ public class GameManager : MonoBehaviour
     public static event GameStateChangeTo gameStateChangeTo;
     private void OnEnable()
     {
-        DestructionGoalManager.destructionGoalsDestroyed += GameWin;
-        DestructionGoalManager.destructionGoalsNotDestroyed += GameOver;
+        LevelGoalManager.levelGoalsDestroyed += GameWin;
+        LevelGoalManager.levelGoalsNotDestroyed += GameOver;
     }
 
     private void OnDisable()
     {
-        DestructionGoalManager.destructionGoalsDestroyed -= GameWin;
-        DestructionGoalManager.destructionGoalsNotDestroyed -= GameOver;
+        LevelGoalManager.levelGoalsDestroyed -= GameWin;
+        LevelGoalManager.levelGoalsNotDestroyed -= GameOver;
     }
     #endregion
 
