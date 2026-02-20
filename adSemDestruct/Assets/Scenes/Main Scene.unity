@@ -1079,8 +1079,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25e32fa5b5b148349a43123dee90459b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destructionGoals: []
-  destructionGoalPF: {fileID: 7223899584104615028, guid: 727b35840ba8b9a4b8b1c2e45b8034e7, type: 3}
+  levelGoals: []
+  levelGoalPF: {fileID: 0}
 --- !u!1 &806025851 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7284985201707115085, guid: 13ffcac5286beee408870a71e4ff87a0, type: 3}
@@ -2983,7 +2983,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4956687761604147046, guid: 83e1f187e5c6ee14284f25589d091dfb, type: 3}
       propertyPath: rows
-      value: 7
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4956687761604147046, guid: 83e1f187e5c6ee14284f25589d091dfb, type: 3}
+      propertyPath: columns
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 4956687761604147046, guid: 83e1f187e5c6ee14284f25589d091dfb, type: 3}
       propertyPath: gridPiecePF
@@ -2995,7 +2999,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6640766167545240673, guid: 83e1f187e5c6ee14284f25589d091dfb, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 6640766167545240673, guid: 83e1f187e5c6ee14284f25589d091dfb, type: 3}
       propertyPath: m_LocalPosition.z

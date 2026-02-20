@@ -4,6 +4,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum MatchType
+{
+    THREE = 3,
+    FOUR = 4,
+    FIVE = 5,
+    NUM_TYPES
+}
+
 public class MatchGrid : MonoBehaviour
 {
     [HideInInspector] public static MatchGrid instance;
@@ -208,27 +216,9 @@ public class MatchGrid : MonoBehaviour
 
         return isMatch;
     }
-    List<GridPiece> SearchForMatch(MatchItem item)
+    void TEMPMatchRecognition()
     {
-        List<GridPiece> matchPieces = new List<GridPiece>();
-        for (int i = 0; i < rows; i++)
-        {
-            for (int j = 0; j < columns - 2; j++) //Prevents index errors
-            {
 
-                if (gridPieces[i, j].getMatchItem() == null || gridPieces[i, j + 1].getMatchItem() == null || gridPieces[i, j + 2].getMatchItem() == null)
-                {
-                    continue;
-                }
-
-                if (gridPieces[i, j].getMatchItem().getType() == item.getType()
-                    && gridPieces[i, j + 1].getMatchItem().getType() == item.getType() && gridPieces[i, j + 2].getMatchItem().getType() == item.getType())
-                {
-                   
-                }
-            }
-        }
-        return matchPieces;
     }
     #region VERTICAL MATCHES
     bool VerticalMatchRecognition(MatchItem item)
