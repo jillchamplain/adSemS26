@@ -1,8 +1,10 @@
-using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
+using Unity.VisualScripting;
 using UnityEngine;
+using static Unity.VisualScripting.Dependencies.Sqlite.SQLite3;
 
 public class MatchGrid : MonoBehaviour
 {
@@ -178,229 +180,107 @@ public class MatchGrid : MonoBehaviour
     }
     void MatchRecognition()
     {
-        for (int i = 0; i < rows; i++)
-        {
-            for (int j = 0; j < columns; j++)
-            {
-                if (gridPieces[i, j].getMatchItem() != null)
-                {
-                    MatchRecognition(gridPieces[i, j].getMatchItem());
-                }
-            }
-        }
-    }
-    bool MatchRecognition(MatchItem item)
-    {
-        int x = item.row;
-        int y = item.col;
-
-        bool isMatch = false;
-        bool vertMatch = VerticalMatchRecognition(item);
-        bool horMatch = HorizontalMatchRecognition(item);
-
-        //Debug.Log("vert match:" + vertMatch);
-        //Debug.Log("hor match: " + horMatch);
-
-        if (vertMatch)//matches of 3 
-        {
-            isMatch = true;
-            //Debug.Log("Vertical Match made! Type:" + item.getType());
-            //match?.Invoke(VerticalMatchCollection(item), FindVerticalMatchOrigin(item), BlockShape.VERTICAL, item.getType());
-
-        }
-        else if (horMatch)
-        {
-            isMatch = true;
-            //match?.Invoke(HorizontalMatchCollection(item), FindHorizontalMatchOrigin(item), BlockShape.HORIZONTAL, item.getType());
-            //Debug.Log("Horizontal Match made! Type:" + item.getType());
-        }
-
-        return isMatch;
-    }
-    void TEMPMatchRecognition()
-    {
-        //Have match function check for X, x - 1, x - 2 etc..  till 3 and get match items in them
-        //check vertical then horizontal
-        //Check if match items from x matches to x -1 matches repeat and don't add them 
-
-        List<GridPiece> matchPieces = new List<GridPiece>();
-
-        //Vertical Matching
-        for (int i = 5; i >= 3; i++)
-        {
-            List<GridPiece> verticalMatchPiecesX = VerticalMatch(i);
-            foreach (GridPiece piece in verticalMatchPiecesX)
-            {
-                if (!matchPieces.Contains(piece))
-                {
-                    matchPieces.Add(piece);
-                    if (matchPieces.Count <= 5)
-                    {
-
-                    }
-                }
-            }
-        }
-
-        //Horizontal Matching
-        for (int i = 5; i >= 3; i++)
-        {
-            List<GridPiece> horizontalMatchPiecesX = HorizontalMatch(i);
-            foreach (GridPiece piece in horizontalMatchPiecesX)
-            {
-                if (!matchPieces.Contains(piece))
-                {
-                    matchPieces.Add(piece);
-                }
-            }
-        }
-
-    }
-
-    void TEMPMatchRecognition(int numToMatch)
-    {
-        //Have match function check for X, x - 1, x - 2 etc..  till 3 and get match items in them
-        //check vertical then horizontal
-        //Check if match items from x matches to x -1 matches repeat and don't add them 
-
-        List<GridPiece> matchPieces = new List<GridPiece>();
-
-
-        //Vertical Matching
-        for (int i = numToMatch; i >= 3; i++)
-        {
-            List<GridPiece> verticalMatchPiecesX = VerticalMatch(i);
-            foreach (GridPiece piece in verticalMatchPiecesX)
-            {
-                if (!matchPieces.Contains(piece))
-                {
-                    matchPieces.Add(piece);
-                    if (matchPieces.Count <= numToMatch && matchPieces.Count > 0)
-                    {
-                        Vector3 originPosition = FindMatchOrigin(matchPieces);
-
-                    }
-                }
-            }
-        }
-
-        //Horizontal Matching
-        for (int i = 5; i >= 3; i++)
-        {
-            List<GridPiece> horizontalMatchPiecesX = HorizontalMatch(i);
-            foreach (GridPiece piece in horizontalMatchPiecesX)
-            {
-                if (!matchPieces.Contains(piece))
-                {
-                    matchPieces.Add(piece);
-                }
-            }
-        }
-    }
-
-    void SUPERTEMPMatchRecogniton()
-    {
-        //Iterate through entire grid
-        List<Vector2Int> directions = new List<Vector2Int>();
-        directions.Add(new Vector2Int(-1, -1));
-        directions.Add(new Vector2Int(-1, 0));
-        directions.Add(new Vector2Int(-1, 1));
-        directions.Add(new Vector2Int(0, 1));
-        directions.Add(new Vector2Int(1, 1));
-        directions.Add(new Vector2Int(1, 0));
-        directions.Add(new Vector2Int(1, -1));
-
-        for (int i = 0; i < rows; i++)
-        {
-            for (int j = 0; j < columns; j++)
-            {
-                //Check all nearby grid pieces for each grid piece
-                //If same type find direction from matching grid piece to center grid piece
-                GridPiece originPiece = gridPieces[i, j];
-
-                List<Vector2Int> matchDirections = new List<Vector2Int>();
-
-                foreach (Vector2Int direction in directions)
-                {
-                    //If same type find direction from matching grid piece to center grid piece
-                    if (gridPieces[i + direction.x, j + direction.y].getMatchItem().getType() == originPiece.getMatchItem().getType())
-                    {
-                        matchDirections.Add(direction);
-                    }
-                }
-
-                //Check if match item in direction and go till failure
-                for (int k = 0; k < matchDirections.Count; k++)
-                {
-                    GridPiece checkPiece = gridPieces[i + ((k + 1) * matchDirections[k].x), j + ((k + 1) * matchDirections[k].y)];
-
-                }
-
-            }
-        }
-
-
-        //Iterate until failure lol, adding to a list of grid pieces on the way
-        //Take grid pieces and find the spawn origin and invoke event 
-    }
-
-    void ANOTHERTempMatchRecognition()
-    {
-        List<GridPiece> matchPieces = new List<GridPiece>();
-
         for(int i = 0; i < rows; i++)
         {
             for(int j = 0; j < columns;j++)
             {
                 GridPiece curPiece = gridPieces[i, j];
-                MatchItemType curType = curPiece.getMatchItem().getType();
-                if (gridPieces[i + 1, j].getMatchItem().getType() == curType) //If match on the right
+                if (curPiece.getMatchItem() != null)
                 {
-                    //Check if grid pieces on position are right type of shape and give list
-                    //Horizontal, Square, L_Bot_Left, L_Bot_Right
-
-                    MatchRecognitionOfShape(getMatchShapeOfType(MatchShapeType.SQUARE), curType);
-
-                    MatchRecognitionOfShape(getMatchShapeOfType(MatchShapeType.L_BOTTOM_LEFT), curType);
-                    MatchRecognitionOfShape(getMatchShapeOfType(MatchShapeType.L_BOTTOM_RIGHT), curType);
-
-                    MatchRecognitionOfShape(getMatchShapeOfType(MatchShapeType.HORIZONTAL_5), curType);
-                    MatchRecognitionOfShape(getMatchShapeOfType(MatchShapeType.HORIZONTAL_4), curType);
-                    MatchRecognitionOfShape(getMatchShapeOfType(MatchShapeType.HORIZONTAL_3), curType);
-
-
-                }
-
-                else if (gridPieces[i, j + 1].getMatchItem().getType() == curType)//If match above
-                {
-                    MatchRecognitionOfShape(getMatchShapeOfType(MatchShapeType.L_TOP_LEFT), curType);
-                    MatchRecognitionOfShape(getMatchShapeOfType(MatchShapeType.L_TOP_RIGHT), curType);
-
-                    MatchRecognitionOfShape(getMatchShapeOfType(MatchShapeType.VERTICAL_5), curType);
-                    MatchRecognitionOfShape(getMatchShapeOfType(MatchShapeType.VERTICAL_4), curType);
-                    MatchRecognitionOfShape(getMatchShapeOfType(MatchShapeType.VERTICAL_3), curType);
+                    MatchItemType curType = curPiece.getMatchItem().getType();
+                    SOMETHINGMatchRecogntion(curPiece, curType);
                 }
             }
         }
     }
 
-    void MatchRecognitionOfShape(MatchShape shape, MatchItemType type)
+    void MatchRecognition(MatchItem item)
     {
+        //Debug.Log("Looking for Match with" + item);
+        GridPiece curPiece = gridPieces[item.row, item.col];
+        MatchItemType curType = item.getType();
+        SOMETHINGMatchRecogntion(curPiece, curType);
+    }
+
+    void MatchRecognition(GridPiece item)
+    {
+        GridPiece curPiece = gridPieces[item.row, item.col];
+        MatchItemType curType = curPiece.getMatchItem().getType();
+        SOMETHINGMatchRecogntion(curPiece, curType);
+    }
+
+    void SOMETHINGMatchRecogntion(GridPiece curPiece, MatchItemType curType)
+    {
+        //Debug.Log(curType);
+        if (curPiece.row + 1 < rows && curPiece.col + 1 < columns)
+        {
+            if (gridPieces[curPiece.row + 1, curPiece.col].getMatchItem() && gridPieces[curPiece.row, curPiece.col + 1].getMatchItem())
+            {
+                //Debug.Log("This is the match Item" + gridPieces[curPiece.row + 1, curPiece.col].getMatchItem());
+                if (gridPieces[curPiece.row + 1, curPiece.col].getMatchItem().getType() == curType) //If match on the right
+                {
+                    if (MatchRecognitionOfShape(curPiece, getMatchShapeOfType(MatchShapeType.SQUARE), curType))
+                        return;
+                    if (MatchRecognitionOfShape(curPiece, getMatchShapeOfType(MatchShapeType.L_BOTTOM_LEFT), curType))
+                        return;
+                    if (MatchRecognitionOfShape(curPiece, getMatchShapeOfType(MatchShapeType.L_BOTTOM_RIGHT), curType))
+                        return;
+                    if (MatchRecognitionOfShape(curPiece, getMatchShapeOfType(MatchShapeType.HORIZONTAL_5), curType))
+                        return;
+                    if (MatchRecognitionOfShape(curPiece, getMatchShapeOfType(MatchShapeType.HORIZONTAL_4), curType))
+                        return;
+                    if (MatchRecognitionOfShape(curPiece, getMatchShapeOfType(MatchShapeType.HORIZONTAL_3), curType))
+                        return;
+                }
+
+                if (gridPieces[curPiece.row, curPiece.col + 1].getMatchItem().getType() == curType)//If match above
+                {
+                    if (MatchRecognitionOfShape(curPiece, getMatchShapeOfType(MatchShapeType.L_TOP_LEFT), curType))
+                        return;
+                    if (MatchRecognitionOfShape(curPiece, getMatchShapeOfType(MatchShapeType.L_TOP_RIGHT), curType))
+                        return;
+                    if (MatchRecognitionOfShape(curPiece, getMatchShapeOfType(MatchShapeType.VERTICAL_5), curType))
+                        return;
+                    if (MatchRecognitionOfShape(curPiece, getMatchShapeOfType(MatchShapeType.VERTICAL_4), curType))
+                        return;
+                    if (MatchRecognitionOfShape(curPiece, getMatchShapeOfType(MatchShapeType.VERTICAL_3), curType))
+                        return;
+                }
+            }
+        }
+    }
+
+    bool MatchRecognitionOfShape(GridPiece origin, MatchShape shape, MatchItemType type)
+    {
+        bool isMatch = false;
         List<GridPiece> matchPieces = new List<GridPiece>();
 
         foreach(Vector2Int pos in getMatchShapeOfType(shape.matchShapeType).matchPositions)
         {
-            if(gridPieces[pos.x, pos.y].getMatchItem().getType() == type)
+            //Debug.Log(origin);
+            if (origin.row + pos.x < rows && origin.row + pos.x >= 0 && origin.col + pos.y < rows && origin.col + pos.y >= 0)
             {
-                matchPieces.Add(gridPieces[pos.x, pos.y]);
+                if (gridPieces[origin.row + pos.x, origin.col + pos.y].getMatchItem() != null)
+                {
+                    if (gridPieces[origin.row + pos.x, origin.col + pos.y].getMatchItem().getType() == type)
+                    {
+                        matchPieces.Add(gridPieces[origin.row + pos.x, origin.col + pos.y]);
+                    }
+                }
             }
         }
 
         if(matchPieces.Count > 0)
         {
+            isMatch = true;
+            foreach(GridPiece gp in matchPieces)
+            {
+                Debug.Log(gp);
+            }
+            
             match?.Invoke(matchPieces, gridPieces[shape.originPosition.x, shape.originPosition.y].transform.position, shape.matchShapeType, type);
         }
-        return;
+        return isMatch;
     }
 
     #region VERTICAL MATCHES

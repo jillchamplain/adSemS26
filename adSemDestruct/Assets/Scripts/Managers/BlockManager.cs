@@ -44,9 +44,9 @@ public class BlockManager : MonoBehaviour, ISubManager
     IEnumerator SpawnBlock(List<GridPiece> matchPieces, Vector3 origin, MatchShapeType shape, MatchItemType type)
     {
         yield return new WaitForSeconds(.5f);
-        GameObject newBlock = Instantiate(getBlockOfShape(shape), origin, Quaternion.identity); //Need to find position
-        newBlock.GetComponent<Block>().setMatchItemType(type);
-        blocks.Add(newBlock);
+        //GameObject newBlock = Instantiate(getBlockOfShape(shape), origin, Quaternion.identity); //Need to find position
+        //newBlock.GetComponent<Block>().setMatchItemType(type);
+        //blocks.Add(newBlock);
         
 
     }
