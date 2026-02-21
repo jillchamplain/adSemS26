@@ -7,11 +7,11 @@ public class BlockManager : MonoBehaviour, ISubManager
     [HideInInspector] public static BlockManager instance;
     [Header("Data")]
     [SerializeField] List<GameObject> blocks;
-    public GameObject getBlockOfShape(BlockShape type)
+    public GameObject getBlockOfShape(MatchShapeType type)
     {
         foreach(GameObject block in blocks)
         {
-            if(block.GetComponent<Block>() && block.GetComponent<Block>().getShape() == type)
+            if(block.GetComponent<Block>() && block.GetComponent<Block>().getMatchShapeType() == type)
             {
                 return block;
             }
@@ -36,12 +36,12 @@ public class BlockManager : MonoBehaviour, ISubManager
         MatchGrid.match -= SpawnBlockCall;
     }
 
-    void SpawnBlockCall(List<GridPiece> matchPieces, Vector3 origin, BlockShape shape, MatchItemType type)
+    void SpawnBlockCall(List<GridPiece> matchPieces, Vector3 origin, MatchShapeType shape, MatchItemType type)
     {
         StartCoroutine(SpawnBlock(matchPieces, origin, shape, type));
     }
 
-    IEnumerator SpawnBlock(List<GridPiece> matchPieces, Vector3 origin, BlockShape shape, MatchItemType type)
+    IEnumerator SpawnBlock(List<GridPiece> matchPieces, Vector3 origin, MatchShapeType shape, MatchItemType type)
     {
         yield return new WaitForSeconds(.5f);
         GameObject newBlock = Instantiate(getBlockOfShape(shape), origin, Quaternion.identity); //Need to find position

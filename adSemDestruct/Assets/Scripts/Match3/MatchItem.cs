@@ -64,7 +64,7 @@ public class MatchItem : GridBased, IGrabbable
     }
 
 
-    void OnMatch(List<GridPiece> matchPieces, Vector3 origin, BlockShape shape, MatchItemType type) 
+    void OnMatch(List<GridPiece> matchPieces, Vector3 origin, MatchShapeType shape, MatchItemType type) 
     {
         foreach (GridPiece gp in matchPieces)
         {

@@ -2,17 +2,11 @@ using DG.Tweening;
 using System.Security.Cryptography;
 using UnityEngine;
 using System.Collections.Generic;
-public enum BlockShape
-{
-    VERTICAL,
-    HORIZONTAL,
-    NUM_SHAPES
-}
 public class Block : Destructor
 {
     [Header("Data")]
-    [SerializeField] BlockShape shape;
-    public BlockShape getShape() {  return shape; }
+    [SerializeField] MatchShapeType shape;
+    public MatchShapeType getMatchShapeType() {  return shape; }
     [SerializeField] MatchItemType type;
     public MatchItemType getMatchItemType() { return type; }
     public void setMatchItemType(MatchItemType newType) {  type = newType; }

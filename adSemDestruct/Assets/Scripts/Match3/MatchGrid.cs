@@ -13,17 +13,27 @@ public class MatchGrid : MonoBehaviour
     [SerializeField] float pieceWidth;
     [SerializeField] float pieceHeight;
     GridPiece[,] gridPieces;
-    public GridPiece getGridPieceAt(int x, int y) 
-    {  
-        if(x  < 0 || x >= rows)
+    public GridPiece getGridPieceAt(int x, int y)
+    {
+        if (x < 0 || x >= rows)
             return null;
-        if(y < 0 || y >= columns)
+        if (y < 0 || y >= columns)
             return null;
-        return gridPieces[x, y]; 
+        return gridPieces[x, y];
     }
 
     [Header("References")]
     [SerializeField] GameObject gridPiecePF;
+    [SerializeField] List<MatchShape> matchShapes;
+    MatchShape getMatchShapeOfType(MatchShapeType type)
+    {
+        for(int i = 0; i < matchShapes.Count; i++)
+        {
+            if (matchShapes[i].matchShapeType == type)
+                return matchShapes[i];
+        }
+        return null;
+    }
 
     #region EVENTS
     public delegate void GridGeneratedWithMatch(int x, int y);
@@ -35,7 +45,7 @@ public class MatchGrid : MonoBehaviour
     public delegate void NullGridAt(int x, int y);
     public static event NullGridAt nullGridAt;
 
-    public delegate void Match(List<GridPiece> matchPieces, Vector3 origin, BlockShape shape, MatchItemType type);
+    public delegate void Match(List<GridPiece> matchPieces, Vector3 origin, MatchShapeType shape, MatchItemType type);
     public static event Match match;
 
     public delegate void MatchItemSwapped();
@@ -58,7 +68,7 @@ public class MatchGrid : MonoBehaviour
     {
         MatchItem.matchItemPlaced -= AssignToGrid;
         MatchItem.matchItemDestroyed -= UnassignFromGrid;
-        
+
         MatchItemManager.matchItemGenerated -= GenerateAssignToGrid;
         MatchItemManager.matchItemSpawned -= AssignToGrid;
         MatchItemManager.matchItemsGenerated -= GenerateMatchRecognition;
@@ -107,7 +117,7 @@ public class MatchGrid : MonoBehaviour
 
     void RepopulateGridCall(int rows, int cols)
     {
-        StartCoroutine(RepopulateGrid(rows, cols));   
+        StartCoroutine(RepopulateGrid(rows, cols));
     }
 
     IEnumerator RepopulateGrid(int rows, int cols)
@@ -143,7 +153,7 @@ public class MatchGrid : MonoBehaviour
                         //Debug.Log("Generated with match");
                         gridGeneratedWithMatch?.Invoke(rows, columns);
                     }
-                        
+
                 }
             }
         }
@@ -168,18 +178,18 @@ public class MatchGrid : MonoBehaviour
     }
     void MatchRecognition()
     {
-        for(int i = 0; i < rows; i++)
+        for (int i = 0; i < rows; i++)
         {
-            for(int  j = 0; j < columns; j++)
+            for (int j = 0; j < columns; j++)
             {
-                if (gridPieces[i,j].getMatchItem() != null)
+                if (gridPieces[i, j].getMatchItem() != null)
                 {
                     MatchRecognition(gridPieces[i, j].getMatchItem());
                 }
             }
         }
     }
-        bool MatchRecognition(MatchItem item) 
+    bool MatchRecognition(MatchItem item)
     {
         int x = item.row;
         int y = item.col;
@@ -195,13 +205,13 @@ public class MatchGrid : MonoBehaviour
         {
             isMatch = true;
             //Debug.Log("Vertical Match made! Type:" + item.getType());
-            match?.Invoke(VerticalMatchCollection(item), FindVerticalMatchOrigin(item), BlockShape.VERTICAL, item.getType());
-            
+            //match?.Invoke(VerticalMatchCollection(item), FindVerticalMatchOrigin(item), BlockShape.VERTICAL, item.getType());
+
         }
-        else if(horMatch)
+        else if (horMatch)
         {
             isMatch = true;
-            match?.Invoke(HorizontalMatchCollection(item), FindHorizontalMatchOrigin(item), BlockShape.HORIZONTAL, item.getType());
+            //match?.Invoke(HorizontalMatchCollection(item), FindHorizontalMatchOrigin(item), BlockShape.HORIZONTAL, item.getType());
             //Debug.Log("Horizontal Match made! Type:" + item.getType());
         }
 
@@ -212,19 +222,19 @@ public class MatchGrid : MonoBehaviour
         //Have match function check for X, x - 1, x - 2 etc..  till 3 and get match items in them
         //check vertical then horizontal
         //Check if match items from x matches to x -1 matches repeat and don't add them 
-            
+
         List<GridPiece> matchPieces = new List<GridPiece>();
 
         //Vertical Matching
-        for(int i = 5; i >= 3; i++)
+        for (int i = 5; i >= 3; i++)
         {
             List<GridPiece> verticalMatchPiecesX = VerticalMatch(i);
-            foreach(GridPiece piece in verticalMatchPiecesX)
+            foreach (GridPiece piece in verticalMatchPiecesX)
             {
-                if(!matchPieces.Contains(piece))
+                if (!matchPieces.Contains(piece))
                 {
                     matchPieces.Add(piece);
-                    if(matchPieces.Count <= 5)
+                    if (matchPieces.Count <= 5)
                     {
 
                     }
@@ -254,7 +264,7 @@ public class MatchGrid : MonoBehaviour
         //Check if match items from x matches to x -1 matches repeat and don't add them 
 
         List<GridPiece> matchPieces = new List<GridPiece>();
-        
+
 
         //Vertical Matching
         for (int i = numToMatch; i >= 3; i++)
@@ -267,8 +277,8 @@ public class MatchGrid : MonoBehaviour
                     matchPieces.Add(piece);
                     if (matchPieces.Count <= numToMatch && matchPieces.Count > 0)
                     {
-                         Vector3 originPosition = FindMatchOrigin(matchPieces);
-                        
+                        Vector3 originPosition = FindMatchOrigin(matchPieces);
+
                     }
                 }
             }
@@ -302,7 +312,7 @@ public class MatchGrid : MonoBehaviour
 
         for (int i = 0; i < rows; i++)
         {
-            for(int j = 0; j < columns; j++)
+            for (int j = 0; j < columns; j++)
             {
                 //Check all nearby grid pieces for each grid piece
                 //If same type find direction from matching grid piece to center grid piece
@@ -310,7 +320,7 @@ public class MatchGrid : MonoBehaviour
 
                 List<Vector2Int> matchDirections = new List<Vector2Int>();
 
-                foreach(Vector2Int direction in directions)
+                foreach (Vector2Int direction in directions)
                 {
                     //If same type find direction from matching grid piece to center grid piece
                     if (gridPieces[i + direction.x, j + direction.y].getMatchItem().getType() == originPiece.getMatchItem().getType())
@@ -318,21 +328,81 @@ public class MatchGrid : MonoBehaviour
                         matchDirections.Add(direction);
                     }
                 }
-                
+
                 //Check if match item in direction and go till failure
-                for(int k = 0; k < matchDirections.Count; k++)
+                for (int k = 0; k < matchDirections.Count; k++)
                 {
                     GridPiece checkPiece = gridPieces[i + ((k + 1) * matchDirections[k].x), j + ((k + 1) * matchDirections[k].y)];
-                    
+
                 }
 
             }
         }
-        
-        
+
+
         //Iterate until failure lol, adding to a list of grid pieces on the way
         //Take grid pieces and find the spawn origin and invoke event 
     }
+
+    void ANOTHERTempMatchRecognition()
+    {
+        List<GridPiece> matchPieces = new List<GridPiece>();
+
+        for(int i = 0; i < rows; i++)
+        {
+            for(int j = 0; j < columns;j++)
+            {
+                GridPiece curPiece = gridPieces[i, j];
+                MatchItemType curType = curPiece.getMatchItem().getType();
+                if (gridPieces[i + 1, j].getMatchItem().getType() == curType) //If match on the right
+                {
+                    //Check if grid pieces on position are right type of shape and give list
+                    //Horizontal, Square, L_Bot_Left, L_Bot_Right
+
+                    MatchRecognitionOfShape(getMatchShapeOfType(MatchShapeType.SQUARE), curType);
+
+                    MatchRecognitionOfShape(getMatchShapeOfType(MatchShapeType.L_BOTTOM_LEFT), curType);
+                    MatchRecognitionOfShape(getMatchShapeOfType(MatchShapeType.L_BOTTOM_RIGHT), curType);
+
+                    MatchRecognitionOfShape(getMatchShapeOfType(MatchShapeType.HORIZONTAL_5), curType);
+                    MatchRecognitionOfShape(getMatchShapeOfType(MatchShapeType.HORIZONTAL_4), curType);
+                    MatchRecognitionOfShape(getMatchShapeOfType(MatchShapeType.HORIZONTAL_3), curType);
+
+
+                }
+
+                else if (gridPieces[i, j + 1].getMatchItem().getType() == curType)//If match above
+                {
+                    MatchRecognitionOfShape(getMatchShapeOfType(MatchShapeType.L_TOP_LEFT), curType);
+                    MatchRecognitionOfShape(getMatchShapeOfType(MatchShapeType.L_TOP_RIGHT), curType);
+
+                    MatchRecognitionOfShape(getMatchShapeOfType(MatchShapeType.VERTICAL_5), curType);
+                    MatchRecognitionOfShape(getMatchShapeOfType(MatchShapeType.VERTICAL_4), curType);
+                    MatchRecognitionOfShape(getMatchShapeOfType(MatchShapeType.VERTICAL_3), curType);
+                }
+            }
+        }
+    }
+
+    void MatchRecognitionOfShape(MatchShape shape, MatchItemType type)
+    {
+        List<GridPiece> matchPieces = new List<GridPiece>();
+
+        foreach(Vector2Int pos in getMatchShapeOfType(shape.matchShapeType).matchPositions)
+        {
+            if(gridPieces[pos.x, pos.y].getMatchItem().getType() == type)
+            {
+                matchPieces.Add(gridPieces[pos.x, pos.y]);
+            }
+        }
+
+        if(matchPieces.Count > 0)
+        {
+            match?.Invoke(matchPieces, gridPieces[shape.originPosition.x, shape.originPosition.y].transform.position, shape.matchShapeType, type);
+        }
+        return;
+    }
+
     #region VERTICAL MATCHES
 
     List<GridPiece> VerticalMatch(int matchLength)
@@ -681,9 +751,9 @@ public class MatchGrid : MonoBehaviour
         {
             theItem.gameObject.transform.position = thePiece.gameObject.transform.position;
 
-            if (getGridPieceAt(theItem.row, theItem.col) != null) //If piece is currently on the grid
+            if (gridPieces[theItem.row, theItem.col] != null) //If piece is currently on the grid
             {
-                GridPiece prevGridPiece = getGridPieceAt(theItem.row, theItem.col);
+                GridPiece prevGridPiece = gridPieces[theItem.row, theItem.col];
 
                 //Swaps position of match item currently on grid piece
                 MatchItem curMatchItem = thePiece.getMatchItem();
