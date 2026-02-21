@@ -1079,7 +1079,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25e32fa5b5b148349a43123dee90459b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelGoals: []
+  levelGoals:
+  - {fileID: 1964513318}
+  - {fileID: 84341241}
   levelGoalPF: {fileID: 0}
 --- !u!1 &806025851 stripped
 GameObject:
@@ -2897,7 +2899,7 @@ PrefabInstance:
       objectReference: {fileID: 1964513318}
     - target: {fileID: 5082322501745781481, guid: 4fee58e7ab44d474ea44879aa36f91f9, type: 3}
       propertyPath: m_Name
-      value: Destruction Goal Manager
+      value: Level Goal Manager
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4730805065226356635, guid: 4fee58e7ab44d474ea44879aa36f91f9, type: 3}

@@ -188,6 +188,7 @@ public class MatchGrid : MonoBehaviour
                 if (curPiece.getMatchItem() != null)
                 {
                     MatchItemType curType = curPiece.getMatchItem().getType();
+                    //Debug.Log("Matching item" + "of type " + curType + "at " + i + "," + j);
                     SOMETHINGMatchRecogntion(curPiece, curType);
                 }
             }
@@ -212,9 +213,9 @@ public class MatchGrid : MonoBehaviour
     void SOMETHINGMatchRecogntion(GridPiece curPiece, MatchItemType curType)
     {
         //Debug.Log(curType);
-        if (curPiece.row + 1 < rows && curPiece.col + 1 < columns)
+        if (curPiece.row + 1 < rows)
         {
-            if (gridPieces[curPiece.row + 1, curPiece.col].getMatchItem() && gridPieces[curPiece.row, curPiece.col + 1].getMatchItem())
+            if (gridPieces[curPiece.row + 1, curPiece.col].getMatchItem())
             {
                 //Debug.Log("This is the match Item" + gridPieces[curPiece.row + 1, curPiece.col].getMatchItem());
                 if (gridPieces[curPiece.row + 1, curPiece.col].getMatchItem().getType() == curType) //If match on the right
@@ -232,7 +233,12 @@ public class MatchGrid : MonoBehaviour
                     if (MatchRecognitionOfShape(curPiece, getMatchShapeOfType(MatchShapeType.HORIZONTAL_3), curType))
                         return;
                 }
-
+            }
+        }
+        if (curPiece.col + 1 < columns)
+        {
+            if (gridPieces[curPiece.row, curPiece.col + 1].getMatchItem())
+            {
                 if (gridPieces[curPiece.row, curPiece.col + 1].getMatchItem().getType() == curType)//If match above
                 {
                     if (MatchRecognitionOfShape(curPiece, getMatchShapeOfType(MatchShapeType.L_TOP_LEFT), curType))
@@ -248,6 +254,7 @@ public class MatchGrid : MonoBehaviour
                 }
             }
         }
+
     }
 
     bool MatchRecognitionOfShape(GridPiece origin, MatchShape shape, MatchItemType type)
@@ -257,11 +264,12 @@ public class MatchGrid : MonoBehaviour
 
         foreach(Vector2Int pos in getMatchShapeOfType(shape.matchShapeType).matchPositions)
         {
-            //Debug.Log(origin);
-            if (origin.row + pos.x < rows && origin.row + pos.x >= 0 && origin.col + pos.y < rows && origin.col + pos.y >= 0)
+  ;
+            if (origin.row + pos.x < rows && origin.row + pos.x >= 0 && origin.col + pos.y < columns && origin.col + pos.y >= 0)
             {
                 if (gridPieces[origin.row + pos.x, origin.col + pos.y].getMatchItem() != null)
                 {
+                    Debug.Log("checking" + gridPieces[origin.row + pos.x, origin.col + pos.y]);
                     if (gridPieces[origin.row + pos.x, origin.col + pos.y].getMatchItem().getType() == type)
                     {
                         matchPieces.Add(gridPieces[origin.row + pos.x, origin.col + pos.y]);
@@ -272,6 +280,7 @@ public class MatchGrid : MonoBehaviour
 
         if(matchPieces.Count == shape.matchPositions.Count)
         {
+            Debug.Log("Match position count of " + shape.matchShapeType + " is " + shape.matchPositions.Count);
             isMatch = true;
             foreach(GridPiece gp in matchPieces)
             {
@@ -584,7 +593,7 @@ public class MatchGrid : MonoBehaviour
             }
         }
 
-        MatchRecognition(item);
+        MatchRecognition();
     }
     void AssignToGrid(MatchItem item, GridPiece gridPiece) //From mouse
     {
@@ -592,7 +601,7 @@ public class MatchGrid : MonoBehaviour
         if(gridPiece == null)
         {
             item.transform.position = gridPieces[item.row, item.col].transform.position;
-            MatchRecognition(item);
+            MatchRecognition();
             return;
         }
 
@@ -611,7 +620,7 @@ public class MatchGrid : MonoBehaviour
             }
         }
 
-        MatchRecognition(item);
+        MatchRecognition();
     }
     #endregion
 
