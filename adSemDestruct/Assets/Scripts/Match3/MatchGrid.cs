@@ -270,12 +270,12 @@ public class MatchGrid : MonoBehaviour
             }
         }
 
-        if(matchPieces.Count > 0)
+        if(matchPieces.Count == shape.matchPositions.Count)
         {
             isMatch = true;
             foreach(GridPiece gp in matchPieces)
             {
-                Debug.Log(gp);
+                Debug.Log(gp + "in shape " + shape.matchShapeType);
             }
             
             match?.Invoke(matchPieces, gridPieces[shape.originPosition.x, shape.originPosition.y].transform.position, shape.matchShapeType, type);
