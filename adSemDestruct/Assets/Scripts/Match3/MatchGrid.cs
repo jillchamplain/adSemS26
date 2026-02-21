@@ -4,14 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum MatchType
-{
-    THREE = 3,
-    FOUR = 4,
-    FIVE = 5,
-    NUM_TYPES
-}
-
 public class MatchGrid : MonoBehaviour
 {
     [HideInInspector] public static MatchGrid instance;
@@ -156,20 +148,6 @@ public class MatchGrid : MonoBehaviour
             }
         }
     }
-    void MatchRecognition()
-    {
-        for(int i = 0; i < rows; i++)
-        {
-            for(int  j = 0; j < columns; j++)
-            {
-                if (gridPieces[i,j].getMatchItem() != null)
-                {
-                    MatchRecognition(gridPieces[i, j].getMatchItem());
-                }
-            }
-        }
-    }
-
     bool GenerateMatchRecognition(MatchItem item)
     {
         int x = item.row;
@@ -188,7 +166,20 @@ public class MatchGrid : MonoBehaviour
         }
         return isMatch;
     }
-    bool MatchRecognition(MatchItem item) 
+    void MatchRecognition()
+    {
+        for(int i = 0; i < rows; i++)
+        {
+            for(int  j = 0; j < columns; j++)
+            {
+                if (gridPieces[i,j].getMatchItem() != null)
+                {
+                    MatchRecognition(gridPieces[i, j].getMatchItem());
+                }
+            }
+        }
+    }
+        bool MatchRecognition(MatchItem item) 
     {
         int x = item.row;
         int y = item.col;
@@ -218,9 +209,167 @@ public class MatchGrid : MonoBehaviour
     }
     void TEMPMatchRecognition()
     {
+        //Have match function check for X, x - 1, x - 2 etc..  till 3 and get match items in them
+        //check vertical then horizontal
+        //Check if match items from x matches to x -1 matches repeat and don't add them 
+            
+        List<GridPiece> matchPieces = new List<GridPiece>();
+
+        //Vertical Matching
+        for(int i = 5; i >= 3; i++)
+        {
+            List<GridPiece> verticalMatchPiecesX = VerticalMatch(i);
+            foreach(GridPiece piece in verticalMatchPiecesX)
+            {
+                if(!matchPieces.Contains(piece))
+                {
+                    matchPieces.Add(piece);
+                    if(matchPieces.Count <= 5)
+                    {
+
+                    }
+                }
+            }
+        }
+
+        //Horizontal Matching
+        for (int i = 5; i >= 3; i++)
+        {
+            List<GridPiece> horizontalMatchPiecesX = HorizontalMatch(i);
+            foreach (GridPiece piece in horizontalMatchPiecesX)
+            {
+                if (!matchPieces.Contains(piece))
+                {
+                    matchPieces.Add(piece);
+                }
+            }
+        }
 
     }
+
+    void TEMPMatchRecognition(int numToMatch)
+    {
+        //Have match function check for X, x - 1, x - 2 etc..  till 3 and get match items in them
+        //check vertical then horizontal
+        //Check if match items from x matches to x -1 matches repeat and don't add them 
+
+        List<GridPiece> matchPieces = new List<GridPiece>();
+        
+
+        //Vertical Matching
+        for (int i = numToMatch; i >= 3; i++)
+        {
+            List<GridPiece> verticalMatchPiecesX = VerticalMatch(i);
+            foreach (GridPiece piece in verticalMatchPiecesX)
+            {
+                if (!matchPieces.Contains(piece))
+                {
+                    matchPieces.Add(piece);
+                    if (matchPieces.Count <= numToMatch && matchPieces.Count > 0)
+                    {
+                         Vector3 originPosition = FindMatchOrigin(matchPieces);
+                        
+                    }
+                }
+            }
+        }
+
+        //Horizontal Matching
+        for (int i = 5; i >= 3; i++)
+        {
+            List<GridPiece> horizontalMatchPiecesX = HorizontalMatch(i);
+            foreach (GridPiece piece in horizontalMatchPiecesX)
+            {
+                if (!matchPieces.Contains(piece))
+                {
+                    matchPieces.Add(piece);
+                }
+            }
+        }
+    }
+
+    void SUPERTEMPMatchRecogniton()
+    {
+        //Iterate through entire grid
+        List<Vector2Int> directions = new List<Vector2Int>();
+        directions.Add(new Vector2Int(-1, -1));
+        directions.Add(new Vector2Int(-1, 0));
+        directions.Add(new Vector2Int(-1, 1));
+        directions.Add(new Vector2Int(0, 1));
+        directions.Add(new Vector2Int(1, 1));
+        directions.Add(new Vector2Int(1, 0));
+        directions.Add(new Vector2Int(1, -1));
+
+        for (int i = 0; i < rows; i++)
+        {
+            for(int j = 0; j < columns; j++)
+            {
+                //Check all nearby grid pieces for each grid piece
+                //If same type find direction from matching grid piece to center grid piece
+                GridPiece originPiece = gridPieces[i, j];
+
+                List<Vector2Int> matchDirections = new List<Vector2Int>();
+
+                foreach(Vector2Int direction in directions)
+                {
+                    //If same type find direction from matching grid piece to center grid piece
+                    if (gridPieces[i + direction.x, j + direction.y].getMatchItem().getType() == originPiece.getMatchItem().getType())
+                    {
+                        matchDirections.Add(direction);
+                    }
+                }
+                
+                //Check if match item in direction and go till failure
+                for(int k = 0; k < matchDirections.Count; k++)
+                {
+                    GridPiece checkPiece = gridPieces[i + ((k + 1) * matchDirections[k].x), j + ((k + 1) * matchDirections[k].y)];
+                    
+                }
+
+            }
+        }
+        
+        
+        //Iterate until failure lol, adding to a list of grid pieces on the way
+        //Take grid pieces and find the spawn origin and invoke event 
+    }
     #region VERTICAL MATCHES
+
+    List<GridPiece> VerticalMatch(int matchLength)
+    {
+        List<GridPiece> matchPieces = new List<GridPiece>();
+        for(int i = 0; i < rows; i++)
+        {
+            for(int j = 0; j < columns - (matchLength - 1); j++)
+            {
+                List<GridPiece> tempMatchPieces = new List<GridPiece>(); //Collects all gridpieces in a match. If match is valid adds it to returning list
+                tempMatchPieces.Clear(); //Resets after checking from a new piece
+                
+                GridPiece curPiece = gridPieces[i, j];
+                int matchCount = 0;
+
+                if (gridPieces[i, j].getMatchItem() != null)
+                {
+                    for (int k = j + 1; k <= j + matchLength; k++)
+                    {
+                        if (gridPieces[i, k].getMatchItem() != null && gridPieces[i, k].getMatchItem().getType() == curPiece.getMatchItem().getType())
+                        {
+                            matchCount++;
+                        }
+                    }
+                }
+                if(matchCount == matchLength)
+                {
+                    foreach(GridPiece piece in tempMatchPieces) //Add pieces in the match to the return list
+                    {
+                        matchPieces.Add(piece);
+                    }
+                }
+            }
+        }
+        return matchPieces;
+    }
+
     bool VerticalMatchRecognition(MatchItem item)
     {
         bool isVertMatch = false;
@@ -293,7 +442,58 @@ public class MatchGrid : MonoBehaviour
     }
     #endregion
 
+    Vector3 FindMatchOrigin(List<GridPiece> matchPieces)
+    {
+        Vector3 originPosition= Vector3.zero;
+
+        if (matchPieces.Count % 2 != 0) //Evens
+        {
+            Vector3 originDifference = (matchPieces[matchPieces.Count / 2].gameObject.transform.position) - (matchPieces[(matchPieces.Count / 2) - 1].gameObject.transform.position);
+            originPosition = matchPieces[(matchPieces.Count / 2) - 1].transform.position + originDifference;
+        }
+        else if (matchPieces.Count % 2 == 0) //Odds
+        {
+            originPosition = matchPieces[matchPieces.Count / 2].transform.position;
+        }
+
+        return originPosition;
+    }
+
     #region HORIZONTAL MATCHES
+    List<GridPiece> HorizontalMatch(int matchLength)
+    {
+        List<GridPiece> matchPieces = new List<GridPiece>();
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns - (matchLength - 1); j++)
+            {
+                List<GridPiece> tempMatchPieces = new List<GridPiece>(); //Collects all gridpieces in a match. If match is valid adds it to returning list
+                tempMatchPieces.Clear(); //Resets after checking from a new piece
+
+                GridPiece curPiece = gridPieces[i, j];
+                int matchCount = 0;
+
+                if (gridPieces[i, j].getMatchItem() != null)
+                {
+                    for (int k = i + 1; k <= i + matchLength; k++)
+                    {
+                        if (gridPieces[k, j].getMatchItem() != null && gridPieces[k, j].getMatchItem().getType() == curPiece.getMatchItem().getType())
+                        {
+                            matchCount++;
+                        }
+                    }
+                }
+                if (matchCount == matchLength)
+                {
+                    foreach (GridPiece piece in tempMatchPieces) //Add pieces in the match to the return list
+                    {
+                        matchPieces.Add(piece);
+                    }
+                }
+            }
+        }
+        return matchPieces;
+    }
     bool HorizontalMatchRecognition(MatchItem item)
     {
         bool isHorMatch = false;
