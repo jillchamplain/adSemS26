@@ -226,6 +226,8 @@ public class MatchGrid : MonoBehaviour
                         return;
                     if (MatchRecognitionOfShape(curPiece, getMatchShapeOfType(MatchShapeType.L_BOTTOM_RIGHT), curType))
                         return;
+                    if (MatchRecognitionOfShape(curPiece, getMatchShapeOfType(MatchShapeType.L_TOP_RIGHT), curType))
+                        return;
                     if (MatchRecognitionOfShape(curPiece, getMatchShapeOfType(MatchShapeType.HORIZONTAL_5), curType))
                         return;
                     if (MatchRecognitionOfShape(curPiece, getMatchShapeOfType(MatchShapeType.HORIZONTAL_4), curType))
@@ -242,8 +244,6 @@ public class MatchGrid : MonoBehaviour
                 if (gridPieces[curPiece.row, curPiece.col + 1].getMatchItem().getType() == curType)//If match above
                 {
                     if (MatchRecognitionOfShape(curPiece, getMatchShapeOfType(MatchShapeType.L_TOP_LEFT), curType))
-                        return;
-                    if (MatchRecognitionOfShape(curPiece, getMatchShapeOfType(MatchShapeType.L_TOP_RIGHT), curType))
                         return;
                     if (MatchRecognitionOfShape(curPiece, getMatchShapeOfType(MatchShapeType.VERTICAL_5), curType))
                         return;
