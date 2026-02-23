@@ -9,15 +9,18 @@ public class BlockManager : MonoBehaviour, ISubManager
     [SerializeField] List<GameObject> blocks;
     public GameObject getBlockOfShape(MatchShapeType type)
     {
-        foreach(GameObject block in blocks)
+        foreach (GameObject block in blocks)
         {
-            if(block.GetComponent<Block>() && block.GetComponent<Block>().getMatchShapeType() == type)
+            if (block.GetComponent<Block>() && block.GetComponent<Block>().getMatchShapeType() == type)
             {
                 return block;
             }
         }
         return null;
     }
+    [Header("References")]
+    [SerializeField] GameObject blockPartPF;
+    
 
     // Update is called once per frame
 
@@ -26,14 +29,28 @@ public class BlockManager : MonoBehaviour, ISubManager
         if(instance == null)
             instance = this;
     }
+
+    #region EVENTS
     private void OnEnable()
     {
-        MatchGrid.match += SpawnBlockCall;
+        MatchGrid.match += TestSpawn;
     }
 
     private void OnDisable()
     {
-        MatchGrid.match -= SpawnBlockCall;
+        MatchGrid.match -= TestSpawn;
+    }
+    #endregion
+
+    public void TestSpawn(List<GridPiece> matchPieces, Vector3 originPos, MatchShapeType shape, MatchItemType type)
+    {
+        GameObject newBlock = new GameObject();
+        //make smaller block sections and attack to newBlock
+        foreach(GridPiece pos in matchPieces)
+        {
+            GameObject newBlockpiece = Instantiate(blockPartPF, pos.transform.position, Quaternion.identity);
+            newBlockpiece.transform.parent = newBlock.transform;
+        }
     }
 
     void SpawnBlockCall(List<GridPiece> matchPieces, Vector3 origin, MatchShapeType shape, MatchItemType type)

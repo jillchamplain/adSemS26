@@ -2134,6 +2134,7 @@ MonoBehaviour:
   blocks:
   - {fileID: 5541109256529163001, guid: 104b2a7157101584cbf4a792130e13ba, type: 3}
   - {fileID: 5541109256529163001, guid: 1521f4e92e32f444dbe4eb8e7ed84929, type: 3}
+  blockPartPF: {fileID: 8248588620304553324, guid: e69fb2300afa2144bac7ec68c731d530, type: 3}
 --- !u!4 &4651651393605737181 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6536714014157031301, guid: bc49b3068aac85643a20fba4ff8e50ba, type: 3}
