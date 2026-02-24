@@ -62,8 +62,8 @@ public class MatchGrid : MonoBehaviour
         MatchItemManager.matchItemSpawned += AssignToGrid;
         MatchItemManager.matchItemsGenerated += GenerateMatchRecognition;
 
-        Block.blockCreated += ReplaceAssignCall;
-        Block.blockCreated += MatchRecognition;
+        BlockManager.blockCreated += ReplaceAssignCall;
+        BlockManager.blockCreated += MatchRecognition;
     }
 
     private void OnDisable()
@@ -75,8 +75,8 @@ public class MatchGrid : MonoBehaviour
         MatchItemManager.matchItemSpawned -= AssignToGrid;
         MatchItemManager.matchItemsGenerated -= GenerateMatchRecognition;
 
-        Block.blockCreated -= ReplaceAssignCall;
-        Block.blockCreated -= MatchRecognition;
+        BlockManager.blockCreated -= ReplaceAssignCall;
+        BlockManager.blockCreated -= MatchRecognition;
     }
     #endregion
     private void Awake()
@@ -269,7 +269,7 @@ public class MatchGrid : MonoBehaviour
             {
                 if (gridPieces[origin.row + pos.x, origin.col + pos.y].getMatchItem() != null)
                 {
-                    Debug.Log("checking" + gridPieces[origin.row + pos.x, origin.col + pos.y]);
+                    //Debug.Log("checking" + gridPieces[origin.row + pos.x, origin.col + pos.y]);
                     if (gridPieces[origin.row + pos.x, origin.col + pos.y].getMatchItem().getType() == type)
                     {
                         matchPieces.Add(gridPieces[origin.row + pos.x, origin.col + pos.y]);
@@ -280,12 +280,8 @@ public class MatchGrid : MonoBehaviour
 
         if(matchPieces.Count == shape.matchPositions.Count)
         {
-            Debug.Log("Match position count of " + shape.matchShapeType + " is " + shape.matchPositions.Count);
+            //Debug.Log("Match position count of " + shape.matchShapeType + " is " + shape.matchPositions.Count);
             isMatch = true;
-            foreach(GridPiece gp in matchPieces)
-            {
-                Debug.Log(gp + "in shape " + shape.matchShapeType);
-            }
             
             match?.Invoke(matchPieces, gridPieces[shape.originPosition.x, shape.originPosition.y].transform.position, shape.matchShapeType, type);
         }

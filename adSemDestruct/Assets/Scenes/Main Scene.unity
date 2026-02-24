@@ -2135,6 +2135,13 @@ MonoBehaviour:
   - {fileID: 5541109256529163001, guid: 104b2a7157101584cbf4a792130e13ba, type: 3}
   - {fileID: 5541109256529163001, guid: 1521f4e92e32f444dbe4eb8e7ed84929, type: 3}
   blockPartPF: {fileID: 8248588620304553324, guid: e69fb2300afa2144bac7ec68c731d530, type: 3}
+  blockPartSprites:
+  - {fileID: -2349687800033593727, guid: f80388c56dc66c941aef6054cd58b385, type: 3}
+  - {fileID: -7638710317576365620, guid: 8172fda330751ef48ae19b25a0f11d49, type: 3}
+  - {fileID: -4727045609779103816, guid: 278ef27f0ff663a498a870c7a2aa1434, type: 3}
+  - {fileID: 2282040344975965624, guid: 292de33c04c568347b5288469290f9f4, type: 3}
+  - {fileID: -4645228507019219102, guid: 7823fdd39eac0704e83689e57266e5ec, type: 3}
+  - {fileID: -2511842697199081010, guid: b3509319a38a7d84ea8457a32a708887, type: 3}
 --- !u!4 &4651651393605737181 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6536714014157031301, guid: bc49b3068aac85643a20fba4ff8e50ba, type: 3}

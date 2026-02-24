@@ -20,6 +20,12 @@ public class BlockManager : MonoBehaviour, ISubManager
     }
     [Header("References")]
     [SerializeField] GameObject blockPartPF;
+    [SerializeField] List<Sprite> blockPartSprites;
+    Sprite getSpriteOfType(MatchItemType type)
+    {
+        return blockPartSprites[(int)type];
+    }
+
     
 
     // Update is called once per frame
@@ -31,6 +37,9 @@ public class BlockManager : MonoBehaviour, ISubManager
     }
 
     #region EVENTS
+
+    public delegate void BlockCreated();
+    public static event BlockCreated blockCreated;
     private void OnEnable()
     {
         MatchGrid.match += TestSpawn;
@@ -51,6 +60,12 @@ public class BlockManager : MonoBehaviour, ISubManager
             GameObject newBlockpiece = Instantiate(blockPartPF, pos.transform.position, Quaternion.identity);
             newBlockpiece.transform.parent = newBlock.transform;
         }
+        newBlock.AddComponent<Rigidbody2D>();
+        newBlock.AddComponent<Block>();
+        newBlock.GetComponent<Block>().setMatchItemType(type); 
+        newBlock.GetComponent<Block>().setSpritesTo(getSpriteOfType(type));
+        newBlock.AddComponent<CompositeCollider2D>();
+        //blockCreated?.Invoke();
     }
 
     void SpawnBlockCall(List<GridPiece> matchPieces, Vector3 origin, MatchShapeType shape, MatchItemType type)

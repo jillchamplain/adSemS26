@@ -9,14 +9,21 @@ public class Block : Destructor
     public MatchShapeType getMatchShapeType() {  return shape; }
     [SerializeField] MatchItemType type;
     public MatchItemType getMatchItemType() { return type; }
-    public void setMatchItemType(MatchItemType newType) {  type = newType; }
+    public void setMatchItemType(MatchItemType newType)
+    {  type = newType; 
+    }
+
     [Header("References")]
     [SerializeField] SpriteRenderer[] spriteRenderers;
+    public void setSpritesTo(Sprite newSprite)
+    {
+        foreach(SpriteRenderer spriteR in spriteRenderers)
+        {
+            spriteR.sprite = newSprite;
+        }
+    }
 
     #region EVENTS
-    public delegate void BlockCreated();
-    public static event BlockCreated blockCreated;
-
     public delegate void BlockHitObject(int forceDamage, LevelMaterial theDestruct);
     public static event BlockHitObject blockHitObject;
 
@@ -26,13 +33,9 @@ public class Block : Destructor
     #endregion
     private void Awake()
     {
-        
-    }
-    void Start()
-    {
-        blockCreated?.Invoke();
-        spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
-    }
+		spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
+
+	}
 
     // Update is called once per frame
     void Update()

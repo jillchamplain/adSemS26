@@ -5,7 +5,7 @@ using System.Collections;
 using DG.Tweening;
 public enum MatchItemType
 {
-    A,
+    A = 0,
     B,
     C,
     D,
@@ -16,6 +16,7 @@ public enum MatchItemType
 
 public class MatchItem : GridBased, IGrabbable
 {
+    [Header("Data")]
     [SerializeField] MatchItemType type;
     public MatchItemType getType() {  return type; }
     public void setType(MatchItemType type) { this.type = type; }
@@ -29,6 +30,9 @@ public class MatchItem : GridBased, IGrabbable
     public void setPrevCol(int prevCol) { this.prevCol = prevCol; }
 
     [SerializeField] LayerMask interactMask;
+    [Header("References")]
+    [SerializeField] SpriteRenderer sprite;
+    public Sprite getSprite() { return sprite.sprite; }
 
     #region EVENTS
     public delegate void MatchItemPlaced(MatchItem item, GridPiece gridPiece);
