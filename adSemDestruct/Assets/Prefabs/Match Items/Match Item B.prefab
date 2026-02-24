@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2788517099473527333, guid: 8544718a99a3a494e9c1fe0ba0c6f1c0, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 6914630956843288269, guid: 8544718a99a3a494e9c1fe0ba0c6f1c0, type: 3}
       propertyPath: m_Name
       value: Match Item B
@@ -57,16 +61,20 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9027627749992056091, guid: 8544718a99a3a494e9c1fe0ba0c6f1c0, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -5807438925313077280, guid: 7aa744e504691f149824c32c90ebe0e0, type: 3}
+    - target: {fileID: 9027627749992056091, guid: 8544718a99a3a494e9c1fe0ba0c6f1c0, type: 3}
       propertyPath: m_Color.b
-      value: 0.24313724
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9027627749992056091, guid: 8544718a99a3a494e9c1fe0ba0c6f1c0, type: 3}
       propertyPath: m_Color.g
-      value: 0.42466214
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9027627749992056091, guid: 8544718a99a3a494e9c1fe0ba0c6f1c0, type: 3}
       propertyPath: m_Color.r
-      value: 0.74509805
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

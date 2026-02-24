@@ -25,7 +25,7 @@ public class LevelMaterial : Destructor
 
     #region EVENTS
 
-    public delegate void MaterialHit(int damage, LevelGoal theGoal);
+    public delegate void MaterialHit(float damage, LevelGoal theGoal);
     public static event MaterialHit materialHit;
 
     private void OnEnable()
@@ -45,11 +45,13 @@ public class LevelMaterial : Destructor
         UpdateUI();
     }
 
-    void TakeDamage(int damage, LevelMaterial theDestruct)
+    void TakeDamage(float damage, LevelMaterial theDestruct)
     {
         if (theDestruct == this)
         {
-            health -= damage;
+            //Debug.Log(this + " listened");
+            //Debug.Log("Took " + damage);
+            health -= (int)damage;
             //Debug.Log("Taking " + damage);
             CheckHealth();
             UpdateUI();

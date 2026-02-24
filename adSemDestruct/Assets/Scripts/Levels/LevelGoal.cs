@@ -43,11 +43,11 @@ public class LevelGoal : MonoBehaviour
         Destroy(gameObject);
     }
 
-    void TakeDamage(int damage, LevelGoal theGoal)
+    void TakeDamage(float damage, LevelGoal theGoal)
     {
         if(theGoal == this)
         {
-            health -= damage;
+            health -= (int)damage;
             CheckHealth();
            UpdateUI();
         }

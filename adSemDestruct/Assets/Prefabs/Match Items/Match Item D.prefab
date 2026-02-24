@@ -53,20 +53,32 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3590125170531628917, guid: 524c035fd87011f4397c31509982f8ba, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -3535699567760059360, guid: ca941467513ace24c85c3a850c0ff9d2, type: 3}
+    - target: {fileID: 3590125170531628917, guid: 524c035fd87011f4397c31509982f8ba, type: 3}
       propertyPath: m_Color.b
-      value: 0.30660853
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3590125170531628917, guid: 524c035fd87011f4397c31509982f8ba, type: 3}
       propertyPath: m_Color.g
-      value: 0.74509805
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3590125170531628917, guid: 524c035fd87011f4397c31509982f8ba, type: 3}
       propertyPath: m_Color.r
-      value: 0.24313724
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4160806760516222156, guid: 524c035fd87011f4397c31509982f8ba, type: 3}
       propertyPath: type
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7649629838151340107, guid: 524c035fd87011f4397c31509982f8ba, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7649629838151340107, guid: 524c035fd87011f4397c31509982f8ba, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -19,7 +19,7 @@ public class MatchItemManager : MonoBehaviour, ISubManager
         return null;
     }
 
-    //EVENTS
+    #region EVENTS
     public delegate void MatchItemsGenerated();
     public static event MatchItemsGenerated matchItemsGenerated;
 
@@ -42,10 +42,22 @@ public class MatchItemManager : MonoBehaviour, ISubManager
         MatchGrid.gridGeneratedWithMatch -= GenerateMatchItems;
         MatchGrid.nullGridAt -= SpawnMatchItem;
     }
+    #endregion
     private void Awake()
     {
         if(instance == null)
             instance = this;
+    }
+
+    void CleanMatchItems()
+    {
+        List<GameObject> newMatchItems = new List<GameObject>();
+        foreach(GameObject m in matchItems)
+        {
+            if(m != null)
+                newMatchItems.Add(m);
+        }
+        matchItems = newMatchItems;
     }
 
     void ClearMatchItems()
@@ -53,7 +65,6 @@ public class MatchItemManager : MonoBehaviour, ISubManager
         foreach(GameObject item in matchItems)
         {
             MatchItem m = item.GetComponent<MatchItem>();
-            m.DestroySelfCall();
             Destroy(item);
         }
 
@@ -78,6 +89,8 @@ public class MatchItemManager : MonoBehaviour, ISubManager
 
     void SpawnMatchItem(int row, int column)
     {
+        CleanMatchItems();
+
         GameObject newMatchItem = Instantiate(getRandomMatchItem(), new Vector3(row, column, 0), Quaternion.identity);
         matchItems.Add(newMatchItem);
         matchItemSpawned?.Invoke(newMatchItem.GetComponent<MatchItem>(), row, column);

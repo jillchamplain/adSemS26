@@ -7,6 +7,7 @@ public class Block : Destructor
     [Header("Data")]
     [SerializeField] MatchShapeType shape;
     public MatchShapeType getMatchShapeType() {  return shape; }
+    public void setMatchShapeType(MatchShapeType matchShapeType) { shape = matchShapeType; }
     [SerializeField] MatchItemType type;
     public MatchItemType getMatchItemType() { return type; }
     public void setMatchItemType(MatchItemType newType)
@@ -14,7 +15,8 @@ public class Block : Destructor
     }
 
     [Header("References")]
-    [SerializeField] SpriteRenderer[] spriteRenderers;
+    [SerializeField] List<SpriteRenderer> spriteRenderers;
+    public List<SpriteRenderer> getSpriteRenderers() { return spriteRenderers; }
     public void setSpritesTo(Sprite newSprite)
     {
         foreach(SpriteRenderer spriteR in spriteRenderers)
@@ -24,25 +26,14 @@ public class Block : Destructor
     }
 
     #region EVENTS
-    public delegate void BlockHitObject(int forceDamage, LevelMaterial theDestruct);
+
+    public delegate void BlockHitObject(float forceDamage, LevelMaterial theDestruct);
     public static event BlockHitObject blockHitObject;
 
-    public delegate void BlockHitGoal(int forceDamage, LevelGoal theDestruct);
+    public delegate void BlockHitGoal(float forceDamage, LevelGoal theDestruct);
     public static event BlockHitGoal blockHitGoal;
 
     #endregion
-    private void Awake()
-    {
-		spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
-
-	}
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     void DestroySelf()
     {
         foreach (SpriteRenderer spriteRenderer in spriteRenderers)
@@ -54,6 +45,7 @@ public class Block : Destructor
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+
         if (collision.gameObject.GetComponent<LevelMaterial>())
         {
             blockHitObject?.Invoke(CalcForceDamage(), collision.gameObject.GetComponent<LevelMaterial>());

@@ -61,9 +61,6 @@ public class MatchGrid : MonoBehaviour
         MatchItemManager.matchItemGenerated += GenerateAssignToGrid;
         MatchItemManager.matchItemSpawned += AssignToGrid;
         MatchItemManager.matchItemsGenerated += GenerateMatchRecognition;
-
-        BlockManager.blockCreated += ReplaceAssignCall;
-        BlockManager.blockCreated += MatchRecognition;
     }
 
     private void OnDisable()
@@ -74,9 +71,6 @@ public class MatchGrid : MonoBehaviour
         MatchItemManager.matchItemGenerated -= GenerateAssignToGrid;
         MatchItemManager.matchItemSpawned -= AssignToGrid;
         MatchItemManager.matchItemsGenerated -= GenerateMatchRecognition;
-
-        BlockManager.blockCreated -= ReplaceAssignCall;
-        BlockManager.blockCreated -= MatchRecognition;
     }
     #endregion
     private void Awake()
@@ -142,43 +136,106 @@ public class MatchGrid : MonoBehaviour
 
     #region MATCH RECOGNITION
 
+    #region GENERATE MATCH RECOGNITION
     void GenerateMatchRecognition()
     {
         for (int i = 0; i < rows; i++)
         {
             for (int j = 0; j < columns; j++)
             {
-                if (gridPieces[i, j].getMatchItem() != null)
+                GridPiece curPiece = gridPieces[i, j];
+                if (curPiece.getMatchItem() != null)
                 {
-                    if (GenerateMatchRecognition(gridPieces[i, j].getMatchItem()))
-                    {
-                        //Debug.Log("Generated with match");
+                    MatchItemType curType = curPiece.getMatchItem().getType();
+                    if (GenerateMatchRecogntion(curPiece, curType))
+                    { 
                         gridGeneratedWithMatch?.Invoke(rows, columns);
                     }
-
                 }
             }
         }
     }
-    bool GenerateMatchRecognition(MatchItem item)
+
+    bool GenerateMatchRecogntion(GridPiece curPiece, MatchItemType curType)
     {
-        int x = item.row;
-        int y = item.col;
-
-        bool isMatch = false;
-        bool vertMatch = VerticalMatchRecognition(item);
-        bool horMatch = HorizontalMatchRecognition(item);
-
-        //Debug.Log("vert match:" + vertMatch);
-        //Debug.Log("hor match: " + horMatch);
-
-        if (vertMatch || horMatch)//matches of 3 
+        //Debug.Log(curType);
+        if (curPiece.row + 1 < rows)
         {
+            if (gridPieces[curPiece.row + 1, curPiece.col].getMatchItem())
+            {
+                //Debug.Log("This is the match Item" + gridPieces[curPiece.row + 1, curPiece.col].getMatchItem());
+                if (gridPieces[curPiece.row + 1, curPiece.col].getMatchItem().getType() == curType) //If match on the right
+                {
+                    if (GenerateMatchRecognitionOfShape(curPiece, getMatchShapeOfType(MatchShapeType.SQUARE), curType))
+                        return true;
+                    if (GenerateMatchRecognitionOfShape(curPiece, getMatchShapeOfType(MatchShapeType.L_BOTTOM_LEFT), curType))
+                        return true;
+                    if (GenerateMatchRecognitionOfShape(curPiece, getMatchShapeOfType(MatchShapeType.L_BOTTOM_RIGHT), curType))
+                        return true;
+                    if (GenerateMatchRecognitionOfShape(curPiece, getMatchShapeOfType(MatchShapeType.L_TOP_RIGHT), curType))
+                        return true;
+                    if (GenerateMatchRecognitionOfShape(curPiece, getMatchShapeOfType(MatchShapeType.HORIZONTAL_5), curType))
+                        return true;
+                    if (GenerateMatchRecognitionOfShape(curPiece, getMatchShapeOfType(MatchShapeType.HORIZONTAL_4), curType))
+                        return true;
+                    if (GenerateMatchRecognitionOfShape(curPiece, getMatchShapeOfType(MatchShapeType.HORIZONTAL_3), curType))
+                        return true;
+                }
+            }
+        }
+        if (curPiece.col + 1 < columns)
+        {
+            if (gridPieces[curPiece.row, curPiece.col + 1].getMatchItem())
+            {
+                if (gridPieces[curPiece.row, curPiece.col + 1].getMatchItem().getType() == curType)//If match above
+                {
+                    if (GenerateMatchRecognitionOfShape(curPiece, getMatchShapeOfType(MatchShapeType.L_TOP_LEFT), curType))
+                        return true;
+                    if (GenerateMatchRecognitionOfShape(curPiece, getMatchShapeOfType(MatchShapeType.VERTICAL_5), curType))
+                        return true;
+                    if (GenerateMatchRecognitionOfShape(curPiece, getMatchShapeOfType(MatchShapeType.VERTICAL_4), curType))
+                        return true;
+                    if (GenerateMatchRecognitionOfShape(curPiece, getMatchShapeOfType(MatchShapeType.VERTICAL_3), curType))
+                        return true;
+                }
+            }
+        }
+        return false;
+
+    }
+
+    bool GenerateMatchRecognitionOfShape(GridPiece origin, MatchShape shape, MatchItemType type)
+    {
+        bool isMatch = false;
+        List<GridPiece> matchPieces = new List<GridPiece>();
+
+        foreach (Vector2Int pos in getMatchShapeOfType(shape.matchShapeType).matchPositions)
+        {
+            ;
+            if (origin.row + pos.x < rows && origin.row + pos.x >= 0 && origin.col + pos.y < columns && origin.col + pos.y >= 0)
+            {
+                if (gridPieces[origin.row + pos.x, origin.col + pos.y].getMatchItem() != null)
+                {
+                    //Debug.Log("checking" + gridPieces[origin.row + pos.x, origin.col + pos.y]);
+                    if (gridPieces[origin.row + pos.x, origin.col + pos.y].getMatchItem().getType() == type)
+                    {
+                        matchPieces.Add(gridPieces[origin.row + pos.x, origin.col + pos.y]);
+                    }
+                }
+            }
+        }
+
+        if (matchPieces.Count == shape.matchPositions.Count)
+        {
+            //Debug.Log("Match position count of " + shape.matchShapeType + " is " + shape.matchPositions.Count);
             isMatch = true;
         }
         return isMatch;
     }
-    void MatchRecognition()
+    #endregion
+
+    #region BASE MATCH RECOGNTION
+    bool MatchRecognition()
     {
         for(int i = 0; i < rows; i++)
         {
@@ -188,29 +245,14 @@ public class MatchGrid : MonoBehaviour
                 if (curPiece.getMatchItem() != null)
                 {
                     MatchItemType curType = curPiece.getMatchItem().getType();
-                    //Debug.Log("Matching item" + "of type " + curType + "at " + i + "," + j);
-                    SOMETHINGMatchRecogntion(curPiece, curType);
+                    if(MatchRecogntion(curPiece, curType))
+                        { return true; }
                 }
             }
         }
+        return false;
     }
-
-    void MatchRecognition(MatchItem item)
-    {
-        //Debug.Log("Looking for Match with" + item);
-        GridPiece curPiece = gridPieces[item.row, item.col];
-        MatchItemType curType = item.getType();
-        SOMETHINGMatchRecogntion(curPiece, curType);
-    }
-
-    void MatchRecognition(GridPiece item)
-    {
-        GridPiece curPiece = gridPieces[item.row, item.col];
-        MatchItemType curType = curPiece.getMatchItem().getType();
-        SOMETHINGMatchRecogntion(curPiece, curType);
-    }
-
-    void SOMETHINGMatchRecogntion(GridPiece curPiece, MatchItemType curType)
+    bool MatchRecogntion(GridPiece curPiece, MatchItemType curType)
     {
         //Debug.Log(curType);
         if (curPiece.row + 1 < rows)
@@ -221,19 +263,19 @@ public class MatchGrid : MonoBehaviour
                 if (gridPieces[curPiece.row + 1, curPiece.col].getMatchItem().getType() == curType) //If match on the right
                 {
                     if (MatchRecognitionOfShape(curPiece, getMatchShapeOfType(MatchShapeType.SQUARE), curType))
-                        return;
+                        return true;
                     if (MatchRecognitionOfShape(curPiece, getMatchShapeOfType(MatchShapeType.L_BOTTOM_LEFT), curType))
-                        return;
+                        return true;
                     if (MatchRecognitionOfShape(curPiece, getMatchShapeOfType(MatchShapeType.L_BOTTOM_RIGHT), curType))
-                        return;
+                        return true;
                     if (MatchRecognitionOfShape(curPiece, getMatchShapeOfType(MatchShapeType.L_TOP_RIGHT), curType))
-                        return;
+                        return true;
                     if (MatchRecognitionOfShape(curPiece, getMatchShapeOfType(MatchShapeType.HORIZONTAL_5), curType))
-                        return;
+                        return true;
                     if (MatchRecognitionOfShape(curPiece, getMatchShapeOfType(MatchShapeType.HORIZONTAL_4), curType))
-                        return;
+                        return true;
                     if (MatchRecognitionOfShape(curPiece, getMatchShapeOfType(MatchShapeType.HORIZONTAL_3), curType))
-                        return;
+                        return true;
                 }
             }
         }
@@ -244,16 +286,17 @@ public class MatchGrid : MonoBehaviour
                 if (gridPieces[curPiece.row, curPiece.col + 1].getMatchItem().getType() == curType)//If match above
                 {
                     if (MatchRecognitionOfShape(curPiece, getMatchShapeOfType(MatchShapeType.L_TOP_LEFT), curType))
-                        return;
+                        return true;
                     if (MatchRecognitionOfShape(curPiece, getMatchShapeOfType(MatchShapeType.VERTICAL_5), curType))
-                        return;
+                        return true;
                     if (MatchRecognitionOfShape(curPiece, getMatchShapeOfType(MatchShapeType.VERTICAL_4), curType))
-                        return;
+                        return true;
                     if (MatchRecognitionOfShape(curPiece, getMatchShapeOfType(MatchShapeType.VERTICAL_3), curType))
-                        return;
+                        return true;
                 }
             }
         }
+        return false;
 
     }
 
@@ -284,239 +327,10 @@ public class MatchGrid : MonoBehaviour
             isMatch = true;
             
             match?.Invoke(matchPieces, gridPieces[shape.originPosition.x, shape.originPosition.y].transform.position, shape.matchShapeType, type);
+            Debug.Log("match recognized");
+            ReplaceAssignCall();
         }
         return isMatch;
-    }
-
-    #region VERTICAL MATCHES
-
-    List<GridPiece> VerticalMatch(int matchLength)
-    {
-        List<GridPiece> matchPieces = new List<GridPiece>();
-        for(int i = 0; i < rows; i++)
-        {
-            for(int j = 0; j < columns - (matchLength - 1); j++)
-            {
-                List<GridPiece> tempMatchPieces = new List<GridPiece>(); //Collects all gridpieces in a match. If match is valid adds it to returning list
-                tempMatchPieces.Clear(); //Resets after checking from a new piece
-                
-                GridPiece curPiece = gridPieces[i, j];
-                int matchCount = 0;
-
-                if (gridPieces[i, j].getMatchItem() != null)
-                {
-                    for (int k = j + 1; k <= j + matchLength; k++)
-                    {
-                        if (gridPieces[i, k].getMatchItem() != null && gridPieces[i, k].getMatchItem().getType() == curPiece.getMatchItem().getType())
-                        {
-                            matchCount++;
-                        }
-                    }
-                }
-                if(matchCount == matchLength)
-                {
-                    foreach(GridPiece piece in tempMatchPieces) //Add pieces in the match to the return list
-                    {
-                        matchPieces.Add(piece);
-                    }
-                }
-            }
-        }
-        return matchPieces;
-    }
-
-    bool VerticalMatchRecognition(MatchItem item)
-    {
-        bool isVertMatch = false;
-        for(int i = 0; i < rows; i++)
-        {
-            for(int j = 0; j < columns - 2; j++) //Prevents index errors
-            {
-               
-                if (gridPieces[i, j].getMatchItem() == null || gridPieces[i, j + 1].getMatchItem() == null || gridPieces[i, j + 2].getMatchItem() == null)
-                {
-                    continue;
-                }
-
-                if (gridPieces[i, j].getMatchItem().getType() == item.getType()
-                    && gridPieces[i, j + 1].getMatchItem().getType() == item.getType() && gridPieces[i, j + 2].getMatchItem().getType() == item.getType())
-                {
-                    isVertMatch = true;
-                }
-            }
-        }
-        return isVertMatch;
-    }
-    List<GridPiece> VerticalMatchCollection(MatchItem item)
-    {
-        List<GridPiece> matchPieces = new List<GridPiece>();
-        for (int i = 0; i < rows; i++)
-        {
-            for (int j = 0; j < columns - 2; j++) //Prevents index errors
-            {
-
-                if (gridPieces[i, j].getMatchItem() == null || gridPieces[i, j + 1].getMatchItem() == null || gridPieces[i, j + 2].getMatchItem() == null)
-                {
-                    continue;
-                }
-
-                if (gridPieces[i, j].getMatchItem().getType() == item.getType()
-                    && gridPieces[i, j + 1].getMatchItem().getType() == item.getType() && gridPieces[i, j + 2].getMatchItem().getType() == item.getType())
-                {
-                    matchPieces.Add(gridPieces[i, j]);
-                    matchPieces.Add(gridPieces[i, j + 1]);
-                    matchPieces.Add(gridPieces[i, j + 2]);
-                    //Debug.Log(matchPieces);
-                    return matchPieces;
-                }
-            }
-        }
-        return matchPieces;
-    }
-
-    Vector3 FindVerticalMatchOrigin(MatchItem item)
-    {
-        for (int i = 0; i < rows; i++)
-        {
-            for (int j = 0; j < columns - 2; j++) //Prevents index errors
-            {
-
-                if (gridPieces[i, j].getMatchItem() == null || gridPieces[i, j + 1].getMatchItem() == null || gridPieces[i, j + 2].getMatchItem() == null)
-                {
-                    continue;
-                }
-
-                if (gridPieces[i, j].getMatchItem().getType() == item.getType()
-                    && gridPieces[i, j + 1].getMatchItem().getType() == item.getType() && gridPieces[i, j + 2].getMatchItem().getType() == item.getType())
-                {
-                    return gridPieces[i, j + 1].gameObject.transform.position;
-                }
-            }
-        }
-        return Vector3.zero;
-    }
-    #endregion
-
-    Vector3 FindMatchOrigin(List<GridPiece> matchPieces)
-    {
-        Vector3 originPosition= Vector3.zero;
-
-        if (matchPieces.Count % 2 != 0) //Evens
-        {
-            Vector3 originDifference = (matchPieces[matchPieces.Count / 2].gameObject.transform.position) - (matchPieces[(matchPieces.Count / 2) - 1].gameObject.transform.position);
-            originPosition = matchPieces[(matchPieces.Count / 2) - 1].transform.position + originDifference;
-        }
-        else if (matchPieces.Count % 2 == 0) //Odds
-        {
-            originPosition = matchPieces[matchPieces.Count / 2].transform.position;
-        }
-
-        return originPosition;
-    }
-
-    #region HORIZONTAL MATCHES
-    List<GridPiece> HorizontalMatch(int matchLength)
-    {
-        List<GridPiece> matchPieces = new List<GridPiece>();
-        for (int i = 0; i < rows; i++)
-        {
-            for (int j = 0; j < columns - (matchLength - 1); j++)
-            {
-                List<GridPiece> tempMatchPieces = new List<GridPiece>(); //Collects all gridpieces in a match. If match is valid adds it to returning list
-                tempMatchPieces.Clear(); //Resets after checking from a new piece
-
-                GridPiece curPiece = gridPieces[i, j];
-                int matchCount = 0;
-
-                if (gridPieces[i, j].getMatchItem() != null)
-                {
-                    for (int k = i + 1; k <= i + matchLength; k++)
-                    {
-                        if (gridPieces[k, j].getMatchItem() != null && gridPieces[k, j].getMatchItem().getType() == curPiece.getMatchItem().getType())
-                        {
-                            matchCount++;
-                        }
-                    }
-                }
-                if (matchCount == matchLength)
-                {
-                    foreach (GridPiece piece in tempMatchPieces) //Add pieces in the match to the return list
-                    {
-                        matchPieces.Add(piece);
-                    }
-                }
-            }
-        }
-        return matchPieces;
-    }
-    bool HorizontalMatchRecognition(MatchItem item)
-    {
-        bool isHorMatch = false;
-        for (int i = 0; i < rows - 2; i++)
-        {
-            for (int j = 0; j < columns; j++) //Prevents index errors
-            {
-
-                if (gridPieces[i, j].getMatchItem() == null || gridPieces[i + 1, j].getMatchItem() == null || gridPieces[i + 2, j].getMatchItem() == null)
-                {
-                    continue;
-                }
-
-                if (gridPieces[i, j].getMatchItem().getType() == item.getType()
-                    && gridPieces[i + 1, j].getMatchItem().getType() == item.getType() && gridPieces[i + 2, j].getMatchItem().getType() == item.getType())
-                {
-                    isHorMatch = true;
-                }
-            }
-        }
-        return isHorMatch;
-    }
-
-    List<GridPiece> HorizontalMatchCollection(MatchItem item)
-    {
-        List<GridPiece> matchPieces = new List<GridPiece>();
-        for (int i = 0; i < rows - 2; i++)
-        {
-            for (int j = 0; j < columns; j++) //Prevents index errors
-            {
-
-                if (gridPieces[i, j].getMatchItem() == null || gridPieces[i + 1, j].getMatchItem() == null || gridPieces[i + 2, j].getMatchItem() == null)
-                {
-                    continue;
-                }
-
-                if (gridPieces[i, j].getMatchItem().getType() == item.getType()
-                    && gridPieces[i + 1, j].getMatchItem().getType() == item.getType() && gridPieces[i + 2, j].getMatchItem().getType() == item.getType())
-                {
-                    matchPieces.Add(gridPieces[i, j]);
-                    matchPieces.Add(gridPieces[i + 1, j]);
-                    matchPieces.Add(gridPieces[i + 2, j]);
-                    return matchPieces;
-                }
-            }
-        }
-        return matchPieces;
-    }
-    Vector3 FindHorizontalMatchOrigin(MatchItem item)
-    {
-        for (int i = 0; i < rows - 2; i++)
-        {
-            for (int j = 0; j < columns; j++) //Prevents index errors
-            {
-
-                if (gridPieces[i, j].getMatchItem() == null || gridPieces[i + 1, j].getMatchItem() == null || gridPieces[i + 2, j].getMatchItem() == null)
-                {
-                    continue;
-                }
-
-                if (gridPieces[i, j].getMatchItem().getType() == item.getType()
-                    && gridPieces[i + 1, j].getMatchItem().getType() == item.getType() && gridPieces[i + 2, j].getMatchItem().getType() == item.getType())
-                {
-                    return gridPieces[i + 1, j].gameObject.transform.position;
-                }
-            }
-        }
-        return Vector3.zero;
     }
     #endregion
 

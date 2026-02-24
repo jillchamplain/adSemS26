@@ -2,23 +2,12 @@ using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using Unity.VisualScripting;
 public class BlockManager : MonoBehaviour, ISubManager
 {
     [HideInInspector] public static BlockManager instance;
-    [Header("Data")]
-    [SerializeField] List<GameObject> blocks;
-    public GameObject getBlockOfShape(MatchShapeType type)
-    {
-        foreach (GameObject block in blocks)
-        {
-            if (block.GetComponent<Block>() && block.GetComponent<Block>().getMatchShapeType() == type)
-            {
-                return block;
-            }
-        }
-        return null;
-    }
     [Header("References")]
+    [SerializeField] GameObject blockParentPF;
     [SerializeField] GameObject blockPartPF;
     [SerializeField] List<Sprite> blockPartSprites;
     Sprite getSpriteOfType(MatchItemType type)
@@ -37,9 +26,6 @@ public class BlockManager : MonoBehaviour, ISubManager
     }
 
     #region EVENTS
-
-    public delegate void BlockCreated();
-    public static event BlockCreated blockCreated;
     private void OnEnable()
     {
         MatchGrid.match += TestSpawn;
@@ -53,19 +39,18 @@ public class BlockManager : MonoBehaviour, ISubManager
 
     public void TestSpawn(List<GridPiece> matchPieces, Vector3 originPos, MatchShapeType shape, MatchItemType type)
     {
-        GameObject newBlock = new GameObject();
+        GameObject newBlock = Instantiate(blockParentPF);
         //make smaller block sections and attack to newBlock
         foreach(GridPiece pos in matchPieces)
         {
             GameObject newBlockpiece = Instantiate(blockPartPF, pos.transform.position, Quaternion.identity);
             newBlockpiece.transform.parent = newBlock.transform;
+
+            newBlock.GetComponent<Block>().getSpriteRenderers().Add(newBlockpiece.GetComponentInChildren<SpriteRenderer>());
         }
-        newBlock.AddComponent<Rigidbody2D>();
-        newBlock.AddComponent<Block>();
-        newBlock.GetComponent<Block>().setMatchItemType(type); 
+        newBlock.GetComponent<Block>().setMatchItemType(type);
+        newBlock.GetComponent<Block>().setMatchShapeType(shape);
         newBlock.GetComponent<Block>().setSpritesTo(getSpriteOfType(type));
-        newBlock.AddComponent<CompositeCollider2D>();
-        //blockCreated?.Invoke();
     }
 
     void SpawnBlockCall(List<GridPiece> matchPieces, Vector3 origin, MatchShapeType shape, MatchItemType type)
