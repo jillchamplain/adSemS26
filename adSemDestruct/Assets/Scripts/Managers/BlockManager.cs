@@ -41,6 +41,7 @@ public class BlockManager : MonoBehaviour, ISubManager
     {
         GameObject newBlock = Instantiate(blockParentPF);
         //make smaller block sections and attack to newBlock
+        Block block = newBlock.GetComponent<Block>();
         foreach(GridPiece pos in matchPieces)
         {
             GameObject newBlockpiece = Instantiate(blockPartPF, pos.transform.position, Quaternion.identity);
@@ -48,6 +49,7 @@ public class BlockManager : MonoBehaviour, ISubManager
 
             newBlock.GetComponent<Block>().getSpriteRenderers().Add(newBlockpiece.GetComponentInChildren<SpriteRenderer>());
         }
+        block.setInitialVelocity(new Vector2(block.getInitialVelocity().x - originPos.x, block.getInitialVelocity().y));
         newBlock.GetComponent<Block>().setMatchItemType(type);
         newBlock.GetComponent<Block>().setMatchShapeType(shape);
         newBlock.GetComponent<Block>().setSpritesTo(getSpriteOfType(type));

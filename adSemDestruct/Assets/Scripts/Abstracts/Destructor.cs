@@ -3,7 +3,7 @@ using UnityEngine;
 public abstract class Destructor : MonoBehaviour 
 {
     [Header("Data")]
-    [SerializeField] Rigidbody2D rb;
+    [SerializeField] protected Rigidbody2D rb;
     public void setRigidBody(Rigidbody2D rb){ this.rb = rb; }
     [SerializeField] float forceDamageMult = 0;
     public void setForceDamageMult(float newMult) { forceDamageMult = newMult; } //Set these based on match type or level material type

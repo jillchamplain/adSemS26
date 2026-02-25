@@ -13,6 +13,9 @@ public class Block : Destructor
     public void setMatchItemType(MatchItemType newType)
     {  type = newType; 
     }
+    [SerializeField] Vector2 initialVelocity;
+    public Vector2 getInitialVelocity() { return initialVelocity; }
+    public void setInitialVelocity(Vector2 newVelocity) {  initialVelocity = newVelocity; }
 
     [Header("References")]
     [SerializeField] List<SpriteRenderer> spriteRenderers;
@@ -34,6 +37,11 @@ public class Block : Destructor
     public static event BlockHitGoal blockHitGoal;
 
     #endregion
+
+    private void Start()
+    {
+        rb.linearVelocity = initialVelocity;
+    }
     void DestroySelf()
     {
         foreach (SpriteRenderer spriteRenderer in spriteRenderers)

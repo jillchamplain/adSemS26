@@ -124,6 +124,7 @@ public class MatchGrid : MonoBehaviour
             {
                 if (gridPieces[i, j].getMatchItem() == null)
                 {
+                    //Debug.Log("null spot at " + gridPieces[i, j]);
                     nullGridAt?.Invoke(i, j);
                     //ANIMATION
                     yield return new WaitForSeconds(0.5f);
@@ -327,7 +328,7 @@ public class MatchGrid : MonoBehaviour
             isMatch = true;
             
             match?.Invoke(matchPieces, gridPieces[shape.originPosition.x, shape.originPosition.y].transform.position, shape.matchShapeType, type);
-            Debug.Log("match recognized");
+            //Debug.Log("match recognized");
             ReplaceAssignCall();
         }
         return isMatch;
@@ -375,7 +376,7 @@ public class MatchGrid : MonoBehaviour
                 {
                     //ANIMATION
                     item.transform.DOMove(gridPiece.transform.position, 0.1f);
-                    yield return new WaitForSeconds(0.1f);
+                    yield return new WaitForSeconds(0.2f);
 
                     gridPieces[i, j].setMatchItem(item);
                 }
@@ -519,6 +520,7 @@ public class MatchGrid : MonoBehaviour
                 if (i == x && j == y)
                 {
                     gridPieces[i, j].setMatchItem(null);
+                    Debug.Log("unassigning at " + gridPieces[i, j]);
                 }
             }
         }
@@ -551,7 +553,6 @@ public class MatchGrid : MonoBehaviour
 
                             gridPieces[i, j].setMatchItem(gridPieces[i, y].getMatchItem());
                             gridPieces[i, y].setMatchItem(null);
-                            MatchRecognition();
                             break;
 
                         }

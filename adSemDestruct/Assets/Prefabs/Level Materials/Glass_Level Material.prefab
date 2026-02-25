@@ -133,7 +133,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 5874396208005999174}
   forceDamageMult: 0.5
-  weight: 50
+  forceDamageMin: 0
+  weight: 2
   type: 0
   maxHealth: 50
   health: 0
