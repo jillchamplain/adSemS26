@@ -126,7 +126,7 @@ public class MatchGrid : MonoBehaviour
                 {
                     nullGridAt?.Invoke(i, j);
                     //ANIMATION
-                    yield return new WaitForSeconds(0.2f);
+                    yield return new WaitForSeconds(0.5f);
                 }
             }
         }
@@ -459,8 +459,8 @@ public class MatchGrid : MonoBehaviour
                
 
                 //ANIMATION
-                curMatchItem.transform.DOMove(prevGridPiece.transform.position, 0.1f);
-                yield return new WaitForSeconds(0.1f);
+                curMatchItem.transform.DOMove(prevGridPiece.transform.position, 0.2f);
+                yield return new WaitForSeconds(0.2f);
                 prevGridPiece.setMatchItem(curMatchItem);
 
                 //curMatchItem.gameObject.transform.parent = prevGridPiece.gameObject.transform;
@@ -545,12 +545,13 @@ public class MatchGrid : MonoBehaviour
                         if (gridPieces[i, y].getMatchItem() != null)
                         {
                             //ANIMATION
-                            gridPieces[i, y].getMatchItem().transform.DOMove(gridPieces[i, j].transform.position, 0.1f);
-                            yield return new WaitForSeconds(0.1f);
+                            gridPieces[i, y].getMatchItem().transform.DOMove(gridPieces[i, j].transform.position, 0.15f);
+                            yield return new WaitForSeconds(0.15f);
 
 
                             gridPieces[i, j].setMatchItem(gridPieces[i, y].getMatchItem());
                             gridPieces[i, y].setMatchItem(null);
+                            MatchRecognition();
                             break;
 
                         }
@@ -558,7 +559,6 @@ public class MatchGrid : MonoBehaviour
                 }
             }
         }
-        MatchRecognition();
         RepopulateGridCall(rows, columns);
     }
     #endregion

@@ -40,7 +40,7 @@ public class Block : Destructor
         {
             spriteRenderer.transform.DOPunchScale(new Vector3(.25f, .25f, 0), 0.5f);
         }
-        Destroy(gameObject, 0.5f);
+        Destroy(gameObject, 0.75f);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
