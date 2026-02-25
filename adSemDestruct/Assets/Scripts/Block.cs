@@ -2,7 +2,7 @@ using DG.Tweening;
 using System.Security.Cryptography;
 using UnityEngine;
 using System.Collections.Generic;
-public class Block : Destructor
+public class Block : Destructor, IDestructible
 {
     [Header("Data")]
     [SerializeField] MatchShapeType shape;
@@ -67,4 +67,11 @@ public class Block : Destructor
             DestroySelf();
         }
     }
+
+    #region IDESTRUCTIBLE
+    public void Destruct()
+    {
+        Destroy(this.gameObject);
+    }
+    #endregion
 }

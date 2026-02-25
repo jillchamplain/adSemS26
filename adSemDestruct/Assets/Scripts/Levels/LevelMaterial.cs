@@ -8,7 +8,7 @@ public enum DestructionObjectType
     STONE,
     NUM_TYPES
 }
-public class LevelMaterial : Destructor
+public class LevelMaterial : Destructor, IDestructible
 {
     [Header("Data")]
     [SerializeField] DestructionObjectType type;
@@ -70,5 +70,12 @@ public class LevelMaterial : Destructor
             materialHit?.Invoke(CalcForceDamage(), collision.gameObject.GetComponent<LevelGoal>());
         }
     }
+
+    #region IDESTRUCTIBLE
+    public void Destruct()
+    {
+        Destroy(this.gameObject);
+    }
+    #endregion
 
 }

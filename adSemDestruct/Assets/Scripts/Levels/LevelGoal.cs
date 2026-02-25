@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class LevelGoal : MonoBehaviour
+public class LevelGoal : MonoBehaviour, IDestructible
 {
     [Header("Data")]
     [SerializeField] int maxHealth;
@@ -58,4 +58,11 @@ public class LevelGoal : MonoBehaviour
        healthTF.text = string.Format("{0}", health);
     }
 
+    #region IDESTRUCTIBLE
+    public void Destruct()
+    {
+        levelGoalDestroyed?.Invoke(this);
+        Destroy(this.gameObject);
+    }
+    #endregion
 }

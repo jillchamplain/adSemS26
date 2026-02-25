@@ -136,6 +136,6 @@ MonoBehaviour:
   forceDamageMin: 0
   weight: 2
   type: 0
-  maxHealth: 50
+  maxHealth: 25
   health: 0
   healthTF: {fileID: 2591409590554323017}

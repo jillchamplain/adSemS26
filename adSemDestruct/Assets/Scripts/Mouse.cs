@@ -38,7 +38,7 @@ public class Mouse : MonoBehaviour, ISubManager
         {
             if (hit)
             {
-                //Debug.Log(hit.transform.gameObject);
+                Debug.Log(hit.transform.gameObject);
                 return true;
             }
         }
