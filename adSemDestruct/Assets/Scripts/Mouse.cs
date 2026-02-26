@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Mouse : MonoBehaviour, ISubManager
 {
-    bool shouldInteract = true;
+    [SerializeField] bool shouldInteract = true;
     [SerializeField] LayerMask interactMask;
     [SerializeField] GameObject held;
 
@@ -38,7 +38,7 @@ public class Mouse : MonoBehaviour, ISubManager
         {
             if (hit)
             {
-                Debug.Log(hit.transform.gameObject);
+                //Debug.Log(hit.transform.gameObject);
                 return true;
             }
         }

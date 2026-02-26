@@ -519,7 +519,7 @@ public class MatchGrid : MonoBehaviour
                 if (i == x && j == y)
                 {
                     gridPieces[i, j].setMatchItem(null);
-                    Debug.Log("unassigning at " + gridPieces[i, j]);
+                    //Debug.Log("unassigning at " + gridPieces[i, j]);
                 }
             }
         }

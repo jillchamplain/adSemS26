@@ -25,17 +25,22 @@ public class LevelMaterial : Destructor, IDestructible
 
     #region EVENTS
 
-    public delegate void MaterialHit(float damage, LevelGoal theGoal);
-    public static event MaterialHit materialHit;
+    public delegate void MaterialHitLevelGoal(float damage, LevelGoal theGoal);
+    public static event MaterialHitLevelGoal materialHitLevelGoal;
+
+    public delegate void MaterialHitLevelMaterial(float damage, LevelMaterial theMaterial);
+    public static event MaterialHitLevelMaterial materialHitLevelMaterial;
 
     private void OnEnable()
     {
         Block.blockHitObject += TakeDamage;
+        materialHitLevelMaterial += TakeDamage;
     }
 
     private void OnDisable()
     {
         Block.blockHitObject -= TakeDamage;
+        materialHitLevelMaterial -= TakeDamage;
     }
     #endregion
 
@@ -67,13 +72,18 @@ public class LevelMaterial : Destructor, IDestructible
     {
         if(collision.gameObject.GetComponent<LevelGoal>())
         {
-            materialHit?.Invoke(CalcForceDamage(), collision.gameObject.GetComponent<LevelGoal>());
+            materialHitLevelGoal?.Invoke(CalcForceDamage(collision), collision.gameObject.GetComponent<LevelGoal>());
+        }
+        if(collision.gameObject.GetComponent<LevelMaterial>())
+        {
+            materialHitLevelMaterial?.Invoke(CalcForceDamage(collision), collision.gameObject.GetComponent <LevelMaterial>());
         }
     }
 
     #region IDESTRUCTIBLE
     public void Destruct()
     {
+        //Debug.Log(this + " is destroyed"); 
         Destroy(this.gameObject);
     }
     #endregion

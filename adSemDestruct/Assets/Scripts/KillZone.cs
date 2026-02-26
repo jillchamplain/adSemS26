@@ -18,6 +18,7 @@ public class KillZone : MonoBehaviour
         if (collision.GetComponent<IDestructible>() != null)
         {
             collision.GetComponent<IDestructible>().Destruct();
+            //Debug.Log("Destroyed " + collision.gameObject);
         }
     }
 }

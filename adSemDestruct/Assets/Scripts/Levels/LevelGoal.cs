@@ -1,3 +1,4 @@
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 
@@ -6,12 +7,13 @@ public class LevelGoal : MonoBehaviour, IDestructible
     [Header("Data")]
     [SerializeField] int maxHealth;
     [SerializeField] int health;
+    bool isDestroyed = false;
     [Header("References")]
     [SerializeField] TextMeshProUGUI healthTF;
     void CheckHealth()
     {
-        if (health <= 0)
-            DestroySelf();
+        if (health <= 0 && !isDestroyed)
+            Destruct();
     }
 
     #region EVENTS
@@ -20,13 +22,13 @@ public class LevelGoal : MonoBehaviour, IDestructible
 
     private void OnEnable()
     {
-        LevelMaterial.materialHit += TakeDamage;
+        LevelMaterial.materialHitLevelGoal += TakeDamage;
         Block.blockHitGoal += TakeDamage;
     }
 
     private void OnDisable()
     {
-        LevelMaterial.materialHit -= TakeDamage;
+        LevelMaterial.materialHitLevelGoal -= TakeDamage;
         Block.blockHitGoal -= TakeDamage;
     }
 
@@ -61,8 +63,10 @@ public class LevelGoal : MonoBehaviour, IDestructible
     #region IDESTRUCTIBLE
     public void Destruct()
     {
+        this.gameObject.transform.DOPunchScale(new Vector3(1, 1, 1), 0.5f);
+        Destroy(this.gameObject, 0.5f);
         levelGoalDestroyed?.Invoke(this);
-        Destroy(this.gameObject);
+        isDestroyed = true;
     }
     #endregion
 }

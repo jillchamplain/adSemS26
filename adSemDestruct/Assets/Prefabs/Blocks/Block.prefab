@@ -48,8 +48,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 224798135740187286}
   forceDamageMult: 75
-  forceDamageMin: 5
+  forceDamageMin: 2
   weight: 3
+  forceApplyMin: 1000
+  lastVelocity: {x: 0, y: 0}
   shape: 0
   type: 0
   initialVelocity: {x: 7, y: 0}

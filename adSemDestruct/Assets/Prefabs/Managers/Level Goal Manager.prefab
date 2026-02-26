@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4517810324591802538}
-  - component: {fileID: 4730805065226356635}
+  - component: {fileID: 8130322482966292214}
   m_Layer: 0
-  m_Name: Destruction Goal Manager
+  m_Name: Level Goal Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4730805065226356635
+--- !u!114 &8130322482966292214
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,8 +41,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 5082322501745781481}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0feedb29186a7274f8d52d852d952f5c, type: 3}
+  m_Script: {fileID: 11500000, guid: 25e32fa5b5b148349a43123dee90459b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destructionGoals: []
-  destructionGoalPF: {fileID: 7223899584104615028, guid: 727b35840ba8b9a4b8b1c2e45b8034e7, type: 3}
+  levelGoals: []
+  levelGoalPF: {fileID: 0}

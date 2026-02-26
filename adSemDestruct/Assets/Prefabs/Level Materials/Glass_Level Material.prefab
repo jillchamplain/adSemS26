@@ -134,7 +134,10 @@ MonoBehaviour:
   rb: {fileID: 5874396208005999174}
   forceDamageMult: 0.5
   forceDamageMin: 0
-  weight: 2
+  forceDamageThreshold: 50
+  weightMultiplier: 1
+  forceApplyMin: 2
+  lastVelocity: {x: 0, y: 0}
   type: 0
   maxHealth: 25
   health: 0

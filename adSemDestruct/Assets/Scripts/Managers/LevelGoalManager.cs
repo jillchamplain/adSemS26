@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
 public class LevelGoalManager : MonoBehaviour, ISubManager
@@ -32,14 +31,14 @@ public class LevelGoalManager : MonoBehaviour, ISubManager
     private void Start()
     {
         //SpawnDestructionGoal(new Vector3(1, 1, 0));
-        
+
     }
 
     void RemoveLevelGoal(LevelGoal theGoal)
     {
         levelGoals.Remove(theGoal.gameObject);
         WinLevelGoalsCheck();
-        
+
     }
     void LoseLevelGoalsCheck()
     {
@@ -51,7 +50,7 @@ public class LevelGoalManager : MonoBehaviour, ISubManager
 
     void WinLevelGoalsCheck()
     {
-        if(levelGoals.Count <= 0)
+        if (levelGoals.Count <= 0)
         {
             levelGoalsDestroyed?.Invoke();
         }

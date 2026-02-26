@@ -56,13 +56,13 @@ public class Block : Destructor, IDestructible
 
         if (collision.gameObject.GetComponent<LevelMaterial>())
         {
-            blockHitObject?.Invoke(CalcForceDamage(), collision.gameObject.GetComponent<LevelMaterial>());
+            blockHitObject?.Invoke(CalcForceDamage(collision), collision.gameObject.GetComponent<LevelMaterial>());
 
             DestroySelf();
         }
         else if(collision.gameObject.GetComponent<LevelGoal>())
         {
-            blockHitGoal?.Invoke(CalcForceDamage(), collision.gameObject.GetComponent<LevelGoal>());
+            blockHitGoal?.Invoke(CalcForceDamage(collision), collision.gameObject.GetComponent<LevelGoal>());
 
             DestroySelf();
         }

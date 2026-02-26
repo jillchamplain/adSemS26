@@ -74,11 +74,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5929983430144882577, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
       propertyPath: maxHealth
-      value: 50
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5929983430144882577, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
+      propertyPath: forceApplyMin
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 5929983430144882577, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
       propertyPath: forceDamageMult
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5929983430144882577, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
+      propertyPath: weightMultiplier
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5929983430144882577, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
+      propertyPath: forceDamageThreshold
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 9006659779986335979, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
       propertyPath: type
