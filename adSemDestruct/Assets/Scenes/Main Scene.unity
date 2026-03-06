@@ -1922,7 +1922,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 227460379323934139, guid: d5431857937620443b535ed675e36098, type: 3}
       propertyPath: m_Name
-      value: Killl Zone (2)
+      value: Killl Zone
       objectReference: {fileID: 0}
     - target: {fileID: 227460379323934139, guid: d5431857937620443b535ed675e36098, type: 3}
       propertyPath: m_IsActive

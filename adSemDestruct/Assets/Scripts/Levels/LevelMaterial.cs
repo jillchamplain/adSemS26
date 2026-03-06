@@ -16,7 +16,8 @@ public class LevelMaterial : Destructor, IDestructible
     [SerializeField] int maxHealth;
     [SerializeField] int health;
     [Header("References")]
-    [SerializeField] TextMeshProUGUI healthTF; 
+    [SerializeField] TextMeshProUGUI healthTF;
+    [SerializeField] ParticleSystem particlesPF;
     void CheckHealth()
     {
         if(health <= 0)
@@ -70,6 +71,7 @@ public class LevelMaterial : Destructor, IDestructible
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+
         if(collision.gameObject.GetComponent<LevelGoal>())
         {
             materialHitLevelGoal?.Invoke(CalcForceDamage(collision), collision.gameObject.GetComponent<LevelGoal>());
