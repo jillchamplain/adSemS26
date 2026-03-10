@@ -147,10 +147,11 @@ MonoBehaviour:
   forceDamageMult: 0.5
   forceDamageMin: 0
   forceDamageThreshold: 50
-  weightMultiplier: 1
+  weightMultiplier: 0.75
   forceApplyMin: 2
   lastVelocity: {x: 0, y: 0}
   type: 0
   maxHealth: 25
   health: 0
   healthTF: {fileID: 2591409590554323017}
+  particlesPF: {fileID: 0}

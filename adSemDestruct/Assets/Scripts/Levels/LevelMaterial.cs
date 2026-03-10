@@ -74,10 +74,12 @@ public class LevelMaterial : Destructor, IDestructible
 
         if(collision.gameObject.GetComponent<LevelGoal>())
         {
+            particlesPF.Play();
             materialHitLevelGoal?.Invoke(CalcForceDamage(collision), collision.gameObject.GetComponent<LevelGoal>());
         }
         if(collision.gameObject.GetComponent<LevelMaterial>())
         {
+            particlesPF.Play();
             materialHitLevelMaterial?.Invoke(CalcForceDamage(collision), collision.gameObject.GetComponent <LevelMaterial>());
         }
     }
