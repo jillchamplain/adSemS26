@@ -17,11 +17,12 @@ public class LevelMaterial : Destructor, IDestructible
     [SerializeField] int health;
     [Header("References")]
     [SerializeField] TextMeshProUGUI healthTF;
-    [SerializeField] ParticleSystem particlesPF;
+    [SerializeField] ParticleSystem hitParticlesPF;
+    [SerializeField] ParticleSystem destroyParticlesPF;
     void CheckHealth()
     {
-        if(health <= 0)
-            Destroy(gameObject);
+        if (health <= 0)
+            Destruct();
     }
 
     #region EVENTS
@@ -58,7 +59,11 @@ public class LevelMaterial : Destructor, IDestructible
             //Debug.Log(this + " listened");
             //Debug.Log("Took " + damage);
             health -= (int)damage;
-            //Debug.Log("Taking " + damage);
+            if(damage > 0)
+            {
+                Instantiate(hitParticlesPF, transform.position, Quaternion.identity);
+            }
+
             CheckHealth();
             UpdateUI();
         }
@@ -74,12 +79,11 @@ public class LevelMaterial : Destructor, IDestructible
 
         if(collision.gameObject.GetComponent<LevelGoal>())
         {
-            particlesPF.Play();
+            
             materialHitLevelGoal?.Invoke(CalcForceDamage(collision), collision.gameObject.GetComponent<LevelGoal>());
         }
         if(collision.gameObject.GetComponent<LevelMaterial>())
         {
-            particlesPF.Play();
             materialHitLevelMaterial?.Invoke(CalcForceDamage(collision), collision.gameObject.GetComponent <LevelMaterial>());
         }
     }
@@ -87,7 +91,7 @@ public class LevelMaterial : Destructor, IDestructible
     #region IDESTRUCTIBLE
     public void Destruct()
     {
-        //Debug.Log(this + " is destroyed"); 
+        Instantiate(destroyParticlesPF, transform.position, Quaternion.identity);
         Destroy(this.gameObject);
     }
     #endregion

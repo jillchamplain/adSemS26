@@ -541,7 +541,7 @@ public class MatchGrid : MonoBehaviour
                 if (gridPieces[i, j].getMatchItem() == null)
                 {
                     //Debug.Log("null spot at " + gridPieces[i, j]);
-                    for(int y = j + 1; y < columns; y++) //Iterate up column
+                    for(int y = j + 1; y < columns; y++) //Iterate up column //Falls one by one
                     {
                         if (gridPieces[i, y].getMatchItem() != null)
                         {

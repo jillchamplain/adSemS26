@@ -8,6 +8,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 539961070781236943, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: 94462a513bcaad148973e748c418e749, type: 2}
+    - target: {fileID: 539961070781236943, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
+      propertyPath: m_LinearDamping
+      value: 0.05
+      objectReference: {fileID: 0}
     - target: {fileID: 2141615376396897099, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
       propertyPath: m_Color.b
       value: 0.9507075
@@ -146,7 +154,7 @@ MonoBehaviour:
   rb: {fileID: 5874396208005999174}
   forceDamageMult: 0.5
   forceDamageMin: 0
-  forceDamageThreshold: 50
+  forceDamageThreshold: 15
   weightMultiplier: 0.75
   forceApplyMin: 2
   lastVelocity: {x: 0, y: 0}
@@ -154,4 +162,5 @@ MonoBehaviour:
   maxHealth: 25
   health: 0
   healthTF: {fileID: 2591409590554323017}
-  particlesPF: {fileID: 0}
+  hitParticlesPF: {fileID: 2306889949061441891, guid: b3c233c9287a266408eef72a06a4ac78, type: 3}
+  destroyParticlesPF: {fileID: 3933553446640366179, guid: 9b389dbdf994a344e89aff626220cf88, type: 3}

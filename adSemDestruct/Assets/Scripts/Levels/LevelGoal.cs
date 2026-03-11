@@ -10,6 +10,7 @@ public class LevelGoal : MonoBehaviour, IDestructible
     bool isDestroyed = false;
     [Header("References")]
     [SerializeField] TextMeshProUGUI healthTF;
+    [SerializeField] ParticleSystem destroyParticlesPF;
     void CheckHealth()
     {
         if (health <= 0 && !isDestroyed)
@@ -64,6 +65,7 @@ public class LevelGoal : MonoBehaviour, IDestructible
     public void Destruct()
     {
         this.gameObject.transform.DOPunchScale(new Vector3(1, 1, 1), 0.5f);
+        Instantiate(destroyParticlesPF, transform.position, Quaternion.identity);
         Destroy(this.gameObject, 0.5f);
         levelGoalDestroyed?.Invoke(this);
         isDestroyed = true;

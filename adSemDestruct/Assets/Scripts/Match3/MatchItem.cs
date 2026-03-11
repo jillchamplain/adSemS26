@@ -11,6 +11,7 @@ public enum MatchItemType
     D,
     E,
     F,
+    G,
     NUM_TYPES
 }
 

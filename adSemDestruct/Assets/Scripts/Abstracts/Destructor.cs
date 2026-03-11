@@ -1,3 +1,4 @@
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 public abstract class Destructor : MonoBehaviour 
@@ -9,7 +10,7 @@ public abstract class Destructor : MonoBehaviour
     public void setForceDamageMult(float newMult) { forceDamageMult = newMult; } //Set these based on match type or level material type
 
     [Tooltip("The minimum damage a destructor can do to an object")]
-    [SerializeField] float forceDamageMin;
+    [SerializeField] protected float forceDamageMin;
     public void setForceDamageMin(float newMin) { forceDamageMin = newMin; }
     [Tooltip("The minimum damage a destructor needs to reach to register damage")]
     [SerializeField] float forceDamageThreshold;
@@ -47,17 +48,21 @@ public abstract class Destructor : MonoBehaviour
 
     public float CalcForceDamage(Collision2D collision)
     { 
-        float forceDamage = forceDamageMult * Mathf.Abs(this.gameObject.GetComponent<Rigidbody2D>().linearVelocityX); //Need Angle of velocity 
+        
+        float forceDamageX = forceDamageMult * Mathf.Abs(this.gameObject.GetComponent<Rigidbody2D>().linearVelocityX); //Need Angle of velocity 
+        float forceDamageY = forceDamageMult * Mathf.Abs(this.gameObject.GetComponent<Rigidbody2D>().linearVelocityY);
+        float forceDamage = Mathf.Max(forceDamageX, forceDamageY);
         float impactSpeed = collision.relativeVelocity.magnitude;
         float mass = collision.rigidbody.mass;
 
         forceDamage = impactSpeed * mass;
-        Debug.Log("applying " + Mathf.Max(forceDamageMin, forceDamage));
-        // Need X and Y
+        
         //Need mass
         //Apply Force
         if(forceDamage > forceDamageThreshold)
         {
+            Debug.Log("applying " + Mathf.Max(forceDamageMin, forceDamage));
+            // Need X and Y
             return Mathf.Max(forceDamageMin, forceDamage);
         }
         return 0;

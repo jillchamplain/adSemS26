@@ -8,6 +8,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 539961070781236943, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: d9c296173ec1ada42a5f871245e1c9b8, type: 2}
+    - target: {fileID: 539961070781236943, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
+      propertyPath: m_LinearDamping
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 539961070781236943, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
+      propertyPath: m_AngularDamping
+      value: 0.7
+      objectReference: {fileID: 0}
     - target: {fileID: 2141615376396897099, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
       propertyPath: m_Color.b
       value: 0.509434
@@ -74,12 +86,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5929983430144882577, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
       propertyPath: maxHealth
-      value: 200
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 5929983430144882577, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
       propertyPath: forceApplyMin
       value: 0.8
       objectReference: {fileID: 0}
+    - target: {fileID: 5929983430144882577, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
+      propertyPath: hitParticlesPF
+      value: 
+      objectReference: {fileID: 2306889949061441891, guid: 699a17eb47943e2439f5d8d189abb3c9, type: 3}
     - target: {fileID: 5929983430144882577, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
       propertyPath: forceDamageMult
       value: 2
@@ -90,7 +106,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5929983430144882577, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
       propertyPath: forceDamageThreshold
-      value: 50
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 7734157777764836401, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
       propertyPath: InitialModule.startColor.maxColor.b
