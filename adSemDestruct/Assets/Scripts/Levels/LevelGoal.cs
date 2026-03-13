@@ -61,6 +61,11 @@ public class LevelGoal : MonoBehaviour, IDestructible
        healthTF.text = string.Format("{0}", health);
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        //Fall Damage
+    }
+
     #region IDESTRUCTIBLE
     public void Destruct()
     {

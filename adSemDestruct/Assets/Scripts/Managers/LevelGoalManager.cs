@@ -4,7 +4,7 @@ public class LevelGoalManager : MonoBehaviour, ISubManager
 {
     [HideInInspector] public static LevelGoalManager instance;
     [Header("Data")]
-    [SerializeField] List<GameObject> levelGoals = new List<GameObject>();
+    [SerializeField] List<GameObject> levelGoals;
     [Header("References")]
     [SerializeField] GameObject levelGoalPF;
 
@@ -30,8 +30,11 @@ public class LevelGoalManager : MonoBehaviour, ISubManager
 
     private void Start()
     {
-        //SpawnDestructionGoal(new Vector3(1, 1, 0));
-
+        LevelGoal[] goals = FindObjectsByType<LevelGoal>(FindObjectsSortMode.InstanceID);
+        foreach (var goal in goals)
+        {
+            levelGoals.Add(goal.gameObject);
+        }
     }
 
     void RemoveLevelGoal(LevelGoal theGoal)

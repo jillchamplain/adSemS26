@@ -8,7 +8,7 @@ public enum DestructionObjectType
     STONE,
     NUM_TYPES
 }
-public class LevelMaterial : Destructor, IDestructible
+public class LevelMaterial : CustomPhysics, IDestructible
 {
     [Header("Data")]
     [SerializeField] DestructionObjectType type;
@@ -61,7 +61,8 @@ public class LevelMaterial : Destructor, IDestructible
             health -= (int)damage;
             if(damage > 0)
             {
-                Instantiate(hitParticlesPF, transform.position, Quaternion.identity);
+                GameObject newParticles = Instantiate(hitParticlesPF.gameObject, transform.position, Quaternion.identity);
+                Destroy(newParticles, 0.2f);
             }
 
             CheckHealth();
@@ -76,6 +77,7 @@ public class LevelMaterial : Destructor, IDestructible
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        //Fall Damage
 
         if(collision.gameObject.GetComponent<LevelGoal>())
         {
@@ -91,7 +93,8 @@ public class LevelMaterial : Destructor, IDestructible
     #region IDESTRUCTIBLE
     public void Destruct()
     {
-        Instantiate(destroyParticlesPF, transform.position, Quaternion.identity);
+        GameObject newParticle = GameObject.Instantiate(destroyParticlesPF.gameObject, transform.position, Quaternion.identity);
+        Destroy(newParticle, .2f);
         Destroy(this.gameObject);
     }
     #endregion

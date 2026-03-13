@@ -1,9 +1,9 @@
 using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
-public abstract class Destructor : MonoBehaviour 
+public abstract class CustomPhysics : MonoBehaviour 
 {
-    [Header("Destructor Data")]
+    [Header("Custom Physics")]
     [SerializeField] protected Rigidbody2D rb;
     public void setRigidBody(Rigidbody2D rb){ this.rb = rb; }
     [SerializeField] float forceDamageMult = 0;
@@ -21,12 +21,25 @@ public abstract class Destructor : MonoBehaviour
     [SerializeField] float forceApplyMin;
     [SerializeField] Vector2 lastVelocity;
 
+    [Header("Falling")]
+    bool isGrounded = false;
+    bool wasGrounded = true;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
 		rb.mass = weightMultiplier * rb.mass;
         lastVelocity = rb.linearVelocity;
 	}
+
+    private void FixedUpdate()
+    {
+        CheckGround();
+        if(!wasGrounded && isGrounded)
+            FallDamage();
+
+        wasGrounded = isGrounded;
+    }
 
     private void Update()
     {
@@ -78,4 +91,26 @@ public abstract class Destructor : MonoBehaviour
         return force;
 
     }
+
+    #region FALLING
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawRay(transform.position, Vector2.up);
+    }
+    bool CheckGround()
+    {
+        isGrounded = Physics2D.Raycast(transform.position, Vector2.up, .02f);
+        //Debug.Log(Physics2D.Raycast(transform.position, Vector2.up, .02f))
+        Debug.Log("grounded is " + isGrounded);
+
+        return isGrounded;
+    }
+    void FallDamage()
+    {
+        //Threshold for how far fell & how fast
+
+        Debug.Log(this.gameObject + "fell");
+
+    }
+    #endregion
 }

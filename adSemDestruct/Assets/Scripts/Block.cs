@@ -2,7 +2,7 @@ using DG.Tweening;
 using System.Security.Cryptography;
 using UnityEngine;
 using System.Collections.Generic;
-public class Block : Destructor, IDestructible
+public class Block : CustomPhysics, IDestructible
 {
     [Header("Data")]
     [SerializeField] MatchShapeType shape;
