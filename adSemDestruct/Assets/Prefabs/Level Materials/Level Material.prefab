@@ -190,7 +190,12 @@ MonoBehaviour:
   forceDamageThreshold: 0
   weightMultiplier: 1
   forceApplyMin: 1000
+  isGrounded: 0
+  wasGrounded: 1
+  mMaxHealth: 100
+  mHealth: 100
   lastVelocity: {x: 0, y: 0}
+  minRegisterVelocity: 1.5
   type: 0
   maxHealth: 0
   health: 0

@@ -74,22 +74,6 @@ public class LevelMaterial : CustomPhysics, IDestructible
     {
         healthTF.text = string.Format("{0}", health);
     }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        //Fall Damage
-
-        if(collision.gameObject.GetComponent<LevelGoal>())
-        {
-            
-            materialHitLevelGoal?.Invoke(CalcForceDamage(collision), collision.gameObject.GetComponent<LevelGoal>());
-        }
-        if(collision.gameObject.GetComponent<LevelMaterial>())
-        {
-            materialHitLevelMaterial?.Invoke(CalcForceDamage(collision), collision.gameObject.GetComponent <LevelMaterial>());
-        }
-    }
-
     #region IDESTRUCTIBLE
     public void Destruct()
     {

@@ -158,6 +158,11 @@ MonoBehaviour:
   weightMultiplier: 0.75
   forceApplyMin: 2
   lastVelocity: {x: 0, y: 0}
+  isGrounded: 0
+  wasGrounded: 1
+  mHealth: 0
+  mMaxHealth: 0
+  minRegisterVelocity: 2
   type: 0
   maxHealth: 5
   health: 0
