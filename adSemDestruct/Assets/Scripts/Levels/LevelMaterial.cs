@@ -70,6 +70,20 @@ public class LevelMaterial : CustomPhysics, IDestructible
         }
     }
 
+    void TakeDamage(float damage)
+    {
+            health -= (int)damage;
+            if (damage > 0)
+            {
+                GameObject newParticles = Instantiate(hitParticlesPF.gameObject, transform.position, Quaternion.identity);
+                Destroy(newParticles, 0.2f);
+            }
+
+            CheckHealth();
+            UpdateUI();
+        
+    }
+
     void UpdateUI()
     {
         healthTF.text = string.Format("{0}", health);
@@ -82,5 +96,19 @@ public class LevelMaterial : CustomPhysics, IDestructible
         Destroy(this.gameObject);
     }
     #endregion
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        float damage = CalcCollisionDamage(lastVelocity);
+        TakeDamage(damage);
 
+        if (collision.gameObject.GetComponent<LevelGoal>())
+        {
+            materialHitLevelGoal?.Invoke(damage, collision.gameObject.GetComponent<LevelGoal>());
+
+        }
+        else if(collision.gameObject.GetComponent<LevelMaterial>())
+        {
+            materialHitLevelMaterial?.Invoke(damage, collision.gameObject.GetComponent<LevelMaterial>());
+        }
+    }
 }

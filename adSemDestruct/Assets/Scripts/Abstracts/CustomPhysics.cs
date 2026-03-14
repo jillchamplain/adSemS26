@@ -29,15 +29,11 @@ public abstract class CustomPhysics : MonoBehaviour
     [SerializeField] float mHealth; //Fix this with subclass override issue
 
     [Header("Collision Damage")]
-    [SerializeField] Vector2 lastVelocity;
+    [SerializeField] protected Vector2 lastVelocity;
     [Tooltip("Linear velocity of last frame")]
     [SerializeField] float minRegisterVelocity;
     [Tooltip("Minimum velocity this needs to reach in order to calculate collision damage")]
 
-    #region EVENTS
-    public delegate void CollisionEvent(Vector2 impactVelocity, GameObject collidedObject);
-    public static event CollisionEvent collisionEvent;
-    #endregion
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -125,37 +121,19 @@ public abstract class CustomPhysics : MonoBehaviour
             isGrounded = false;
         return isGrounded;
     }*/
-    void CalcCollisionDamage(Vector2 reachedVelocity)
+    protected float CalcCollisionDamage(Vector2 reachedVelocity)
     {
+        float damage = 0;
         float reachedX = Mathf.Abs(reachedVelocity.x);
         float reachedY = Mathf.Abs(reachedVelocity.y);
         if (reachedX >= minRegisterVelocity || reachedY >= minRegisterVelocity)
         {
-            Debug.Log("start health is " + mHealth);
-            Debug.Log(this.gameObject + "fell");
-            float damage = Mathf.Max(1f,reachedX, reachedY);
-            Debug.Log("Taking " + damage);
-            mHealth -= (int)damage;
-            Debug.Log("health is " + mHealth);
+            //Debug.Log("start health is " + mHealth);
+            //Debug.Log(this.gameObject + "fell");
+            damage = Mathf.Max(1f,reachedX, reachedY);
         }
-
+        return damage;
     }
     #endregion
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        //Debug.Log(gameObject + "reached " + lastVelocity);
-        CalcCollisionDamage(lastVelocity);
-        collisionEvent?.Invoke(lastVelocity, collision.gameObject);
-
-        /*if (collision.gameObject.GetComponent<LevelGoal>())
-        {
-            
-            materialHitLevelGoal?.Invoke(CalcForceDamage(collision), collision.gameObject.GetComponent<LevelGoal>());
-        }
-        if(collision.gameObject.GetComponent<LevelMaterial>())
-        {
-            materialHitLevelMaterial?.Invoke(CalcForceDamage(collision), collision.gameObject.GetComponent <LevelMaterial>());
-        }*/
-    }
 
 }
