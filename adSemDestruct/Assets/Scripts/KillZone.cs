@@ -15,9 +15,9 @@ public class KillZone : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.GetComponent<IDestructible>() != null)
+        if (collision.GetComponent<IDamageable>() != null)
         {
-            collision.GetComponent<IDestructible>().Destruct();
+            collision.GetComponent<IDamageable>().Destruct();
             //Debug.Log("Destroyed " + collision.gameObject);
         }
     }

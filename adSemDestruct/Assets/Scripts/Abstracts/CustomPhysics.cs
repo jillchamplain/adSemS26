@@ -24,10 +24,6 @@ public abstract class CustomPhysics : MonoBehaviour
     [SerializeField] bool isGrounded = false;
     [SerializeField] bool wasGrounded = true;*/
 
-    [Header("Health")]
-    [SerializeField] float mMaxHealth;
-    [SerializeField] float mHealth; //Fix this with subclass override issue
-
     [Header("Collision Damage")]
     [SerializeField] protected Vector2 lastVelocity;
     [Tooltip("Linear velocity of last frame")]
@@ -40,12 +36,6 @@ public abstract class CustomPhysics : MonoBehaviour
         rb.mass = weightMultiplier * rb.mass;
         lastVelocity = rb.linearVelocity;
     }
-
-    private void Start()
-    {
-        mHealth = mMaxHealth;
-        Debug.Log("Starting...");
-    }
     private void FixedUpdate()
     {
         lastVelocity = rb.linearVelocity;
@@ -53,10 +43,10 @@ public abstract class CustomPhysics : MonoBehaviour
 
     private void Update()
     {
-        ApplyForce();
+
     }
 
-    public void ApplyForce()
+    public void ApplyForce(Vector2 force)
     {
         /* Vector2 curVelocity = rb.linearVelocity;
          Vector2 minVelocityTarget = new Vector2(lastVelocity.x + forceApplyMin, lastVelocity.y + forceApplyMin);
@@ -67,6 +57,7 @@ public abstract class CustomPhysics : MonoBehaviour
              //Debug.Log("Applying Force Of" + curVelocity);
          }
          lastVelocity = curVelocity;*/
+        rb.AddRelativeForce(force);
     }
 
     public float CalcForceDamage(Collision2D collision)
@@ -91,10 +82,17 @@ public abstract class CustomPhysics : MonoBehaviour
         return 0;
     }
 
-    public Vector2 CalcForce()
+    public Vector2 CalcForce(Collision2D collision)
     {
         Vector2 force = Vector2.zero;
-        float forceDamage = forceDamageMult * Mathf.Abs(this.gameObject.GetComponent<Rigidbody2D>().linearVelocityX); //Need Angle of velocity 
+
+        Vector2 normal = collision.contacts[0].normal;
+        Vector2 sendingVelocity = collision.relativeVelocity;
+        Vector2 reflectedDirection = Vector2.Reflect(sendingVelocity, normal);
+
+        force = reflectedDirection;
+        //float forceDamage = forceDamageMult * Mathf.Abs(this.gameObject.GetComponent<Rigidbody2D>().linearVelocityX); //Need Angle of velocity 
+        //float mass = rb.mass;
         // Need X and Y
         //Need mass
         //Apply Force
@@ -135,5 +133,21 @@ public abstract class CustomPhysics : MonoBehaviour
         return damage;
     }
     #endregion
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        float damage = CalcCollisionDamage(lastVelocity);
+        if(GetComponent<IDamageable>() != null)
+            GetComponent<IDamageable>().TakeDamage(damage);
+
+        if (collision.gameObject.GetComponent<IDamageable>() != null)
+            collision.gameObject.GetComponent<IDamageable>().TakeDamage(damage);
+
+        if(collision.gameObject.GetComponent<CustomPhysics>() != null)
+        {
+            collision.gameObject.GetComponent<CustomPhysics>().ApplyForce(CalcForce(collision));
+        }
+
+    }
 
 }

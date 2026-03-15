@@ -2,7 +2,7 @@ using DG.Tweening;
 using System.Security.Cryptography;
 using UnityEngine;
 using System.Collections.Generic;
-public class Block : CustomPhysics, IDestructible
+public class Block : CustomPhysics, IDamageable
 {
     [Header("Data")]
     [SerializeField] MatchShapeType shape;
@@ -68,7 +68,11 @@ public class Block : CustomPhysics, IDestructible
         }
     }
 
-    #region IDESTRUCTIBLE
+    #region IDAMAGEABLE
+    public void TakeDamage(float damage)
+    {
+
+    }
     public void Destruct()
     {
         Destroy(this.gameObject);

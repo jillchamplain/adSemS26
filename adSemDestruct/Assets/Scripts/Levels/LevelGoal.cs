@@ -2,7 +2,7 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 
-public class LevelGoal : MonoBehaviour, IDestructible
+public class LevelGoal : MonoBehaviour, IDamageable
 {
     [Header("Data")]
     [SerializeField] int maxHealth;
@@ -56,6 +56,7 @@ public class LevelGoal : MonoBehaviour, IDestructible
         }
     }
 
+
     void UpdateUI()
     {
        healthTF.text = string.Format("{0}", health);
@@ -66,7 +67,16 @@ public class LevelGoal : MonoBehaviour, IDestructible
         //Fall Damage
     }
 
-    #region IDESTRUCTIBLE
+    #region IDAMAGEABLE
+
+    public void TakeDamage(float damage)
+    {
+
+        health -= (int)damage;
+        CheckHealth();
+        UpdateUI();
+    }
+
     public void Destruct()
     {
         this.gameObject.transform.DOPunchScale(new Vector3(1, 1, 1), 0.5f);
