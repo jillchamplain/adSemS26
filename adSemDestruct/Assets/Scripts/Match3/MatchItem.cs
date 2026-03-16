@@ -17,7 +17,6 @@ public enum MatchItemType
 
 public class MatchItem : GridBased, IGrabbable
 {
-    [Header("Data")]
     [SerializeField] MatchItemType type;
     public MatchItemType getType() {  return type; }
     public void setType(MatchItemType type) { this.type = type; }
@@ -31,6 +30,11 @@ public class MatchItem : GridBased, IGrabbable
     public void setPrevCol(int prevCol) { this.prevCol = prevCol; }
 
     [SerializeField] LayerMask interactMask;
+    [Header("Position Animation")]
+    //[SerializeField] float targetX;
+    //public void setTargetX(float x) {  targetX = x; }
+    //[SerializeField] float targetY;
+    // public void setTargetY(float y) { targetY = y; }
     [Header("References")]
     [SerializeField] SpriteRenderer sprite;
     public Sprite getSprite() { return sprite.sprite; }
@@ -51,12 +55,26 @@ public class MatchItem : GridBased, IGrabbable
     {
         MatchGrid.match -= OnMatch;
     }
-#endregion
+    #endregion
 
     private void Start()
     {
         prevRow = row;
         prevCol = col;
+    }
+
+    private void Update()
+    {
+        //Lerp towards target position
+        /*if(Mathf.Abs(targetX - transform.position.x) > .01f  && Mathf.Abs(targetY - transform.position.y) >.01f)
+        {
+            Vector2 tempPosition = new Vector2(targetX, transform.position.y);
+            transform.position = Vector2.Lerp(transform.position, tempPosition, .4f);
+        }
+        else
+        {
+            transform.position = new Vector2(targetX, targetY);
+        }*/
     }
 
     public void DestroySelfCall()

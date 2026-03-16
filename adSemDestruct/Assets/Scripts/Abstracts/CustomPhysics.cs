@@ -75,7 +75,7 @@ public abstract class CustomPhysics : MonoBehaviour
         //Apply Force
         if (forceDamage > forceDamageThreshold)
         {
-            Debug.Log("applying " + Mathf.Max(forceDamageMin, forceDamage));
+            //Debug.Log("applying " + Mathf.Max(forceDamageMin, forceDamage));
             // Need X and Y
             return Mathf.Max(forceDamageMin, forceDamage);
         }

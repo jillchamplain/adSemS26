@@ -104,7 +104,7 @@ public class MatchGrid : MonoBehaviour
                 GridPiece piece = newPiece.GetComponent<GridPiece>();
                 piece.row = i;
                 piece.col = j;
-                Debug.Log(i + "_" + j);
+                //Debug.Log(i + "_" + j);
                 gridPieces[i, j] = piece;
             }
         }
@@ -118,7 +118,9 @@ public class MatchGrid : MonoBehaviour
 
     IEnumerator RepopulateGrid(int rows, int cols)
     {
-        for (int i = 0; i < rows; i++)
+        yield return new WaitForSeconds(0);
+
+        /*for (int i = 0; i < rows; i++)
         {
             for (int j = 0; j < cols; j++)
             {
@@ -130,7 +132,7 @@ public class MatchGrid : MonoBehaviour
                     yield return new WaitForSeconds(0.5f);
                 }
             }
-        }
+        }*/
     }
 
     #endregion
@@ -531,7 +533,7 @@ public class MatchGrid : MonoBehaviour
     
     void ReplaceAssignCall()
     {
-        StartCoroutine(ReplaceAssign());
+        StartCoroutine(MatchTestFall());
     }
     IEnumerator ReplaceAssign()
     {
@@ -568,6 +570,30 @@ public class MatchGrid : MonoBehaviour
     #endregion
     #endregion
     #region TESTING
+    IEnumerator MatchTestFall()
+    {
+        int nullCount = 0;
+        for(int i = 0; i < rows; i++)
+        {
+            nullCount = 0;
+            for (int j = 0; j < columns; j++)
+            {
+                if (gridPieces[i, j].getMatchItem() == null)
+                {
+                    nullCount++;
+                    Debug.Log(nullCount);
+                }
 
+                else if (nullCount > 0 && j - nullCount >= 0)
+                {
+                    MatchItem movingItem = gridPieces[i, j].getMatchItem();
+                    movingItem.transform.DOMove(gridPieces[i, j - nullCount].transform.position, .5f);
+                    //gridPieces[i, j - nullCount].setMatchItem(movingItem);
+                    gridPieces[i, j].setMatchItem(null);
+                }
+            }
+        }
+        yield return new WaitForSeconds(.5f);
+    }
     #endregion
 }

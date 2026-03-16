@@ -23,8 +23,7 @@ public class GridPiece : GridBased
         matchItemRef = newRef; 
 
         matchItemRef.transform.parent = this.transform;
-
-        matchItemRef.transform.position = this.transform.position;
+        //matchItemRef.transform.position = this.transform.position;
     }
 
     [Header("References")]
