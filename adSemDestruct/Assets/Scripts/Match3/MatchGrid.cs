@@ -92,9 +92,9 @@ public class MatchGrid : MonoBehaviour
 
     void GenerateGrid(int rows, int cols)
     {
-        for (int i = 0; i < cols; i++) // i is row
+        for (int i = 0; i < rows; i++) // i is row
         {
-            for (int j = 0; j < rows; j++) // j is col
+            for (int j = 0; j < cols; j++) // j is col
             {
                 Vector3 pos = new Vector3(this.transform.position.x + i * pieceWidth, this.transform.position.y + j * pieceHeight, 0);
                 GameObject newPiece = GameObject.Instantiate(gridPiecePF, pos, Quaternion.identity, this.gameObject.transform);
@@ -104,6 +104,7 @@ public class MatchGrid : MonoBehaviour
                 GridPiece piece = newPiece.GetComponent<GridPiece>();
                 piece.row = i;
                 piece.col = j;
+                Debug.Log(i + "_" + j);
                 gridPieces[i, j] = piece;
             }
         }
@@ -546,19 +547,22 @@ public class MatchGrid : MonoBehaviour
                         if (gridPieces[i, y].getMatchItem() != null)
                         {
                             //ANIMATION
-                            gridPieces[i, y].getMatchItem().transform.DOMove(gridPieces[i, j].transform.position, 0.15f);
-                            yield return new WaitForSeconds(0.15f);
-
+                            gridPieces[i, y].getMatchItem().transform.DOMove(gridPieces[i, j].transform.position, 0.5f);
+                            
 
                             gridPieces[i, j].setMatchItem(gridPieces[i, y].getMatchItem());
                             gridPieces[i, y].setMatchItem(null);
+
                             break;
 
                         }
                     }
                 }
             }
+            
         }
+        yield return new WaitForSeconds(0.5f);
+
         RepopulateGridCall(rows, columns);
     }
     #endregion
