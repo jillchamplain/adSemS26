@@ -566,6 +566,8 @@ public class MatchGrid : MonoBehaviour
         RepopulateGridCall(rows, columns);
     }
     #endregion
+    #endregion
+    #region TESTING
 
     #endregion
 }
