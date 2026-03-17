@@ -37,10 +37,10 @@ public class MatchGrid : MonoBehaviour
     }
 
     #region EVENTS
-    public delegate void GridGeneratedWithMatch(int x, int y);
+    public delegate void GridGeneratedWithMatch(GridPiece[,] gridPieces);
     public static event GridGeneratedWithMatch gridGeneratedWithMatch;
 
-    public delegate void GridGenerated(int x, int y);
+    public delegate void GridGenerated(GridPiece[,] gridPieces);
     public static event GridGenerated gridGenerated;
 
     public delegate void NullGridAt(int x, int y);
@@ -108,7 +108,7 @@ public class MatchGrid : MonoBehaviour
                 gridPieces[i, j] = piece;
             }
         }
-        gridGenerated?.Invoke(rows, cols);
+        gridGenerated?.Invoke(gridPieces);
     }
 
     void RepopulateGridCall(int rows, int cols)
@@ -152,7 +152,7 @@ public class MatchGrid : MonoBehaviour
                     MatchItemType curType = curPiece.getMatchItem().getType();
                     if (GenerateMatchRecogntion(curPiece, curType))
                     { 
-                        gridGeneratedWithMatch?.Invoke(rows, columns);
+                        gridGeneratedWithMatch?.Invoke(gridPieces);
                     }
                 }
             }
@@ -390,6 +390,7 @@ public class MatchGrid : MonoBehaviour
     #region ASSIGN
     void AssignToGrid(MatchItem item, int x, int y)
     {
+        //Debug.Log("assigning to " + x + ", " + y);
         //Debug.Log("Grid Piece: " + gridPiece.getRow() + "," + gridPiece.getCol());
 
         GridPiece gridPiece = gridPieces[x, y];
@@ -402,6 +403,7 @@ public class MatchGrid : MonoBehaviour
                 if (i == gridPiece.row && j == gridPiece.col)
                 {
                     gridPieces[i,j].setMatchItem(item);
+                    item.transform.position = gridPieces[i,y].transform.position;
                 }
             }
         }
@@ -410,8 +412,7 @@ public class MatchGrid : MonoBehaviour
     }
     void AssignToGrid(MatchItem item, GridPiece gridPiece) //From mouse
     {
-        //Debug.Log("Grid Piece: " + gridPiece.getRow() + "," + gridPiece.getCol());
-        if(gridPiece == null)
+        if (gridPiece == null)
         {
             item.transform.position = gridPieces[item.row, item.col].transform.position;
             MatchRecognition();
@@ -444,6 +445,7 @@ public class MatchGrid : MonoBehaviour
     }
     IEnumerator SwapGridAssign(MatchItem theItem, GridPiece thePiece)
     {
+       
         bool isSamePiece = false;
 
         if (theItem.row == thePiece.row && theItem.col == thePiece.col)
@@ -474,8 +476,12 @@ public class MatchGrid : MonoBehaviour
                 Debug.Log(getGridPieceAt(theItem.row, theItem.col));
             }
         }
+        else
+        {
+            theItem.transform.position = thePiece.transform.position;
+        }
 
-        theItem.setPrevRow(theItem.row);
+            theItem.setPrevRow(theItem.row);
         theItem.setPrevCol(theItem.col);
 
 
@@ -581,19 +587,20 @@ public class MatchGrid : MonoBehaviour
                 if (gridPieces[i, j].getMatchItem() == null)
                 {
                     nullCount++;
-                    Debug.Log(nullCount);
+                    //Debug.Log(nullCount);
                 }
 
                 else if (nullCount > 0 && j - nullCount >= 0)
                 {
                     MatchItem movingItem = gridPieces[i, j].getMatchItem();
                     movingItem.transform.DOMove(gridPieces[i, j - nullCount].transform.position, .5f);
-                    //gridPieces[i, j - nullCount].setMatchItem(movingItem);
+                    gridPieces[i, j - nullCount].setMatchItem(movingItem);
                     gridPieces[i, j].setMatchItem(null);
                 }
             }
         }
         yield return new WaitForSeconds(.5f);
+        MatchRecognition();
     }
     #endregion
 }

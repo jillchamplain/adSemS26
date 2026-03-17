@@ -71,10 +71,16 @@ public class MatchItemManager : MonoBehaviour, ISubManager
         matchItems.Clear();
     }
 
-    void GenerateMatchItems(int rows, int columns)
+    void GenerateMatchItems(GridPiece[,] gridPieces) //Reference to gridpiece array
     {
         ClearMatchItems();
-        //Debug.Log("generating match items");
+
+        foreach(GridPiece piece in gridPieces)
+        {
+            GenerateMatchItem(piece);
+        }
+
+        /*//Debug.Log("generating match items");
         for(int i = 0; i < rows; i++)
         {
             for(int j = 0; j < columns; j++)
@@ -83,8 +89,16 @@ public class MatchItemManager : MonoBehaviour, ISubManager
                 matchItems.Add(newMatchItem);
                 matchItemGenerated?.Invoke(newMatchItem.GetComponent<MatchItem>(), i, j);
             }
-        }
+        }*/
         matchItemsGenerated?.Invoke();
+    }
+
+    void GenerateMatchItem(GridPiece piece)
+    {
+        Vector3 spawnPos = piece.gameObject.transform.position;
+        GameObject newMatchItem = Instantiate(getRandomMatchItem(), spawnPos, Quaternion.identity);
+        matchItems.Add(newMatchItem);
+        matchItemGenerated?.Invoke(newMatchItem.GetComponent<MatchItem>(), piece.row, piece.col);
     }
 
     void SpawnMatchItem(int row, int column) //Need spawn position now, send reference for grid piece?
