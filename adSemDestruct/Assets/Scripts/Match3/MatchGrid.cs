@@ -118,9 +118,8 @@ public class MatchGrid : MonoBehaviour
 
     IEnumerator RepopulateGrid(int rows, int cols)
     {
-        yield return new WaitForSeconds(0);
 
-        /*for (int i = 0; i < rows; i++)
+        for (int i = 0; i < rows; i++)
         {
             for (int j = 0; j < cols; j++)
             {
@@ -129,10 +128,11 @@ public class MatchGrid : MonoBehaviour
                     //Debug.Log("null spot at " + gridPieces[i, j]);
                     nullGridAt?.Invoke(i, j);
                     //ANIMATION
-                    yield return new WaitForSeconds(0.5f);
+                    
                 }
             }
-        }*/
+        }
+        yield return new WaitForSeconds(0.1f);
     }
 
     #endregion
@@ -315,7 +315,6 @@ public class MatchGrid : MonoBehaviour
             {
                 if (gridPieces[origin.row + pos.x, origin.col + pos.y].getMatchItem() != null)
                 {
-                    //Debug.Log("checking" + gridPieces[origin.row + pos.x, origin.col + pos.y]);
                     if (gridPieces[origin.row + pos.x, origin.col + pos.y].getMatchItem().getType() == type)
                     {
                         matchPieces.Add(gridPieces[origin.row + pos.x, origin.col + pos.y]);
@@ -326,12 +325,10 @@ public class MatchGrid : MonoBehaviour
 
         if(matchPieces.Count == shape.matchPositions.Count)
         {
-            //Debug.Log("Match position count of " + shape.matchShapeType + " is " + shape.matchPositions.Count);
             isMatch = true;
             
             match?.Invoke(matchPieces, gridPieces[shape.originPosition.x, shape.originPosition.y].transform.position, shape.matchShapeType, type);
-            //Debug.Log("match recognized");
-            ReplaceAssignCall();
+            FallAssignCall();
         }
         return isMatch;
     }
@@ -342,10 +339,6 @@ public class MatchGrid : MonoBehaviour
     #region GRID ASSIGNMENT
 
     #region GENERATE ASSIGN
-    void GenerateAssignToGridCall(MatchItem item, int x, int y)
-    {
-       StartCoroutine(RTGenerateAssignToGrid(item, x, y));
-    }
 
     void GenerateAssignToGrid(MatchItem item, int x, int y)
     {
@@ -365,34 +358,12 @@ public class MatchGrid : MonoBehaviour
         }
     }
 
-    IEnumerator RTGenerateAssignToGrid(MatchItem item, int x, int y)
-    {
-        GridPiece gridPiece = gridPieces[x, y];
-        UnassignFromGrid(item);
 
-        for (int i = 0; i < rows; i++)
-        {
-            for (int j = 0; j < columns; j++)
-            {
-                if (i == gridPiece.row && j == gridPiece.col)
-                {
-                    //ANIMATION
-                    item.transform.DOMove(gridPiece.transform.position, 0.1f);
-                    yield return new WaitForSeconds(0.2f);
-
-                    gridPieces[i, j].setMatchItem(item);
-                }
-            }
-        }
-    }
     #endregion
 
     #region ASSIGN
     void AssignToGrid(MatchItem item, int x, int y)
     {
-        //Debug.Log("assigning to " + x + ", " + y);
-        //Debug.Log("Grid Piece: " + gridPiece.getRow() + "," + gridPiece.getCol());
-
         GridPiece gridPiece = gridPieces[x, y];
         UnassignFromGrid(item);
 
@@ -535,48 +506,18 @@ public class MatchGrid : MonoBehaviour
     }
     #endregion
 
-    #region REPLACE ASSIGN
+    #region FALL ASSIGN
     
-    void ReplaceAssignCall()
+    void FallAssignCall()
     {
-        StartCoroutine(MatchTestFall());
+        StartCoroutine(FallAssign());
     }
-    IEnumerator ReplaceAssign()
-    {
-        for(int i = 0; i < rows; i++)
-        {
-            for(int j = 0; j < columns; j++)
-            {
-                if (gridPieces[i, j].getMatchItem() == null)
-                {
-                    //Debug.Log("null spot at " + gridPieces[i, j]);
-                    for(int y = j + 1; y < columns; y++) //Iterate up column //Falls one by one
-                    {
-                        if (gridPieces[i, y].getMatchItem() != null)
-                        {
-                            //ANIMATION
-                            gridPieces[i, y].getMatchItem().transform.DOMove(gridPieces[i, j].transform.position, 0.5f);
-                            
 
-                            gridPieces[i, j].setMatchItem(gridPieces[i, y].getMatchItem());
-                            gridPieces[i, y].setMatchItem(null);
-
-                            break;
-
-                        }
-                    }
-                }
-            }
-            
-        }
-        yield return new WaitForSeconds(0.5f);
-
-        RepopulateGridCall(rows, columns);
-    }
     #endregion
     #endregion
+
     #region TESTING
-    IEnumerator MatchTestFall()
+    IEnumerator FallAssign()
     {
         int nullCount = 0;
         for(int i = 0; i < rows; i++)
@@ -600,7 +541,12 @@ public class MatchGrid : MonoBehaviour
             }
         }
         yield return new WaitForSeconds(.5f);
-        MatchRecognition();
+        while(MatchRecognition())
+        {
+            yield return new WaitForSeconds(0.001f);
+        }
+        Debug.Log("Done");
+        RepopulateGridCall(rows, columns);
     }
     #endregion
 }
