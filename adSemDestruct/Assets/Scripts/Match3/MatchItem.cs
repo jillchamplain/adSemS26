@@ -79,10 +79,10 @@ public class MatchItem : GridBased, IGrabbable
 
     public void DestroySelfCall()
     {
-        transform.DOPunchScale(new Vector3(2, 2, 0), 0.5f);
+        transform.DOPunchScale(new Vector3(2, 2, 0), 0.2f);
         //Debug.Log("Destroy Anim");
         //Debug.Log("Done animating");
-        Destroy(this.gameObject, 0.5f);
+        Destroy(this.gameObject, 0.2f);
         matchItemDestroyed?.Invoke(this.row, this.col);
     }
 

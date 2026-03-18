@@ -5,9 +5,9 @@ using System.Collections;
 public class MatchItemManager : MonoBehaviour, ISubManager
 {
     [HideInInspector] public MatchItemManager instance;
-    [Header("Data")]
     [SerializeField] List<GameObject> matchItemTemplates = new List<GameObject>();
     [SerializeField] List<GameObject> matchItems = new List<GameObject>();
+    [SerializeField] float matchItemSpawnOffset;
     public GameObject getRandomMatchItem()
     {
         int randIndex = Random.Range(0, matchItemTemplates.Count);
@@ -95,7 +95,7 @@ public class MatchItemManager : MonoBehaviour, ISubManager
 
     void GenerateMatchItem(GridPiece piece)
     {
-        Vector3 spawnPos = piece.gameObject.transform.position;
+        Vector3 spawnPos =  new Vector3(piece.gameObject.transform.position.x, piece.gameObject.transform.position.y + matchItemSpawnOffset,0);
         GameObject newMatchItem = Instantiate(getRandomMatchItem(), spawnPos, Quaternion.identity);
         matchItems.Add(newMatchItem);
         matchItemGenerated?.Invoke(newMatchItem.GetComponent<MatchItem>(), piece.row, piece.col);

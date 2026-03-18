@@ -125,10 +125,7 @@ public class MatchGrid : MonoBehaviour
             {
                 if (gridPieces[i, j].getMatchItem() == null)
                 {
-                    //Debug.Log("null spot at " + gridPieces[i, j]);
                     nullGridAt?.Invoke(i, j);
-                    //ANIMATION
-                    
                 }
             }
         }
@@ -140,9 +137,32 @@ public class MatchGrid : MonoBehaviour
     #region MATCH RECOGNITION
 
     #region GENERATE MATCH RECOGNITION
-    bool GenerateMatchRecognition()
+
+    bool RecognizeMatches()
     {
         bool isMatch = false;
+
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns; j++)
+            {
+                GridPiece curPiece = gridPieces[i, j];
+                if (curPiece.getMatchItem() != null)
+                {
+                    MatchItemType curType = curPiece.getMatchItem().getType();
+                    if (GenerateMatchRecogntion(curPiece, curType))
+                    {
+                        isMatch = true;
+                    }
+                }
+            }
+        }
+
+
+        return isMatch;
+    }
+    void GenerateMatchRecognition()
+    {
         for (int i = 0; i < rows; i++)
         {
             for (int j = 0; j < columns; j++)
@@ -153,13 +173,11 @@ public class MatchGrid : MonoBehaviour
                     MatchItemType curType = curPiece.getMatchItem().getType();
                     if (GenerateMatchRecogntion(curPiece, curType))
                     { 
-                        isMatch = true;
                         gridGeneratedWithMatch?.Invoke(gridPieces);
                     }
                 }
             }
         }
-        return isMatch;
     }
 
     bool GenerateMatchRecogntion(GridPiece curPiece, MatchItemType curType)
@@ -544,12 +562,7 @@ public class MatchGrid : MonoBehaviour
             }
         }
         yield return new WaitForSeconds(.5f);
-        while(MatchRecognition())
-        {
-            yield return new WaitForSeconds(0.001f);
-        }
-        Debug.Log("Done");
-        RepopulateGridCall(rows, columns);
+        StartCoroutine(TestLogic());
     }
 
     IEnumerator TestLogic()
@@ -557,7 +570,7 @@ public class MatchGrid : MonoBehaviour
         RepopulateGridCall(rows, columns);
         yield return new WaitForSeconds(.5f);
 
-        while (GenerateMatchRecognition())
+        while (RecognizeMatches())
         {
             yield return new WaitForSeconds(0.5f);
             //Destroy any matches
