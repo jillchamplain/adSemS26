@@ -140,8 +140,9 @@ public class MatchGrid : MonoBehaviour
     #region MATCH RECOGNITION
 
     #region GENERATE MATCH RECOGNITION
-    void GenerateMatchRecognition()
+    bool GenerateMatchRecognition()
     {
+        bool isMatch = false;
         for (int i = 0; i < rows; i++)
         {
             for (int j = 0; j < columns; j++)
@@ -152,11 +153,13 @@ public class MatchGrid : MonoBehaviour
                     MatchItemType curType = curPiece.getMatchItem().getType();
                     if (GenerateMatchRecogntion(curPiece, curType))
                     { 
+                        isMatch = true;
                         gridGeneratedWithMatch?.Invoke(gridPieces);
                     }
                 }
             }
         }
+        return isMatch;
     }
 
     bool GenerateMatchRecogntion(GridPiece curPiece, MatchItemType curType)
@@ -547,6 +550,18 @@ public class MatchGrid : MonoBehaviour
         }
         Debug.Log("Done");
         RepopulateGridCall(rows, columns);
+    }
+
+    IEnumerator TestLogic()
+    {
+        RepopulateGridCall(rows, columns);
+        yield return new WaitForSeconds(.5f);
+
+        while (GenerateMatchRecognition())
+        {
+            yield return new WaitForSeconds(0.5f);
+            //Destroy any matches
+        }
     }
     #endregion
 }
