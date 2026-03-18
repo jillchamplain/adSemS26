@@ -89,6 +89,10 @@ PrefabInstance:
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5929983430144882577, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
+      propertyPath: scoreValue
+      value: 250
+      objectReference: {fileID: 0}
+    - target: {fileID: 5929983430144882577, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
       propertyPath: forceApplyMin
       value: 1.2
       objectReference: {fileID: 0}

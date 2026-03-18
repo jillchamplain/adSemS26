@@ -2,11 +2,11 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 
-public class LevelGoal : MonoBehaviour, IDamageable
+public class LevelGoal : CustomPhysics, IDamageable
 {
-    [Header("Data")]
     [SerializeField] int maxHealth;
     [SerializeField] int health;
+    [SerializeField] public int scoreValue;
     bool isDestroyed = false;
     [Header("References")]
     [SerializeField] TextMeshProUGUI healthTF;
@@ -40,11 +40,6 @@ public class LevelGoal : MonoBehaviour, IDamageable
         health = maxHealth;
         UpdateUI();
     }
-    void DestroySelf()
-    {
-        levelGoalDestroyed?.Invoke(this);
-        Destroy(gameObject);
-    }
 
     void TakeDamage(float damage, LevelGoal theGoal)
     {
@@ -60,11 +55,6 @@ public class LevelGoal : MonoBehaviour, IDamageable
     void UpdateUI()
     {
        healthTF.text = string.Format("{0}", health);
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        //Fall Damage
     }
 
     #region IDAMAGEABLE

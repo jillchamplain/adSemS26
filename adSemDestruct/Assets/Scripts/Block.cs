@@ -53,19 +53,7 @@ public class Block : CustomPhysics, IDamageable
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-
-        if (collision.gameObject.GetComponent<LevelMaterial>())
-        {
-            blockHitObject?.Invoke(CalcForceDamage(collision), collision.gameObject.GetComponent<LevelMaterial>());
-
             DestroySelf();
-        }
-        else if(collision.gameObject.GetComponent<LevelGoal>())
-        {
-            blockHitGoal?.Invoke(CalcForceDamage(collision), collision.gameObject.GetComponent<LevelGoal>());
-
-            DestroySelf();
-        }
     }
 
     #region IDAMAGEABLE

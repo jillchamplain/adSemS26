@@ -16,10 +16,17 @@ public class LevelMaterial : CustomPhysics, IDamageable
     public DestructionObjectType getType() { return type; }
     [SerializeField] int maxHealth;
     [SerializeField] int health;
+    [SerializeField] public int scoreValue;
     [Header("References")]
     [SerializeField] TextMeshProUGUI healthTF;
     [SerializeField] ParticleSystem hitParticlesPF;
     [SerializeField] ParticleSystem destroyParticlesPF;
+
+    #region EVENTS
+    public delegate void LevelMaterialDestroyed(LevelMaterial theMaterial);
+    public static event LevelMaterialDestroyed levelMaterialDestroyed;
+
+    #endregion
     void CheckHealth()
     {
         if (health <= 0)
@@ -93,6 +100,7 @@ public class LevelMaterial : CustomPhysics, IDamageable
     {
         GameObject newParticle = GameObject.Instantiate(destroyParticlesPF.gameObject, transform.position, Quaternion.identity);
         Destroy(newParticle, .2f);
+        levelMaterialDestroyed?.Invoke(this);
         Destroy(this.gameObject);
     }
     #endregion

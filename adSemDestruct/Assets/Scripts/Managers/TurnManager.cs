@@ -4,7 +4,6 @@ using UnityEngine;
 public class TurnManager : MonoBehaviour, ISubManager
 {
     [HideInInspector] public static TurnManager instance;
-    [Header("Data")]
     [SerializeField] int maxTurns;
     public int getMaxTurns() {  return maxTurns; }
     int curTurn = 0;

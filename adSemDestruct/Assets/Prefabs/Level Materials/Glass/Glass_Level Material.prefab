@@ -158,14 +158,11 @@ MonoBehaviour:
   weightMultiplier: 0.75
   forceApplyMin: 2
   lastVelocity: {x: 0, y: 0}
-  isGrounded: 0
-  wasGrounded: 1
-  mHealth: 0
-  mMaxHealth: 0
   minRegisterVelocity: 2
   type: 0
   maxHealth: 5
   health: 0
+  scoreValue: 100
   healthTF: {fileID: 2591409590554323017}
   hitParticlesPF: {fileID: 2306889949061441891, guid: b3c233c9287a266408eef72a06a4ac78, type: 3}
   destroyParticlesPF: {fileID: 3933553446640366179, guid: 9b389dbdf994a344e89aff626220cf88, type: 3}

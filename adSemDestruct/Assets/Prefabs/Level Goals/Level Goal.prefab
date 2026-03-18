@@ -373,8 +373,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d9910a03d00f43409e63ccebc9d1dae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rb: {fileID: 8598871697833386816}
+  forceDamageMult: 0
+  forceDamageMin: 0
+  forceDamageThreshold: 0
+  weightMultiplier: 1
+  forceApplyMin: 0
+  lastVelocity: {x: 0, y: 0}
+  minRegisterVelocity: 2
   maxHealth: 10
   health: 10
+  scoreValue: 1000
   healthTF: {fileID: 4906461004764992683}
   destroyParticlesPF: {fileID: 8678360295965159611, guid: 80f6bdcfc3f0a58478e849920e093bb1, type: 3}
 --- !u!58 &8792379303828876092
