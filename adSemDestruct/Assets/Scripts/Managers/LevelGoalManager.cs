@@ -3,7 +3,7 @@ using System.Collections.Generic;
 public class LevelGoalManager : MonoBehaviour, ISubManager
 {
     [HideInInspector] public static LevelGoalManager instance;
-    [Header("Data")]
+    [SerializeField] float timeTillGameOver;
     [SerializeField] List<GameObject> levelGoals;
     [Header("References")]
     [SerializeField] GameObject levelGoalPF;
@@ -18,13 +18,15 @@ public class LevelGoalManager : MonoBehaviour, ISubManager
     private void OnEnable()
     {
         LevelGoal.levelGoalDestroyed += RemoveLevelGoal;
-        TurnManager.reachedMaxTurns += LoseLevelGoalsCheck;
+        TurnManager.reachedMaxTurns += LevelGoalsCheck;
+        GameManager.tryToGameOver += LevelGoalsCheck;
     }
 
     private void OnDisable()
     {
         LevelGoal.levelGoalDestroyed -= RemoveLevelGoal;
-        TurnManager.reachedMaxTurns -= LoseLevelGoalsCheck;
+        TurnManager.reachedMaxTurns -= LevelGoalsCheck;
+        GameManager.tryToGameOver -= LevelGoalsCheck;
     }
     #endregion
 
@@ -40,24 +42,27 @@ public class LevelGoalManager : MonoBehaviour, ISubManager
     void RemoveLevelGoal(LevelGoal theGoal)
     {
         levelGoals.Remove(theGoal.gameObject);
-        WinLevelGoalsCheck();
+        LevelGoalsWinCheck();
 
     }
-    void LoseLevelGoalsCheck()
+
+    void LevelGoalsWinCheck()
+    {
+        if (levelGoals.Count <= 0)
+            levelGoalsDestroyed?.Invoke();
+    }
+
+    void LevelGoalsCheck()
     {
         if (levelGoals.Count > 0)
             levelGoalsNotDestroyed?.Invoke();
+
         else
-            WinLevelGoalsCheck();
+            levelGoalsDestroyed?.Invoke();
     }
 
-    void WinLevelGoalsCheck()
-    {
-        if (levelGoals.Count <= 0)
-        {
-            levelGoalsDestroyed?.Invoke();
-        }
-    }
+
+   
 
     void SpawnDestructionGoal(Vector3 pos) //Level scriptable object?
     {

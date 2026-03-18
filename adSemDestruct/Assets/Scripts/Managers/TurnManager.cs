@@ -53,7 +53,6 @@ public class TurnManager : MonoBehaviour, ISubManager
 
         if (curTurn == maxTurns)
         {
-            Debug.Log("game over");
             reachedMaxTurns?.Invoke();
         }
 

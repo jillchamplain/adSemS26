@@ -3790,6 +3790,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Game Manager
       objectReference: {fileID: 0}
+    - target: {fileID: 6353060469913213850, guid: ab3da5e4ac46f984f88822445bdbfc08, type: 3}
+      propertyPath: gameOverTimer
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public enum GameState
@@ -13,6 +14,8 @@ public class GameManager : MonoBehaviour
 {
     [HideInInspector] public static GameManager instance;
     [SerializeField] GameState curState = GameState.PLAY;
+    [SerializeField] float gameOverTimer;
+    bool hasTriedGameOver = false;
     public void setGameState(GameState state)                                                                                                      
     {
         curState = state;
@@ -34,6 +37,9 @@ public class GameManager : MonoBehaviour
     #region EVENTS
     public delegate void GameStateChangeTo(GameState state);
     public static event GameStateChangeTo gameStateChangeTo;
+
+    public delegate void TryToGameOver();
+    public static event TryToGameOver tryToGameOver;
     private void OnEnable()
     {
         LevelGoalManager.levelGoalsDestroyed += GameWin;
@@ -76,13 +82,25 @@ public class GameManager : MonoBehaviour
 
     void GameWin()
     {
-        Debug.Log("Win");
         setGameState(GameState.GAME_WIN);
     }
 
     void GameOver()
     {
-        Debug.Log("Lose");
+        if (!hasTriedGameOver)
+        {
+            hasTriedGameOver = true;
+            StartCoroutine(GameOverTimer());
+        }
+        else if (hasTriedGameOver)
         setGameState(GameState.GAME_OVER);
     }
+
+    IEnumerator GameOverTimer()
+    {
+        Debug.Log("starting timer");
+        yield return new WaitForSeconds(gameOverTimer);
+        tryToGameOver?.Invoke();
+    }
+
 }
