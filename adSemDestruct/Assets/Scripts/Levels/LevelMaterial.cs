@@ -56,6 +56,7 @@ public class LevelMaterial : CustomPhysics, IDamageable
 
     void Start()
     {
+        base.Start();
         health = maxHealth;
         UpdateUI();
     }

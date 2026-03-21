@@ -186,7 +186,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 539961070781236943}
   forceDamageMult: 0
-  forceDamageMin: 0
+  forceDamageMin: 1
   forceDamageThreshold: 0
   weightMultiplier: 1
   forceApplyMin: 1000

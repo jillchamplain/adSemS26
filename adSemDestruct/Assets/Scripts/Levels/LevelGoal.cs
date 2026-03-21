@@ -37,6 +37,7 @@ public class LevelGoal : CustomPhysics, IDamageable
 
     private void Start()
     {
+        base.Start();
         health = maxHealth;
         UpdateUI();
     }
