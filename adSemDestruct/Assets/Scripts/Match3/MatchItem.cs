@@ -31,15 +31,14 @@ public class MatchItem : GridBased, IGrabbable
 
     [SerializeField] LayerMask interactMask;
     [Header("Position Animation")]
-    //[SerializeField] float targetX;
-    //public void setTargetX(float x) {  targetX = x; }
-    //[SerializeField] float targetY;
-    // public void setTargetY(float y) { targetY = y; }
     [Header("References")]
     [SerializeField] SpriteRenderer sprite;
     public Sprite getSprite() { return sprite.sprite; }
 
     #region EVENTS
+    public delegate void MatchItemReleased();
+    public static event MatchItemReleased matchItemReleased;
+
     public delegate void MatchItemPlaced(MatchItem item, GridPiece gridPiece);
     public static event MatchItemPlaced matchItemPlaced;
 
@@ -65,23 +64,12 @@ public class MatchItem : GridBased, IGrabbable
 
     private void Update()
     {
-        //Lerp towards target position
-        /*if(Mathf.Abs(targetX - transform.position.x) > .01f  && Mathf.Abs(targetY - transform.position.y) >.01f)
-        {
-            Vector2 tempPosition = new Vector2(targetX, transform.position.y);
-            transform.position = Vector2.Lerp(transform.position, tempPosition, .4f);
-        }
-        else
-        {
-            transform.position = new Vector2(targetX, targetY);
-        }*/
+
     }
 
     public void DestroySelfCall()
     {
         transform.DOPunchScale(new Vector3(2, 2, 0), 0.2f);
-        //Debug.Log("Destroy Anim");
-        //Debug.Log("Done animating");
         Destroy(this.gameObject, 0.2f);
         matchItemDestroyed?.Invoke(this.row, this.col);
     }
@@ -108,7 +96,7 @@ public class MatchItem : GridBased, IGrabbable
     {
         //raycast from center of block and assign to grid square 
         RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.forward, 0, interactMask);
-        if (hit)
+        if (hit && TurnManager.instance.getCurTurns() + 1 <= TurnManager.instance.getMaxTurns())  
         {
             matchItemPlaced?.Invoke(this, hit.transform.gameObject.GetComponent<GridPiece>());
         }
