@@ -53,6 +53,10 @@ public class Block : CustomPhysics, IDamageable
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if(collision.gameObject.GetComponent<CustomPhysics>())
+        {
+            collision.gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+        }
             DestroySelf();
     }
 

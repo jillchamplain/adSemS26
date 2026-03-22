@@ -50,15 +50,6 @@ public abstract class CustomPhysics : MonoBehaviour
 
     public void ApplyForce(Vector2 force)
     {
-        /* Vector2 curVelocity = rb.linearVelocity;
-         Vector2 minVelocityTarget = new Vector2(lastVelocity.x + forceApplyMin, lastVelocity.y + forceApplyMin);
-         if(minVelocityTarget.x <= curVelocity.x || minVelocityTarget.y <= curVelocity.y)
-         {
-             //Debug.Log("Min Velocity is " + minVelocityTarget);
-             rb.AddForce(curVelocity, ForceMode2D.Impulse);
-             //Debug.Log("Applying Force Of" + curVelocity);
-         }
-         lastVelocity = curVelocity;*/
         rb.AddRelativeForce(force);
     }
 
@@ -71,11 +62,6 @@ public abstract class CustomPhysics : MonoBehaviour
         Vector2 reflectedDirection = Vector2.Reflect(sendingVelocity, normal);
 
         force = reflectedDirection;
-        //float forceDamage = forceDamageMult * Mathf.Abs(this.gameObject.GetComponent<Rigidbody2D>().linearVelocityX); //Need Angle of velocity 
-        //float mass = rb.mass;
-        // Need X and Y
-        //Need mass
-        //Apply Force
         return force;
 
     }
@@ -87,8 +73,6 @@ public abstract class CustomPhysics : MonoBehaviour
         float reachedY = Mathf.Abs(reachedVelocity.y);
         if (reachedX >= minRegisterVelocity || reachedY >= minRegisterVelocity)
         {
-            //Debug.Log("start health is " + mHealth);
-            //Debug.Log(this.gameObject + "fell");
             damage = Mathf.Max(damageMin,reachedX, reachedY);
         }
         return damageMin;
@@ -107,6 +91,7 @@ public abstract class CustomPhysics : MonoBehaviour
 
         if(collision.gameObject.GetComponent<CustomPhysics>() != null)
         {
+            collision.gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
             collision.gameObject.GetComponent<CustomPhysics>().ApplyForce(CalcForce(collision));
         }
 

@@ -4,39 +4,44 @@ using System.Collections.Generic;
 public class Balloon : MonoBehaviour
 {
     [SerializeField] List<GameObject> touchObjects = new List<GameObject>();   
-    void Start()
-    {
-        
-    }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.GetComponentInParent<Block>())
+        if(touchObjects.Count <= 0)
         {
-            foreach(GameObject obj in touchObjects)
+            collision.gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+            touchObjects.Add(collision.gameObject);
+        }
+
+        else
+        {
+            foreach (GameObject obj in touchObjects)
             {
-                obj.GetComponent<CustomPhysics>().TogglePhysics(true);
-                obj.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+                if(obj != null)
+                    obj.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
             }
             touchObjects.Clear();
             Destroy(this.gameObject);
         }
+    }
 
-        if(collision.gameObject.GetComponent<CustomPhysics>())
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (touchObjects.Count <= 0)
         {
-            collision.gameObject.GetComponent<CustomPhysics>().TogglePhysics(false);
             collision.gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
             touchObjects.Add(collision.gameObject);
         }
-    }
 
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.gameObject.GetComponent<CustomPhysics>())
+        else
         {
-            Debug.Log(collision.gameObject);
-            //collision.gameObject.GetComponent<Rigidbody2D>().simulated = true;
-            //touchObjects.Remove(collision.gameObject);
+            foreach (GameObject obj in touchObjects)
+            {
+                if (obj != null)
+                    obj.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+            }
+            touchObjects.Clear();
+            this.GetComponent<CircleCollider2D>().isTrigger = true;
+            Destroy(this.gameObject);
         }
     }
 
