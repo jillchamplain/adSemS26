@@ -375,11 +375,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activePhysics: 0
   rb: {fileID: 8598871697833386816}
+  damageMult: 1
   lastVelocity: {x: 0, y: 0}
   terminalVelocity: 0.2
   health: 10
   maxHealth: 10
-  score: 0
+  score: 1000
   healthTF: {fileID: 4906461004764992683}
   destroyParticlesPF: {fileID: 8678360295965159611, guid: 80f6bdcfc3f0a58478e849920e093bb1, type: 3}
 --- !u!58 &8792379303828876092

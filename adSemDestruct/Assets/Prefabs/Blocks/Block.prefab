@@ -46,12 +46,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98bc9aeb2f3666b4eaaabebe3518fde1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activePhysics: 0
   rb: {fileID: 224798135740187286}
-  forceDamageMult: 75
-  forceDamageMin: 2
-  weight: 3
-  forceApplyMin: 1000
+  damageMult: 1.25
   lastVelocity: {x: 0, y: 0}
+  terminalVelocity: 0
   shape: 0
   type: 0
   initialVelocity: {x: 7, y: 0}

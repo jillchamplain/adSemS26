@@ -133,6 +133,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11b509cf38678604fa4d9087889181b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 0
+  maxHealth: 0
+  score: 0
+  destroyParticlesPF: {fileID: 3371474945794800044, guid: 9b389dbdf994a344e89aff626220cf88, type: 3}
+  touchObjects: []
 --- !u!58 &6349489004271168269
 CircleCollider2D:
   m_ObjectHideFlags: 0

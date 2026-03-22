@@ -27,9 +27,9 @@ public class LevelGoal : CustomPhysics, IDamageable, IScoreable
     }
     public void Destruct()
     {
-        this.gameObject.transform.DOPunchScale(new Vector3(1, 1, 1), 0.5f);
+        this.gameObject.transform.DOPunchScale(new Vector3(1, 1, 1), 0.25f);
         Instantiate(destroyParticlesPF, transform.position, Quaternion.identity);
-        Destroy(this.gameObject, 0.5f);
+        Destroy(this.gameObject, 0.25f);
         levelGoalDestroyed?.Invoke(this);
         GiveScore();
         isDestroyed = true;

@@ -27,6 +27,7 @@ public class Balloon : MonoBehaviour, IDamageable, IScoreable
     }
     public void Destruct()
     {
+        Instantiate(destroyParticlesPF, transform.position, Quaternion.identity);
         touchObjects.Clear();
         Destroy(this.gameObject);
         GiveScore();
@@ -48,6 +49,7 @@ public class Balloon : MonoBehaviour, IDamageable, IScoreable
     }
 
     #endregion
+    [SerializeField] GameObject destroyParticlesPF;
     [SerializeField] List<GameObject> touchObjects = new List<GameObject>();   
     private void OnTriggerEnter2D(Collider2D collision)
     {

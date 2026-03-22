@@ -11,6 +11,9 @@ public abstract class CustomPhysics : MonoBehaviour
     [Tooltip("Minimum damage done on collision")]
     [SerializeField] static float damageMin = 1;
 
+    [Tooltip("How much damage done is multiplied")]
+    [SerializeField] float damageMult;
+
     [SerializeField] protected Vector2 lastVelocity;
     [Tooltip("Linear velocity of last frame")]
     [SerializeField] float terminalVelocity;
@@ -29,8 +32,9 @@ public abstract class CustomPhysics : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        lastVelocity = rb.linearVelocity * Time.deltaTime;
+        lastVelocity = rb.linearVelocity;
     }
+
 
     IEnumerator EnablePhysicsAfter(float seconds)
     {
@@ -59,18 +63,18 @@ public abstract class CustomPhysics : MonoBehaviour
 
     protected float CalcDamage(Vector2 reachedVelocity)
     {
-        Debug.Log(reachedVelocity);
+        Debug.Log(lastVelocity);
         float damage = 0;
         float reachedX = Mathf.Abs(reachedVelocity.x);
         float reachedY = Mathf.Abs(reachedVelocity.y);
-        damage = Mathf.Max(damageMin, reachedX, reachedY);
 
         if (reachedX >= terminalVelocity ||  reachedY >= terminalVelocity)
         {
             if (GetComponent<IDamageable>() != null)
                 GetComponent<IDamageable>().Destruct();
         }
-        return Mathf.Max(damage, reachedX, reachedY);
+        damage = Mathf.Max(damageMin, reachedX, reachedY);
+        return damage;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -82,7 +86,7 @@ public abstract class CustomPhysics : MonoBehaviour
             GetComponent<IDamageable>().TakeDamage(damage);
 
         if (collision.gameObject.GetComponent<IDamageable>() != null)
-            collision.gameObject.GetComponent<IDamageable>().TakeDamage(damage);
+            collision.gameObject.GetComponent<IDamageable>().TakeDamage(damage * damageMult);
 
         if(collision.gameObject.GetComponent<CustomPhysics>() != null)
         {
