@@ -184,18 +184,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13b08965c2db86a4aab614ecaae38fe4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activePhysics: 0
   rb: {fileID: 539961070781236943}
-  forceDamageMult: 0
-  forceDamageMin: 1
-  forceDamageThreshold: 0
-  weightMultiplier: 1
-  forceApplyMin: 1000
   lastVelocity: {x: 0, y: 0}
-  minRegisterVelocity: 1.6
-  type: 0
-  maxHealth: 0
+  terminalVelocity: 0.2
   health: 0
-  scoreValue: 100
+  maxHealth: 0
+  score: 0
+  type: 0
   healthTF: {fileID: 8434915321238389952}
   hitParticlesPF: {fileID: 2306889949061441891, guid: 267593537aa0b514e93f535407de6dfe, type: 3}
   destroyParticlesPF: {fileID: 3933553446640366179, guid: 9b389dbdf994a344e89aff626220cf88, type: 3}

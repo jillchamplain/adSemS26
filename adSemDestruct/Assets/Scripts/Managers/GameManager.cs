@@ -98,7 +98,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator GameOverTimer()
     {
-        Debug.Log("starting timer");
+        //Debug.Log("starting timer");
         yield return new WaitForSeconds(gameOverTimer);
         tryToGameOver?.Invoke();
     }

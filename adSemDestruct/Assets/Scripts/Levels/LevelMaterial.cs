@@ -9,14 +9,59 @@ public enum DestructionObjectType
     STONE,
     NUM_TYPES
 }
-public class LevelMaterial : CustomPhysics, IDamageable
+public class LevelMaterial : CustomPhysics, IDamageable, IScoreable
 {
-    [Header("Data")]
+    #region IDAMAGEABLE
+    [Header("Damageable")]
+    [SerializeField] int health;
+    public int Health
+    {
+        get { return health; }
+        set { health = value; }
+    }
+    [SerializeField] int maxHealth;
+    public int MaxHealth
+    {
+        get { return maxHealth; }
+    }
+    public void TakeDamage(float damage)
+    {
+        health -= (int)damage;
+        if (damage > 0)
+        {
+            GameObject newParticles = Instantiate(hitParticlesPF.gameObject, transform.position, Quaternion.identity);
+            Destroy(newParticles, 0.2f);
+        }
+
+        CheckHealth();
+        UpdateUI();
+
+    }
+    public void Destruct()
+    {
+        GameObject newParticle = GameObject.Instantiate(destroyParticlesPF.gameObject, transform.position, Quaternion.identity);
+        Destroy(newParticle, .2f);
+        levelMaterialDestroyed?.Invoke(this);
+        Destroy(this.gameObject);
+    }
+    #endregion 
+
+    #region ISCOREABLE
+    [Header("Scoreable")]
+    [SerializeField] int score;
+    public int Score
+    {
+        get { return score; }
+    }
+    public void GiveScore()
+    {
+        ScoreManager.instance.AddScore(score);
+    }
+    #endregion
+
     [SerializeField] DestructionObjectType type;
     public DestructionObjectType getType() { return type; }
-    [SerializeField] int maxHealth;
-    [SerializeField] int health;
-    [SerializeField] public int scoreValue;
+
     [Header("References")]
     [SerializeField] TextMeshProUGUI healthTF;
     [SerializeField] ParticleSystem hitParticlesPF;
@@ -43,14 +88,14 @@ public class LevelMaterial : CustomPhysics, IDamageable
 
     private void OnEnable()
     {
-        Block.blockHitObject += TakeDamage;
-        materialHitLevelMaterial += TakeDamage;
+        Block.blockHitObject += DamageCheck;
+        materialHitLevelMaterial += DamageCheck;
     }
 
     private void OnDisable()
     {
-        Block.blockHitObject -= TakeDamage;
-        materialHitLevelMaterial -= TakeDamage;
+        Block.blockHitObject -= DamageCheck;
+        materialHitLevelMaterial -= DamageCheck;
     }
     #endregion
 
@@ -61,21 +106,11 @@ public class LevelMaterial : CustomPhysics, IDamageable
         UpdateUI();
     }
 
-    void TakeDamage(float damage, LevelMaterial theDestruct)
+    void DamageCheck(float damage, LevelMaterial theDestruct)
     {
         if (theDestruct == this)
         {
-            //Debug.Log(this + " listened");
-            //Debug.Log("Took " + damage);
-            health -= (int)damage;
-            if(damage > 0)
-            {
-                GameObject newParticles = Instantiate(hitParticlesPF.gameObject, transform.position, Quaternion.identity);
-                Destroy(newParticles, 0.2f);
-            }
-
-            CheckHealth();
-            UpdateUI();
+            TakeDamage(damage);
         }
     }
 
@@ -83,26 +118,5 @@ public class LevelMaterial : CustomPhysics, IDamageable
     {
         healthTF.text = string.Format("{0}", health);
     }
-    #region IDESTRUCTIBLE
-    public void TakeDamage(float damage)
-    {
-        health -= (int)damage;
-        if (damage > 0)
-        {
-            GameObject newParticles = Instantiate(hitParticlesPF.gameObject, transform.position, Quaternion.identity);
-            Destroy(newParticles, 0.2f);
-        }
-
-        CheckHealth();
-        UpdateUI();
-
-    }
-    public void Destruct()
-    {
-        GameObject newParticle = GameObject.Instantiate(destroyParticlesPF.gameObject, transform.position, Quaternion.identity);
-        Destroy(newParticle, .2f);
-        levelMaterialDestroyed?.Invoke(this);
-        Destroy(this.gameObject);
-    }
-    #endregion
+   
 }

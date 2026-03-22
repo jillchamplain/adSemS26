@@ -2,11 +2,56 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 
-public class LevelGoal : CustomPhysics, IDamageable
+public class LevelGoal : CustomPhysics, IDamageable, IScoreable
 {
-    [SerializeField] int maxHealth;
+    #region IDAMAGEABLE
+    [Header("Damageable")]
     [SerializeField] int health;
-    [SerializeField] public int scoreValue;
+    public int Health
+    {
+        get { return health; }
+        set { health = value; }
+    }
+    [SerializeField] int maxHealth;
+    public int MaxHealth
+    {
+        get { return maxHealth; }
+        set { maxHealth = value; }
+    }
+    public void TakeDamage(float damage)
+    {
+
+        health -= (int)damage;
+        CheckHealth();
+        UpdateUI();
+    }
+    public void Destruct()
+    {
+        this.gameObject.transform.DOPunchScale(new Vector3(1, 1, 1), 0.5f);
+        Instantiate(destroyParticlesPF, transform.position, Quaternion.identity);
+        Destroy(this.gameObject, 0.5f);
+        levelGoalDestroyed?.Invoke(this);
+        GiveScore();
+        isDestroyed = true;
+    }
+    #endregion
+
+    #region ISCOREABLE
+    [Header("Scoreable")]
+    [SerializeField] int score;
+    public int Score
+    {
+        get
+        {
+            return score;
+        }
+    }
+    public void GiveScore()
+    {
+        ScoreManager.instance.AddScore(score);
+    }
+    #endregion
+    
     bool isDestroyed = false;
     [Header("References")]
     [SerializeField] TextMeshProUGUI healthTF;
@@ -23,14 +68,14 @@ public class LevelGoal : CustomPhysics, IDamageable
 
     private void OnEnable()
     {
-        LevelMaterial.materialHitLevelGoal += TakeDamage;
-        Block.blockHitGoal += TakeDamage;
+        LevelMaterial.materialHitLevelGoal += DamageCheck;
+        Block.blockHitGoal += DamageCheck;
     }
 
     private void OnDisable()
     {
-        LevelMaterial.materialHitLevelGoal -= TakeDamage;
-        Block.blockHitGoal -= TakeDamage;
+        LevelMaterial.materialHitLevelGoal -= DamageCheck;
+        Block.blockHitGoal -= DamageCheck;
     }
 
     #endregion
@@ -42,13 +87,11 @@ public class LevelGoal : CustomPhysics, IDamageable
         UpdateUI();
     }
 
-    void TakeDamage(float damage, LevelGoal theGoal)
+    void DamageCheck(float damage, LevelGoal theGoal)
     {
         if(theGoal == this)
         {
-            health -= (int)damage;
-            CheckHealth();
-           UpdateUI();
+            TakeDamage(damage);
         }
     }
 
@@ -57,24 +100,4 @@ public class LevelGoal : CustomPhysics, IDamageable
     {
        healthTF.text = string.Format("{0}", health);
     }
-
-    #region IDAMAGEABLE
-
-    public void TakeDamage(float damage)
-    {
-
-        health -= (int)damage;
-        CheckHealth();
-        UpdateUI();
-    }
-
-    public void Destruct()
-    {
-        this.gameObject.transform.DOPunchScale(new Vector3(1, 1, 1), 0.5f);
-        Instantiate(destroyParticlesPF, transform.position, Quaternion.identity);
-        Destroy(this.gameObject, 0.5f);
-        levelGoalDestroyed?.Invoke(this);
-        isDestroyed = true;
-    }
-    #endregion
 }

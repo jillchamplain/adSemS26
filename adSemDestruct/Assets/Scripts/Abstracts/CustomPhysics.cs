@@ -4,32 +4,22 @@ using UnityEngine;
 public abstract class CustomPhysics : MonoBehaviour
 {
     [Header("Custom Physics")]
-    [SerializeField] bool shouldPhysics = false;
-    public void TogglePhysics(bool physics) {  shouldPhysics = physics; }
+    [SerializeField] bool activePhysics = false;
+    public void TogglePhysics(bool physics) {  activePhysics = physics; }
     [SerializeField] protected Rigidbody2D rb;
-    public void setRigidBody(Rigidbody2D rb) { this.rb = rb; }
 
-    [Tooltip("The minimum damage done to an object")]
+    [Tooltip("Minimum damage done on collision")]
     [SerializeField] static float damageMin = 1;
-    public void setForceDamageMin(float newMin) { damageMin = newMin; }
-    [Tooltip("The minimum damage this needs to calculate to register damage")]
-    [SerializeField] float forceDamageThreshold;
 
-    [SerializeField] float weightMultiplier = 1;
-    public void setWeightMultiplier(float newWeight) { weightMultiplier = newWeight; }
-    [Tooltip("Minimum change in linear velocity before this applies an impulse force")]
-    [SerializeField] float forceApplyMin;
-
-    [Header("Collision Damage")]
     [SerializeField] protected Vector2 lastVelocity;
     [Tooltip("Linear velocity of last frame")]
-    [SerializeField] float minRegisterVelocity;
-    [Tooltip("Minimum velocity this needs to reach in order to calculate collision damage")]
+    [SerializeField] float terminalVelocity;
+    [Tooltip("Minimum velocity to destroy this on collision")]
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        rb.mass = weightMultiplier * rb.mass;
+        rb.mass = rb.mass;
         lastVelocity = rb.linearVelocity;
     }
 
@@ -45,7 +35,7 @@ public abstract class CustomPhysics : MonoBehaviour
     IEnumerator EnablePhysicsAfter(float seconds)
     {
         yield return new WaitForSeconds(seconds);   
-        shouldPhysics = true;
+        activePhysics = true;
     }
 
     public void ApplyForce(Vector2 force)
@@ -62,27 +52,32 @@ public abstract class CustomPhysics : MonoBehaviour
         Vector2 reflectedDirection = Vector2.Reflect(sendingVelocity, normal);
 
         force = reflectedDirection;
+        //Debug.Log("Force applied is " +  force);
         return force;
 
     }
 
-    protected float CalcCollisionDamage(Vector2 reachedVelocity)
+    protected float CalcDamage(Vector2 reachedVelocity)
     {
+        Debug.Log(reachedVelocity);
         float damage = 0;
         float reachedX = Mathf.Abs(reachedVelocity.x);
         float reachedY = Mathf.Abs(reachedVelocity.y);
-        if (reachedX >= minRegisterVelocity || reachedY >= minRegisterVelocity)
+        damage = Mathf.Max(damageMin, reachedX, reachedY);
+
+        if (reachedX >= terminalVelocity ||  reachedY >= terminalVelocity)
         {
-            damage = Mathf.Max(damageMin,reachedX, reachedY);
+            if (GetComponent<IDamageable>() != null)
+                GetComponent<IDamageable>().Destruct();
         }
-        return damageMin;
+        return Mathf.Max(damage, reachedX, reachedY);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (!shouldPhysics)
+        if (!activePhysics)
             return;
-        float damage = CalcCollisionDamage(lastVelocity);
+        float damage = CalcDamage(lastVelocity);
         if(GetComponent<IDamageable>() != null)
             GetComponent<IDamageable>().TakeDamage(damage);
 
@@ -94,7 +89,6 @@ public abstract class CustomPhysics : MonoBehaviour
             collision.gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
             collision.gameObject.GetComponent<CustomPhysics>().ApplyForce(CalcForce(collision));
         }
-
     }
 
 }
