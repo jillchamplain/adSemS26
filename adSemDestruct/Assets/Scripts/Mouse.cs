@@ -104,6 +104,7 @@ public class Mouse : MonoBehaviour, ISubManager
                 shouldInteract = false;
                 break;
         }
+
     }
 
     #region ISubManager

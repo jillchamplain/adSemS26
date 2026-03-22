@@ -5,6 +5,7 @@ public abstract class CustomPhysics : MonoBehaviour
 {
     [Header("Custom Physics")]
     [SerializeField] bool shouldPhysics = false;
+    public void TogglePhysics(bool physics) {  shouldPhysics = physics; }
     [SerializeField] protected Rigidbody2D rb;
     public void setRigidBody(Rigidbody2D rb) { this.rb = rb; }
 
