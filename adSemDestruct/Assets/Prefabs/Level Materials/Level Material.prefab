@@ -191,11 +191,12 @@ MonoBehaviour:
   terminalVelocity: 0.2
   health: 0
   maxHealth: 0
+  hitParticlePF: {fileID: 6753573999170959915, guid: 1ff07973c6fa0ce4089e6cce88804ae6, type: 3}
+  destroyParticlePF: {fileID: 9111382922874301112, guid: 75025a18f8ccd1245ad05bbfbe95f4df, type: 3}
   score: 100
+  scoreParticlePF: {fileID: 5727417616746648152, guid: a2f4cd930edee1e4da99139dda165c25, type: 3}
   type: 0
   healthTF: {fileID: 8434915321238389952}
-  hitParticlesPF: {fileID: 2306889949061441891, guid: 267593537aa0b514e93f535407de6dfe, type: 3}
-  destroyParticlesPF: {fileID: 3933553446640366179, guid: 9b389dbdf994a344e89aff626220cf88, type: 3}
 --- !u!212 &2141615376396897099
 SpriteRenderer:
   m_ObjectHideFlags: 0

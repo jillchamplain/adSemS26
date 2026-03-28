@@ -1,6 +1,8 @@
 using DG.Tweening;
+using NUnit.Framework;
 using TMPro;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class LevelGoal : CustomPhysics, IDamageable, IScoreable
 {
@@ -18,6 +20,16 @@ public class LevelGoal : CustomPhysics, IDamageable, IScoreable
         get { return maxHealth; }
         set { maxHealth = value; }
     }
+    [SerializeField] GameObject hitParticlePF;
+    public GameObject HitParticlePF
+    {
+        get { return hitParticlePF; }
+    }
+    [SerializeField] GameObject destroyParticlePF;
+    public GameObject DestroyParticlePF
+    {
+        get { return destroyParticlePF; }
+    }
     public void TakeDamage(float damage)
     {
 
@@ -28,7 +40,14 @@ public class LevelGoal : CustomPhysics, IDamageable, IScoreable
     public void Destruct()
     {
         this.gameObject.transform.DOPunchScale(new Vector3(1, 1, 1), 0.25f);
-        Instantiate(destroyParticlesPF, transform.position, Quaternion.identity);
+        GameObject dParticle = Instantiate(destroyParticlePF.gameObject, transform.position, Quaternion.identity);
+        Destroy(dParticle, .2f);
+
+        GameObject sParticle = Instantiate(scoreParticle, transform.position, Quaternion.identity);
+        //sParticle.GetComponent<TextMeshPro>().DOFade(0f, 5f);
+        sParticle.transform.DOMoveY(transform.position.y + 2f, .2f);
+        //Destroy(sParticle, 0.5f);
+
         Destroy(this.gameObject, 0.25f);
         levelGoalDestroyed?.Invoke(this);
         GiveScore();
@@ -39,6 +58,7 @@ public class LevelGoal : CustomPhysics, IDamageable, IScoreable
     #region ISCOREABLE
     [Header("Scoreable")]
     [SerializeField] int score;
+    [SerializeField] GameObject scoreParticle;
     public int Score
     {
         get
@@ -46,6 +66,12 @@ public class LevelGoal : CustomPhysics, IDamageable, IScoreable
             return score;
         }
     }
+
+    public GameObject ScoreParticlePF
+    {
+        get { return scoreParticle; }
+    }
+
     public void GiveScore()
     {
         ScoreManager.instance.AddScore(score);
@@ -53,9 +79,7 @@ public class LevelGoal : CustomPhysics, IDamageable, IScoreable
     #endregion
     
     bool isDestroyed = false;
-    [Header("References")]
     [SerializeField] TextMeshProUGUI healthTF;
-    [SerializeField] ParticleSystem destroyParticlesPF;
     void CheckHealth()
     {
         if (health <= 0 && !isDestroyed)

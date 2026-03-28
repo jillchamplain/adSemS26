@@ -1,3 +1,4 @@
+using DG.Tweening;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -24,13 +25,24 @@ public class LevelMaterial : CustomPhysics, IDamageable, IScoreable
     {
         get { return maxHealth; }
     }
+
+    [SerializeField] GameObject hitParticlePF;
+    public GameObject HitParticlePF
+    {
+        get { return hitParticlePF; }
+    }
+    [SerializeField] GameObject destroyParticlePF;
+    public GameObject DestroyParticlePF
+    {
+        get { return destroyParticlePF; }
+    }
     public void TakeDamage(float damage)
     {
         health -= (int)damage;
         if (damage > 0)
         {
-            GameObject newParticles = Instantiate(hitParticlesPF.gameObject, transform.position, Quaternion.identity);
-            Destroy(newParticles, 0.2f);
+            GameObject hParticle = Instantiate(hitParticlePF.gameObject, transform.position, Quaternion.identity);
+            Destroy(hParticle, 0.2f);
         }
 
         CheckHealth();
@@ -39,8 +51,13 @@ public class LevelMaterial : CustomPhysics, IDamageable, IScoreable
     }
     public void Destruct()
     {
-        GameObject newParticle = GameObject.Instantiate(destroyParticlesPF.gameObject, transform.position, Quaternion.identity);
-        Destroy(newParticle, .2f);
+        GameObject dParticle = GameObject.Instantiate(destroyParticlePF.gameObject, transform.position, Quaternion.identity);
+        Destroy(dParticle, .2f);
+
+        GameObject sParticle = GameObject.Instantiate(scoreParticlePF, transform.position, Quaternion.identity);
+        sParticle.GetComponent<TextMeshPro>().DOFade(0f, .5f);
+        Destroy(sParticle, .5f);
+
         levelMaterialDestroyed?.Invoke(this);
         Destroy(this.gameObject);
     }
@@ -49,10 +66,17 @@ public class LevelMaterial : CustomPhysics, IDamageable, IScoreable
     #region ISCOREABLE
     [Header("Scoreable")]
     [SerializeField] int score;
+    [SerializeField] GameObject scoreParticlePF;
     public int Score
     {
         get { return score; }
     }
+
+    public GameObject ScoreParticlePF
+    {
+        get { return scoreParticlePF; }
+    }
+
     public void GiveScore()
     {
         ScoreManager.instance.AddScore(score);
@@ -64,8 +88,6 @@ public class LevelMaterial : CustomPhysics, IDamageable, IScoreable
 
     [Header("References")]
     [SerializeField] TextMeshProUGUI healthTF;
-    [SerializeField] ParticleSystem hitParticlesPF;
-    [SerializeField] ParticleSystem destroyParticlesPF;
 
     #region EVENTS
     public delegate void LevelMaterialDestroyed(LevelMaterial theMaterial);
@@ -83,19 +105,15 @@ public class LevelMaterial : CustomPhysics, IDamageable, IScoreable
     public delegate void MaterialHitLevelGoal(float damage, LevelGoal theGoal);
     public static event MaterialHitLevelGoal materialHitLevelGoal;
 
-    public delegate void MaterialHitLevelMaterial(float damage, LevelMaterial theMaterial);
-    public static event MaterialHitLevelMaterial materialHitLevelMaterial;
 
     private void OnEnable()
     {
         Block.blockHitObject += DamageCheck;
-        materialHitLevelMaterial += DamageCheck;
     }
 
     private void OnDisable()
     {
         Block.blockHitObject -= DamageCheck;
-        materialHitLevelMaterial -= DamageCheck;
     }
     #endregion
 

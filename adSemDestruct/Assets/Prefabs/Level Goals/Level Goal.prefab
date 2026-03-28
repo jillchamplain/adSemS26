@@ -380,9 +380,11 @@ MonoBehaviour:
   terminalVelocity: 0.2
   health: 10
   maxHealth: 10
+  hitParticlePF: {fileID: 0}
+  destroyParticlePF: {fileID: 877706179349384830, guid: 7b7b679cfb419384f9946e69ee6f598e, type: 3}
   score: 1000
+  scoreParticle: {fileID: 5727417616746648152, guid: a2f4cd930edee1e4da99139dda165c25, type: 3}
   healthTF: {fileID: 4906461004764992683}
-  destroyParticlesPF: {fileID: 8678360295965159611, guid: 80f6bdcfc3f0a58478e849920e093bb1, type: 3}
 --- !u!58 &8792379303828876092
 CircleCollider2D:
   m_ObjectHideFlags: 0

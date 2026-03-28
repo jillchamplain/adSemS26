@@ -101,6 +101,10 @@ PrefabInstance:
       value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 5929983430144882577, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
+      propertyPath: hitParticlePF
+      value: 
+      objectReference: {fileID: 5907203538618986513, guid: b317fae76819dea4ab3f7c2e774ef7d6, type: 3}
+    - target: {fileID: 5929983430144882577, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
       propertyPath: hitParticlesPF
       value: 
       objectReference: {fileID: 2306889949061441891, guid: 699a17eb47943e2439f5d8d189abb3c9, type: 3}

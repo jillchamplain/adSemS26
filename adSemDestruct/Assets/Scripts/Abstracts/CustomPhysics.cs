@@ -63,7 +63,7 @@ public abstract class CustomPhysics : MonoBehaviour
 
     protected float CalcDamage(Vector2 reachedVelocity)
     {
-        Debug.Log(lastVelocity);
+        //Debug.Log(lastVelocity);
         float damage = 0;
         float reachedX = Mathf.Abs(reachedVelocity.x);
         float reachedY = Mathf.Abs(reachedVelocity.y);

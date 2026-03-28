@@ -1,6 +1,7 @@
 using DG.Tweening;
 using NUnit.Framework;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using static LevelGoal;
 public class Balloon : MonoBehaviour, IDamageable, IScoreable
@@ -18,6 +19,18 @@ public class Balloon : MonoBehaviour, IDamageable, IScoreable
         get { return maxHealth; }
         set { maxHealth = value; }
     }
+    [SerializeField] GameObject hitParticlePF;
+
+    public GameObject HitParticlePF
+    {
+        get { return hitParticlePF; }
+    }
+    [SerializeField] GameObject destroyParticlePF;
+    public GameObject DestroyParticlePF
+    {
+        get { return destroyParticlePF; }
+    }
+
     public void TakeDamage(float damage)
     {
 
@@ -27,7 +40,13 @@ public class Balloon : MonoBehaviour, IDamageable, IScoreable
     }
     public void Destruct()
     {
-        Instantiate(destroyParticlesPF, transform.position, Quaternion.identity);
+        GameObject dParticle = Instantiate(destroyParticlePF, transform.position, Quaternion.identity);
+        Destroy(dParticle, .2f);
+
+        GameObject sParticle = Instantiate(scoreParticlePF, transform.position, Quaternion.identity);
+        scoreParticlePF.GetComponent<TextMeshPro>().DOFade(0f, .5f);
+        Destroy(sParticle, 0.5f);
+
         touchObjects.Clear();
         Destroy(this.gameObject);
         GiveScore();
@@ -36,6 +55,7 @@ public class Balloon : MonoBehaviour, IDamageable, IScoreable
     #region ISCOREABLE
     [Header("Scoreable")]
     [SerializeField] public int score;
+    [SerializeField] GameObject scoreParticlePF;
     public int Score
     {
         get
@@ -43,13 +63,18 @@ public class Balloon : MonoBehaviour, IDamageable, IScoreable
             return score;
         }
     }
+
+    public GameObject ScoreParticlePF
+    {
+        get { return scoreParticlePF; }
+    }
+
     public void GiveScore()
     {
         ScoreManager.instance.AddScore(score);
     }
 
     #endregion
-    [SerializeField] GameObject destroyParticlesPF;
     [SerializeField] List<GameObject> touchObjects = new List<GameObject>();   
     private void OnTriggerEnter2D(Collider2D collision)
     {

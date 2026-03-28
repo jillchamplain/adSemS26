@@ -135,8 +135,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 0
   maxHealth: 0
+  hitParticlePF: {fileID: 6753573999170959915, guid: 1ff07973c6fa0ce4089e6cce88804ae6, type: 3}
+  destroyParticlePF: {fileID: 9111382922874301112, guid: 75025a18f8ccd1245ad05bbfbe95f4df, type: 3}
   score: 0
-  destroyParticlesPF: {fileID: 3371474945794800044, guid: 9b389dbdf994a344e89aff626220cf88, type: 3}
+  scoreParticlePF: {fileID: 5727417616746648152, guid: a2f4cd930edee1e4da99139dda165c25, type: 3}
   touchObjects: []
 --- !u!58 &6349489004271168269
 CircleCollider2D:

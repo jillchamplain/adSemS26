@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public interface IScoreable
@@ -7,4 +8,5 @@ public interface IScoreable
         ScoreManager.instance.AddScore(Score);
     }
     [SerializeField] int Score { get; }
+    [SerializeField] GameObject ScoreParticlePF { get; }
 }
