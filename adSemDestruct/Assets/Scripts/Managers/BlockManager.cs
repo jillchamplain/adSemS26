@@ -6,6 +6,8 @@ using Unity.VisualScripting;
 public class BlockManager : MonoBehaviour, ISubManager
 {
     [HideInInspector] public static BlockManager instance;
+    [SerializeField] float xOffset;
+    [SerializeField] float yOffset;
     [Header("References")]
     [SerializeField] GameObject blockParentPF;
     [SerializeField] GameObject blockPartPF;
@@ -44,7 +46,9 @@ public class BlockManager : MonoBehaviour, ISubManager
         Block block = newBlock.GetComponent<Block>();
         foreach(GridPiece pos in matchPieces)
         {
-            GameObject newBlockpiece = Instantiate(blockPartPF, pos.transform.position, Quaternion.identity);
+            Vector2 spawnPos = new Vector2(pos.transform.position.x + xOffset, pos.transform.position.y + yOffset);
+            Debug.Log($"Should be spawning at {spawnPos}");
+            GameObject newBlockpiece = Instantiate(blockPartPF, spawnPos, Quaternion.identity);
             newBlockpiece.transform.parent = newBlock.transform;
 
             newBlock.GetComponent<Block>().getSpriteRenderers().Add(newBlockpiece.GetComponentInChildren<SpriteRenderer>());

@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6536714014157031301}
+  - component: {fileID: 920480950114503766}
   m_Layer: 0
   m_Name: Block Manager
   m_TagString: Untagged
@@ -31,3 +32,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &920480950114503766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5348522167950114733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 110a1dbf43d444d4b87b857b76f0550f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  xOffset: 0
+  blockParentPF: {fileID: 5541109256529163001, guid: 1521f4e92e32f444dbe4eb8e7ed84929, type: 3}
+  blockPartPF: {fileID: 8248588620304553324, guid: e69fb2300afa2144bac7ec68c731d530, type: 3}
+  blockPartSprites:
+  - {fileID: -2349687800033593727, guid: f80388c56dc66c941aef6054cd58b385, type: 3}
+  - {fileID: -7638710317576365620, guid: 8172fda330751ef48ae19b25a0f11d49, type: 3}
+  - {fileID: -4727045609779103816, guid: 278ef27f0ff663a498a870c7a2aa1434, type: 3}
+  - {fileID: 2282040344975965624, guid: 292de33c04c568347b5288469290f9f4, type: 3}
+  - {fileID: -4645228507019219102, guid: 7823fdd39eac0704e83689e57266e5ec, type: 3}
+  - {fileID: -2511842697199081010, guid: b3509319a38a7d84ea8457a32a708887, type: 3}
+  - {fileID: -1869974728441279026, guid: ce650469f21092a4d9b158b32fa85583, type: 3}
