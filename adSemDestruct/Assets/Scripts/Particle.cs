@@ -10,7 +10,7 @@ public class Particle : MonoBehaviour
         if (GetComponentInChildren<ParticleSystem>())
         {
             lifeTime = GetComponentInChildren<ParticleSystem>().main.duration;
-            Debug.Log($"New lifetime is {lifeTime}!");
+            //Debug.Log($"New lifetime is {lifeTime}!");
         }
     }
     void Start()
