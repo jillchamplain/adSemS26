@@ -47,7 +47,7 @@ public class BlockManager : MonoBehaviour, ISubManager
         foreach(GridPiece pos in matchPieces)
         {
             Vector2 spawnPos = new Vector2(pos.transform.position.x + xOffset, pos.transform.position.y + yOffset);
-            Debug.Log($"Should be spawning at {spawnPos}");
+            //Debug.Log($"Should be spawning at {spawnPos}");
             GameObject newBlockpiece = Instantiate(blockPartPF, spawnPos, Quaternion.identity);
             newBlockpiece.transform.parent = newBlock.transform;
 

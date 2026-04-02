@@ -51,11 +51,13 @@ public class LevelMaterial : CustomPhysics, IDamageable, IScoreable
     }
     public void Destruct()
     {
+        GiveScore();
         GameObject dParticle = GameObject.Instantiate(destroyParticlePF.gameObject, transform.position, Quaternion.identity);
         Destroy(dParticle, .2f);
 
         GameObject sParticle = GameObject.Instantiate(scoreParticlePF, transform.position, Quaternion.identity);
         sParticle.GetComponent<TextMeshPro>().DOFade(0f, .5f);
+        sParticle.transform.DOLocalMoveY(.1f, 5f);
         Destroy(sParticle, .5f);
 
         levelMaterialDestroyed?.Invoke(this);

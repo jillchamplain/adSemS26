@@ -96,7 +96,7 @@ public class MatchItem : GridBased, IGrabbable
     {
         //raycast from center of block and assign to grid square 
         RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.forward, 0, interactMask);
-        if (hit && TurnManager.instance.getCurTurns() + 1 <= TurnManager.instance.getMaxTurns())  
+        if (hit && TurnManager.instance.getTurnsLeft() - 1 >= 0)  
         {
             matchItemPlaced?.Invoke(this, hit.transform.gameObject.GetComponent<GridPiece>());
         }
