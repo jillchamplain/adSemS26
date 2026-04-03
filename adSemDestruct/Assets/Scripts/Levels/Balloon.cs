@@ -44,7 +44,9 @@ public class Balloon : MonoBehaviour, IDamageable, IScoreable
         Destroy(dParticle, .2f);
 
         GameObject sParticle = Instantiate(scoreParticlePF, transform.position, Quaternion.identity);
-        scoreParticlePF.GetComponent<TextMeshPro>().DOFade(0f, .5f);
+        scoreParticlePF.GetComponentInChildren<TextMeshPro>().text = score.ToString();
+        scoreParticlePF.GetComponentInChildren<TextMeshPro>().DOFade(1f, .5f);
+        scoreParticlePF.transform.DOLocalMoveY(.1f, 5f);
         Destroy(sParticle, 0.5f);
 
         touchObjects.Clear();

@@ -44,12 +44,12 @@ public class LevelGoal : CustomPhysics, IDamageable, IScoreable
         Destroy(dParticle, .2f);
 
         GameObject sParticle = Instantiate(scoreParticle, transform.position, Quaternion.identity);
-        //sParticle.GetComponent<TextMeshPro>().DOFade(0f, 5f);
-        sParticle.transform.DOMoveY(transform.position.y + 2f, .2f);
-        //Destroy(sParticle, 0.5f);
+        sParticle.GetComponentInChildren<TextMeshPro>().text = score.ToString();
+        sParticle.GetComponentInChildren<TextMeshPro>().DOFade(1f, 2f);
+        sParticle.transform.DOLocalMoveY(.1f, 5f);
 
-        Destroy(this.gameObject, 0.25f);
         levelGoalDestroyed?.Invoke(this);
+        Destroy(this.gameObject, 0.25f);
         GiveScore();
         isDestroyed = true;
     }
