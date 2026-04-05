@@ -45,7 +45,7 @@ public class LevelGoal : CustomPhysics, IDamageable, IScoreable
 
         GameObject sParticle = Instantiate(scoreParticle, transform.position, Quaternion.identity);
         sParticle.GetComponentInChildren<TextMeshPro>().text = score.ToString();
-        sParticle.GetComponentInChildren<TextMeshPro>().DOFade(1f, 2f);
+        sParticle.GetComponentInChildren<TextMeshPro>().DOFade(0f, 1f);
         sParticle.transform.DOLocalMoveY(.1f, 5f);
 
         levelGoalDestroyed?.Invoke(this);

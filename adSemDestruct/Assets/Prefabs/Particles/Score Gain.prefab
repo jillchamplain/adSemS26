@@ -186,7 +186,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1435757572252018987, guid: ba37bced65b958848ad35cbf8fea8b38, type: 3}
       propertyPath: lifeTime
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2112721229981553843, guid: ba37bced65b958848ad35cbf8fea8b38, type: 3}
       propertyPath: m_LocalPosition.x
