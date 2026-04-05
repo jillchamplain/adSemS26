@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7553317136978973790}
-  - component: {fileID: 6872306137566350933}
   m_Layer: 0
   m_Name: Destroyer
   m_TagString: Untagged
@@ -33,18 +32,6 @@ Transform:
   - {fileID: 231841322876084193}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6872306137566350933
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 620886003753367532}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29da128c3a788054dbd7a7b6cf1f8f18, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2009285510312046528
 GameObject:
   m_ObjectHideFlags: 0
@@ -54,6 +41,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 231841322876084193}
+  - component: {fileID: 6601382340327110645}
   - component: {fileID: 7419679235741834949}
   - component: {fileID: 1684827351498688150}
   m_Layer: 0
@@ -78,6 +66,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7553317136978973790}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6601382340327110645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2009285510312046528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29da128c3a788054dbd7a7b6cf1f8f18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &7419679235741834949
 SpriteRenderer:
   m_ObjectHideFlags: 0

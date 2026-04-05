@@ -92,14 +92,10 @@ public class LevelGoal : CustomPhysics, IDamageable, IScoreable
 
     private void OnEnable()
     {
-        LevelMaterial.materialHitLevelGoal += DamageCheck;
-        Block.blockHitGoal += DamageCheck;
     }
 
     private void OnDisable()
     {
-        LevelMaterial.materialHitLevelGoal -= DamageCheck;
-        Block.blockHitGoal -= DamageCheck;
     }
 
     #endregion

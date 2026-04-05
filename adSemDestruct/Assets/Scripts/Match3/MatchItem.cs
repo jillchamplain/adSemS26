@@ -36,8 +36,6 @@ public class MatchItem : GridBased, IGrabbable
     public Sprite getSprite() { return sprite.sprite; }
 
     #region EVENTS
-    public delegate void MatchItemReleased();
-    public static event MatchItemReleased matchItemReleased;
 
     public delegate void MatchItemPlaced(MatchItem item, GridPiece gridPiece);
     public static event MatchItemPlaced matchItemPlaced;

@@ -29,19 +29,13 @@ public class Block : CustomPhysics
 
     #region EVENTS
 
-    public delegate void BlockHitObject(float forceDamage, LevelMaterial theDestruct);
-    public static event BlockHitObject blockHitObject;
-
-    public delegate void BlockHitGoal(float forceDamage, LevelGoal theDestruct);
-    public static event BlockHitGoal blockHitGoal;
-
     #endregion
 
     private void Start()
     {
         rb.linearVelocity = initialVelocity;
     }
-    void DestroySelf()
+    public void DestroySelf()
     {
         foreach (SpriteRenderer spriteRenderer in spriteRenderers)
         {

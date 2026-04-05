@@ -59,7 +59,7 @@ public class LevelMaterial : CustomPhysics, IDamageable, IScoreable
         sParticle.GetComponentInChildren<TextMeshPro>().DOFade(1f, 2f);
         sParticle.transform.DOLocalMoveY(.1f, 5f);
 
-        Debug.Log("Spawning particle");
+        //Debug.Log("Spawning particle");
         levelMaterialDestroyed?.Invoke(this);
         Destroy(this.gameObject);
     }
@@ -104,18 +104,13 @@ public class LevelMaterial : CustomPhysics, IDamageable, IScoreable
 
     #region EVENTS
 
-    public delegate void MaterialHitLevelGoal(float damage, LevelGoal theGoal);
-    public static event MaterialHitLevelGoal materialHitLevelGoal;
-
 
     private void OnEnable()
     {
-        Block.blockHitObject += DamageCheck;
     }
 
     private void OnDisable()
     {
-        Block.blockHitObject -= DamageCheck;
     }
     #endregion
 
