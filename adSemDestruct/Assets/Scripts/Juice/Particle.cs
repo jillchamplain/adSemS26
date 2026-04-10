@@ -18,6 +18,11 @@ public class Particle : MonoBehaviour
         Destroy(gameObject, lifeTime);
     }
 
+    void Spawn()
+    {
+
+    }
+
     protected void Play()
     {
 

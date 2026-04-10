@@ -32,6 +32,6 @@ public class ScoreManager : MonoBehaviour
 
     void UpdateUI()
     {
-        scoreTF.text = score.ToString();
+        scoreTF.text = "$" + score.ToString();
     }
 }

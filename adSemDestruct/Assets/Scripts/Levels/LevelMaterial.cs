@@ -55,9 +55,7 @@ public class LevelMaterial : CustomPhysics, IDamageable, IScoreable
         GameObject dParticle = GameObject.Instantiate(destroyParticlePF.gameObject, transform.position, Quaternion.identity);
 
         GameObject sParticle = GameObject.Instantiate(scoreParticlePF, transform.position, Quaternion.identity);
-        sParticle.GetComponentInChildren<TextMeshPro>().text = score.ToString();   
-        sParticle.GetComponentInChildren<TextMeshPro>().DOFade(0f, 2f);
-        sParticle.transform.DOLocalMoveY(.1f, 1f);
+        sParticle.GetComponent<ScoreParticle>().Spawn(score);
 
         //Debug.Log("Spawning particle");
         levelMaterialDestroyed?.Invoke(this);
