@@ -3,6 +3,11 @@ using UnityEngine;
 
 public class Mouse : MonoBehaviour, ISubManager
 {
+    [SerializeField] Texture2D hoverSprite;
+    [SerializeField] Texture2D clickSprite;
+    [SerializeField] Texture2D holdSprite;
+    Vector2 hotSpot = Vector2.zero;
+
     [SerializeField] bool shouldInteract = true;
     [SerializeField] LayerMask interactMask;
     [SerializeField] GameObject held;
@@ -18,6 +23,11 @@ public class Mouse : MonoBehaviour, ISubManager
         GameManager.gameStateChangeTo -= HandleGameState;
     }
     #endregion
+
+    private void Start()
+    {
+        Cursor.SetCursor(hoverSprite, hotSpot, CursorMode.Auto);
+    }
     void Update()
     {
         if (shouldInteract)
@@ -29,6 +39,7 @@ public class Mouse : MonoBehaviour, ISubManager
         }
     }
 
+
     bool ClickCheck()
     {
 
@@ -36,6 +47,7 @@ public class Mouse : MonoBehaviour, ISubManager
 
         if (Input.GetMouseButtonDown(0))
         {
+            Cursor.SetCursor(clickSprite, hotSpot, CursorMode.Auto);
             if (hit)
             {
                 //Debug.Log(hit.transform.gameObject);
@@ -56,7 +68,7 @@ public class Mouse : MonoBehaviour, ISubManager
 
         if (Input.GetMouseButton(0))
         {
-
+            Cursor.SetCursor(holdSprite, hotSpot, CursorMode.Auto);
             RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, 0, interactMask);
             if (hit)
             {
@@ -80,6 +92,7 @@ public class Mouse : MonoBehaviour, ISubManager
     {
         if (Input.GetMouseButtonUp(0))
         {
+            Cursor.SetCursor(hoverSprite, hotSpot, CursorMode.Auto);
             if (held)
             {
                 held.GetComponent<IGrabbable>().Released();

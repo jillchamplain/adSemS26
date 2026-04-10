@@ -44,6 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e49c3246533a7234989c6f39e69db768, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hoverSprite: {fileID: 2800000, guid: 53cc913e9fdc06346914c356dc67222e, type: 3}
+  clickSprite: {fileID: 2800000, guid: 728ec8f7b34b6a64a9fcae7a09ba4b4d, type: 3}
+  holdSprite: {fileID: 2800000, guid: db4cc0e2f091db140b24e3f73d3a246b, type: 3}
+  shouldInteract: 1
   interactMask:
     serializedVersion: 2
     m_Bits: 8
