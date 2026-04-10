@@ -8,8 +8,6 @@ public class ScoreManager : MonoBehaviour
     [SerializeField] int score;
     [Header("References")]
     [SerializeField] TextMeshProUGUI scoreTF;
-    [SerializeField] GameObject scoreParticlePF;
-    [SerializeField] Vector3 scoreParticleSpawn;
 
     private void Awake()
     {

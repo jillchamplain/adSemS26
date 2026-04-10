@@ -5,10 +5,7 @@ using DG.Tweening;
 public class ScoreParticle : Particle
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
 
-    }
 
     // Update is called once per frame
     void Update()
@@ -19,7 +16,7 @@ public class ScoreParticle : Particle
     public void Spawn(int score)
     {
         GetComponentInChildren<TextMeshPro>().text = "$" + score.ToString();
-        GetComponentInChildren<TextMeshPro>().DOFade(1f, 1f);
-        transform.DOLocalMoveY(.1f, 5f);
+        GetComponentInChildren<TextMeshPro>().DOFade(0f, 1.75f);
+        transform.DOLocalMoveY(.001f, 2f);
     }
 }

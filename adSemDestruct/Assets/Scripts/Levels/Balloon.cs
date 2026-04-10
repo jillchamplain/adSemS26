@@ -79,8 +79,8 @@ public class Balloon : MonoBehaviour, IDamageable, IScoreable
     {
         if(touchObjects.Count <= 0)
         {
-            if (collision.gameObject.GetComponent<Block>() == null) 
-            collision.gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+            if (collision.gameObject.GetComponent<Block>() == null && collision.gameObject.GetComponent<Rigidbody2D>()) 
+                collision.gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
             touchObjects.Add(collision.gameObject);
         }
 
