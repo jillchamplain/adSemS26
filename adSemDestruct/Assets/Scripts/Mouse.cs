@@ -30,6 +30,20 @@ public class Mouse : MonoBehaviour, ISubManager
     }
     void Update()
     {
+        if (Input.GetMouseButtonDown(0))
+        {
+            //Debug.Log("Click");
+            Cursor.SetCursor(clickSprite, hotSpot, CursorMode.Auto);
+            //Debug.Log("Setting sprite");
+        }
+
+        else if(Input.GetMouseButton(0))
+            Cursor.SetCursor(holdSprite, hotSpot, CursorMode.Auto);
+
+        else if(Input.GetMouseButtonUp(0))
+            Cursor.SetCursor(hoverSprite, hotSpot, CursorMode.Auto);
+
+
         if (shouldInteract)
         {
             if (!ClickCheck())
@@ -37,6 +51,8 @@ public class Mouse : MonoBehaviour, ISubManager
 
             ReleaseCheck();
         }
+
+      
     }
 
 

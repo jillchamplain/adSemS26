@@ -62,11 +62,12 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Tab))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if(curState != GameState.PAUSED)
+            if(curState == GameState.PLAY)
                 setGameState(GameState.PAUSED);
-            else setGameState(GameState.PLAY);
+            else if(curState == GameState.PAUSED)
+                setGameState(GameState.PLAY);
         }
     }
 

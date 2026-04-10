@@ -42,7 +42,7 @@ public class LevelGoalManager : MonoBehaviour, ISubManager
     void RemoveLevelGoal(LevelGoal theGoal)
     {
         levelGoals.Remove(theGoal.gameObject);
-        Debug.Log("Checking Level Goals");
+        //Debug.Log("Checking Level Goals");
         LevelGoalsWinCheck();
 
     }

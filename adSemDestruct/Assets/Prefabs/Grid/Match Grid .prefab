@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6640766167545240673}
   - component: {fileID: 4956687761604147046}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: 'Match Grid '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44,8 +44,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1a261b2162fdc24e9d97649804c6e4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rows: 2
-  columns: 7
-  pieceWidth: 1
-  pieceHeight: 1
-  gridPiecePF: {fileID: 0}
+  rows: 7
+  columns: 9
+  pieceWidth: 1.5
+  pieceHeight: 1.5
+  gridPiecePF: {fileID: 7128094111639049000, guid: e19b629677d3e0b47b86da83ee61297c, type: 3}
+  matchShapes:
+  - {fileID: 11400000, guid: e8327155cdd95cc4a9e5881db8d8796d, type: 2}
+  - {fileID: 11400000, guid: 99a3f719740ec9940bf34f924c86836e, type: 2}
+  - {fileID: 11400000, guid: 71aa2913f22837247a4f6d5514cf0089, type: 2}
+  - {fileID: 11400000, guid: 9d6d5646460807e4097cb0b1748813f7, type: 2}
+  - {fileID: 11400000, guid: 86c7d84e65792d746a4e89a765e5db9d, type: 2}
+  - {fileID: 11400000, guid: e8251f6e84a8b984a90ac55bcc980e3d, type: 2}
+  - {fileID: 11400000, guid: 2a1043656ed030042b9ea1cc84b9ace9, type: 2}
+  - {fileID: 11400000, guid: b8c45db98fbffd143b6cc1058119bdb6, type: 2}
+  - {fileID: 11400000, guid: 0be95d66fdedd1745bd8a18d7c8b2b27, type: 2}
+  - {fileID: 11400000, guid: dcef0db63fe4e0a4a9c11e3c77c731de, type: 2}
+  - {fileID: 11400000, guid: ccbaf1b8d9436f64ab445fd161a5ebc3, type: 2}

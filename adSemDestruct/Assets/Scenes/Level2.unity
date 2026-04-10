@@ -2400,8 +2400,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   score: 0
   scoreTF: {fileID: 698192611}
-  scoreParticlePF: {fileID: 5727417616746648152, guid: 9d34d37ad41433845a1f5b5a25231444, type: 3}
-  scoreParticleSpawn: {x: 0, y: 0, z: 0}
 --- !u!1001 &1787809525
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4384,7 +4382,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4956687761604147046, guid: 83e1f187e5c6ee14284f25589d091dfb, type: 3}
       propertyPath: columns
-      value: 10
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 4956687761604147046, guid: 83e1f187e5c6ee14284f25589d091dfb, type: 3}
       propertyPath: pieceWidth
@@ -4452,7 +4450,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6640766167545240673, guid: 83e1f187e5c6ee14284f25589d091dfb, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -6.75
+      value: -7
       objectReference: {fileID: 0}
     - target: {fileID: 6640766167545240673, guid: 83e1f187e5c6ee14284f25589d091dfb, type: 3}
       propertyPath: m_LocalPosition.z
