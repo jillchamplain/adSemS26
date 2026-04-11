@@ -17,6 +17,6 @@ public class ScoreParticle : Particle
     {
         GetComponentInChildren<TextMeshPro>().text = "$" + score.ToString();
         GetComponentInChildren<TextMeshPro>().DOFade(0f, 1.75f);
-        transform.DOLocalMoveY(.001f, 2f);
+        transform.DOJump(transform.position, 2f, 1, 2f);
     }
 }
