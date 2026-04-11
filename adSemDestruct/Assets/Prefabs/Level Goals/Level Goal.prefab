@@ -381,7 +381,7 @@ MonoBehaviour:
   health: 10
   maxHealth: 10
   hitParticlePF: {fileID: 0}
-  destroyParticlePF: {fileID: 877706179349384830, guid: 7b7b679cfb419384f9946e69ee6f598e, type: 3}
+  destroyParticlePF: {fileID: 7300915210043694195, guid: 3b93716e6aa2ea943b197b90887082a4, type: 3}
   score: 1000
   scoreParticle: {fileID: 5727417616746648152, guid: a2f4cd930edee1e4da99139dda165c25, type: 3}
   healthTF: {fileID: 4906461004764992683}

@@ -117,6 +117,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5929983430144882577, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
+      propertyPath: destroyParticlePF
+      value: 
+      objectReference: {fileID: 7683726489516426842, guid: 0c02084e6a6f5384997bd193f86aa0be, type: 3}
+    - target: {fileID: 5929983430144882577, guid: 03ed20a300baac6459faca353b66e82d, type: 3}
       propertyPath: forceDamageThreshold
       value: 15
       objectReference: {fileID: 0}
