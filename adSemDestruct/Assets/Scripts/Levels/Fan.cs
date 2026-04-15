@@ -19,14 +19,14 @@ public class Fan : MonoBehaviour
         if (collision.gameObject.GetComponent<Rigidbody2D>())
         {
             Debug.Log("Fan collided with " + collision.gameObject);
-            Vector3 blowForce = (transform.right + transform.up) * force;
+            Vector3 blowForce = (transform.up) * force;
             Debug.Log(blowForce);
             collision.gameObject.GetComponent<Rigidbody2D>().AddForce(blowForce);
         }
         else if (collision.gameObject.GetComponentInParent<Rigidbody2D>())
         {
             Debug.Log("Fan collided with " + collision.gameObject);
-            Vector3 blowForce = (transform.right + transform.up) * force;
+            Vector3 blowForce = (transform.up) * force;
             Debug.Log(blowForce);
             collision.gameObject.GetComponentInParent<Rigidbody2D>().AddForce(blowForce);
         }
