@@ -407,6 +407,7 @@ public class MatchGrid : MonoBehaviour
         if (gridPiece == null)
         {
             item.transform.position = gridPieces[item.row, item.col].transform.position;
+            //Debug.Log($"Resetting position to {gridPieces[item.row, item.col].transform.position}");
             MatchRecognition();
             return;
         }

@@ -87,19 +87,25 @@ public class MatchItem : GridBased, IGrabbable
     #region IGrabbable
     public void Grabbed(Vector2 pos)
     {
-        transform.position = pos;
+        //Debug.Log("Grabbed");
+        //transform.position = pos;
+        transform.DOMove(pos, .1f);
     }
 
     public void Released()
     {
         //raycast from center of block and assign to grid square 
+        transform.DOComplete();
+
         RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.forward, 0, interactMask);
         if (hit && TurnManager.instance.getTurnsLeft() - 1 >= 0)  
         {
+            
             matchItemPlaced?.Invoke(this, hit.transform.gameObject.GetComponent<GridPiece>());
         }
         else
         {
+            ///Debug.Log("Released match item");
             matchItemPlaced?.Invoke(this, null);
         }
     }

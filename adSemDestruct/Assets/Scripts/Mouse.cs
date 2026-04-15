@@ -32,9 +32,7 @@ public class Mouse : MonoBehaviour, ISubManager
     {
         if (Input.GetMouseButtonDown(0))
         {
-            //Debug.Log("Click");
             Cursor.SetCursor(clickSprite, hotSpot, CursorMode.Auto);
-            //Debug.Log("Setting sprite");
         }
 
         else if(Input.GetMouseButton(0))
@@ -43,22 +41,18 @@ public class Mouse : MonoBehaviour, ISubManager
         else if(Input.GetMouseButtonUp(0))
             Cursor.SetCursor(hoverSprite, hotSpot, CursorMode.Auto);
 
-
         if (shouldInteract)
         {
             if (!ClickCheck())
                 HoldCheck();
 
             ReleaseCheck();
-        }
-
-      
+        }   
     }
 
 
     bool ClickCheck()
     {
-
         RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, 0, interactMask);
 
         if (Input.GetMouseButtonDown(0))
@@ -88,8 +82,6 @@ public class Mouse : MonoBehaviour, ISubManager
             RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, 0, interactMask);
             if (hit)
             {
-                //Debug.Log("Holding over" + hit.transform.gameObject); 
-
                 if (!held && (hit.transform.gameObject.GetComponent<IGrabbable>() != null)) //if grabbable & not holding
                 {
                     hit.transform.gameObject.GetComponent<IGrabbable>().Grabbed(Camera.main.ScreenToWorldPoint(Input.mousePosition));
