@@ -19,12 +19,21 @@ public class LevelManager : MonoBehaviour
     public void RestartLevel()
     {
         string curLevel = SceneManager.GetActiveScene().name;
+        Time.timeScale = 1.0f;
         SceneManager.LoadScene(curLevel);
+        
     }
 
     public void GoToLevelIndex(int level)
     {
+        Time.timeScale = 1.0f;
         SceneManager.LoadScene(level);
+        
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
     }
 
 
@@ -39,6 +48,8 @@ public class LevelManager : MonoBehaviour
         if (curLevelIndex >= SceneManager.sceneCountInBuildSettings)
             curLevelIndex = 0;
 
+        Time.timeScale = 1.0f;
         SceneManager.LoadScene(curLevelIndex);
+        
     }
 }
