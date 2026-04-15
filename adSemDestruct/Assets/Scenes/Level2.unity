@@ -3538,6 +3538,18 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: RestartLevel
       objectReference: {fileID: 0}
+    - target: {fileID: 1774862990710906992, guid: 60124fb492a1b8046ae6ad81567be55c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1893476474}
+    - target: {fileID: 1774862990710906992, guid: 60124fb492a1b8046ae6ad81567be55c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: RestartLevel
+      objectReference: {fileID: 0}
+    - target: {fileID: 1774862990710906992, guid: 60124fb492a1b8046ae6ad81567be55c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: LevelManager, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 1842110183403808478, guid: 60124fb492a1b8046ae6ad81567be55c, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -3862,7 +3874,9 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1893476474}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3506050969964758355, guid: 60124fb492a1b8046ae6ad81567be55c, type: 3}
+    - {fileID: 5963041437508889607, guid: 60124fb492a1b8046ae6ad81567be55c, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
